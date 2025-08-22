@@ -25,7 +25,7 @@ spec:
         kind: GitRepository
         url: https://github.com/BSFishy/k8s-homelab.git
         ref: refs/heads/main
-        path: kubernetes/flux/cluster/bootstrap
+        path: kubernetes/flux/cluster
         interval: 1h
       commonMetadata:
         labels:
