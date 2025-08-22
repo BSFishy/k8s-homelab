@@ -15,9 +15,12 @@ spec:
       repository: velero/velero
       tag: v1.16.0
 
+    # Disable CSI snapshots
+    snapshotsEnabled: false
+    deployNodeAgent: false
+
     # Provider + BSL use S3 plugin (works with B2's S3-compat)
     configuration:
-      features: EnableCSI
       backupStorageLocation:
         - name: b2
           provider: velero.io/aws
@@ -32,20 +35,10 @@ spec:
     credentials:
       existingSecret: velero-cloud-credentials
 
-    # Install node-agent (Kopia/FSB) as a DaemonSet for PV file-level backups
-    deployNodeAgent: true
-    nodeAgent:
-      uploaderType: kopia
-
     # Install plugins via initContainers (AWS/S3 + CSI)
     initContainers:
       - name: velero-plugin-for-aws
         image: velero/velero-plugin-for-aws:v1.12.1
-        volumeMounts:
-          - name: plugins
-            mountPath: /target
-      - name: velero-plugin-for-csi
-        image: velero/velero-plugin-for-csi:v0.7.0
         volumeMounts:
           - name: plugins
             mountPath: /target
