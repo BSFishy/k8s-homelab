@@ -55,3 +55,8 @@ bootstrap-crds:
 # the rest of the services
 bootstrap: bootstrap-crds
   helmfile --file kubernetes/bootstrap/helmfile.d/01-apps.yaml sync --hide-notes
+
+# Cause flux to reconcile the main git source. Allows forcing the cluster to
+# update to new changes without needing to wait for schedules
+reconcile:
+  flux reconcile source git flux-system
