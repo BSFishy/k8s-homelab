@@ -21,6 +21,7 @@ spec:
       features: EnableCSI
       backupStorageLocation:
         - name: b2
+          provider: velero.io/aws
           bucket: mattprovost-k8s-homelab
           prefix: velero
           config:
