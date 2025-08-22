@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.10/website/content/v1.10/schemas/config.schema.json
+
+machine:
+  network:
+    interfaces:
+      - interface: enp1s0
+        dhcp: true
+        addresses:
+          - 10.1.2.3/16
+        vip:
+          ip: 10.1.3.2
+    hostname: gaia-02
+
+  install:
+    disk: /dev/nvme0n1
+    wipe: false

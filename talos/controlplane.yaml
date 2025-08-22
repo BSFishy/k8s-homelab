@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.10/website/content/v1.10/schemas/config.schema.json
+
+cluster:
+  # allow scheduling work on controlplane nodes
+  allowSchedulingOnControlPlanes: true
+
+machine:
+  nodeLabels:
+    # allow load balancing from controlplane nodes
+    node.kubernetes.io/exclude-from-external-load-balancers:
+      $patch: delete

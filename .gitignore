@@ -1,0 +1,8 @@
+# direnv cache
+/.direnv
+
+# talos configurations
+/controlplane.yaml
+/talosconfig
+/worker.yaml
+/rendered

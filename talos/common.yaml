@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.10/website/content/v1.10/schemas/config.schema.json
+
+machine:
+  kubelet:
+    extraMounts:
+      # create longhorn mount
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+
+  features:
+    # enable dns caching
+    hostDNS:
+      enabled: true
+
+cluster:
+  network:
+    podSubnets:
+      - 10.244.0.0/16
+      - 2001:db8:42:0::/56
+    serviceSubnets:
+      - 10.96.0.0/12
+      - 2001:db8:42:1::/112
