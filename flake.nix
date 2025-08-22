@@ -31,6 +31,11 @@
 
               # k8s tools
               pkgs.fluxcd
+              pkgs.velero
+
+              # sops
+              pkgs.age
+              pkgs.sops
             ];
           };
         };

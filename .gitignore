@@ -6,3 +6,6 @@
 /talosconfig
 /worker.yaml
 /rendered
+
+# age
+/age.agekey

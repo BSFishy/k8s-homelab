@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: velero
+spec:
+  interval: 10m
+  chartRef:
+    kind: OCIRepository
+    name: velero
+  values:
+    # Use the official 1.16 image
+    image:
+      repository: velero/velero
+      tag: v1.16.0
+
+    # Provider + BSL use S3 plugin (works with B2's S3-compat)
+    configuration:
+      provider: aws
+      features: EnableCSI
+      backupStorageLocation:
+        name: b2
+        bucket: mattprovost-k8s-homelab
+        prefix: velero
+        config:
+          region: us-east-005
+          s3ForcePathStyle: "true"
+          s3Url: "https://s3.us-east-005.backblazeb2.com"
+
+    # Tell chart to use your existing credentials secret
+    credentials:
+      existingSecret: velero-cloud-credentials
+
+    # Install node-agent (Kopia/FSB) as a DaemonSet for PV file-level backups
+    deployNodeAgent: true
+    nodeAgent:
+      uploaderType: kopia
+
+    # Install plugins via initContainers (AWS/S3 + CSI)
+    initContainers:
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.12.1
+        volumeMounts:
+          - name: plugins
+            mountPath: /target
+      - name: velero-plugin-for-csi
+        image: velero/velero-plugin-for-csi:v0.7.0
+        volumeMounts:
+          - name: plugins
+            mountPath: /target
