@@ -15,11 +15,22 @@
         devShells = {
           default = pkgs.mkShell {
             buildInputs = [
-              pkgs.talosctl
-              pkgs.k9s
-              pkgs.kubectl
+              # misc tools
               pkgs.just
               pkgs.jq
+              pkgs.yq
+
+              # cluster management
+              pkgs.talosctl
+              pkgs.k9s
+
+              # k8s management
+              pkgs.kubectl
+              pkgs.kubernetes-helm
+              pkgs.helmfile
+
+              # k8s tools
+              pkgs.fluxcd
             ];
           };
         };

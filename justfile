@@ -44,3 +44,14 @@ talos-endpoints:
 #   just upgrade v1.10.6 schematic-longhorn.yaml 10.1.2.2 10.1.2.3 10.1.2.4
 upgrade ver +nodes:
 	bash scripts/factory-upgrade.sh {{ver}} boot-assets.yaml {{nodes}}
+
+# Deploy CRDs needed to bootstrap the cluster
+bootstrap-crds:
+  helmfile --quiet --file kubernetes/bootstrap/helmfile.d/00-crds.yaml template | kubectl apply --server-side --filename -
+
+# Bootstrap the cluster with flux. Installs all the basic infrastructure
+# services, like velero and longhorn. Allows for restoring the cluster in the
+# event of a disaster or building a new cluster from scratch before deploying
+# the rest of the services
+bootstrap: bootstrap-crds
+  helmfile --file kubernetes/bootstrap/helmfile.d/01-apps.yaml sync --hide-notes
