@@ -1,0 +1,60 @@
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: cluster-state
+  namespace: velero-system
+spec:
+  schedule: "0 4 * * *"
+  template:
+    ttl: 336h
+    snapshotVolumes: false
+    defaultVolumesToFsBackup: false
+    includedNamespaces:
+      - "*"
+    excludedNamespaces:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - velero-system
+      - longhorn-system
+    includedResources:
+      - namespaces
+      - persistentvolumeclaims
+      - persistentvolumes
+      # add these ONLY if not managed by Flux:
+      # - storageclasses.storage.k8s.io
+      # - resourcequotas
+      # - limitranges
+      # - networkpolicies.networking.k8s.io
+    excludedResources:
+      - events
+      - events.events.k8s.io
+      - leases.coordination.k8s.io
+      - endpoints
+      - endpointslices.discovery.k8s.io
+      - pods
+      - replicasets
+      - deployments
+      - daemonsets
+      - statefulsets
+      - jobs
+      - cronjobs
+      - metrics.k8s.io
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: pinned-secrets
+  namespace: velero-system
+spec:
+  schedule: "15 4 * * *"
+  template:
+    ttl: 336h
+    snapshotVolumes: false
+    defaultVolumesToFsBackup: false
+    includedNamespaces: ["*"]
+    includedResources: ["secrets"]
+    labelSelector:
+      matchLabels:
+        backup.velero.io/include: "true"
