@@ -17,6 +17,7 @@
 
 - `10.1.3.2` - control plane vip
 - `10.1.3.3` - traefik ingress
+- `10.1.3.4` - coredns
 
 ## ipv6
 
