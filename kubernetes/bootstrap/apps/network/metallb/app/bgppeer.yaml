@@ -1,0 +1,24 @@
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: defaultv4-peer
+  namespace: network
+spec:
+  myASN: 65000
+  peerASN: 65000
+  peerAddress: 10.1.0.1
+  bfdProfile: default-bfd
+  dualStackAddressFamily: true
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: defaultv6-peer
+  namespace: network
+spec:
+  myASN: 65000
+  peerASN: 65000
+  peerAddress: 2603:8080:1e00:1b02::1
+  bfdProfile: default-bfd
+  dualStackAddressFamily: true
