@@ -22,6 +22,7 @@ spec:
       # TODO: add ipv6 ip
       loadBalancerIP: 10.1.3.4
 
+    # dont try to replace the cluster coredns
     isClusterService: false
 
     servers:
@@ -31,6 +32,7 @@ spec:
             use_tcp: true
         port: 53
         plugins:
+          - name: debug
           - name: errors
           - name: health
             configBlock: |-
