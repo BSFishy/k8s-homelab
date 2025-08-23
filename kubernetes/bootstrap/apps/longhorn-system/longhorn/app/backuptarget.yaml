@@ -6,4 +6,4 @@ metadata:
 spec:
   backupTargetURL: s3://mattprovost-k8s-homelab@s3.us-east-005.backblazeb2.com/longhorn/
   credentialSecret: b2-longhorn
-  pollInterval: 5m0s
+  pollInterval: 60m0s
