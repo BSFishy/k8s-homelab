@@ -50,3 +50,27 @@ spec:
           trustedIPs:
             - 0.0.0.0/0
           insecure: true
+
+    ingressRoute:
+      dashboard:
+        enabled: true
+        matchRule: Host(`traefik.home.mattprovost.dev`)
+        entryPoints: ["websecure", "traefik"]
+        middlewares:
+          - name: authentik-authentik@kubernetescrd
+      healthcheck:
+        enabled: true
+
+    providers:
+      kubernetesCRD:
+        allowCrossNamespace: true
+
+    # register the dns record in coredns
+    service:
+      ipFamilyPolicy: RequireDualStack
+      annotations:
+        "metallb.io/loadBalancerIPs": "10.1.1.250,2603:8080:1e00:1b02::2"
+        "coredns.io/hostname": "traefik.home.mattprovost.dev"
+      spec:
+        # fix external traffic ip
+        externalTrafficPolicy: Local
