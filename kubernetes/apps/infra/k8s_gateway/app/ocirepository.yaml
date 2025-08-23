@@ -12,5 +12,3 @@ spec:
   ref:
     tag: 3.2.6
   url: oci://ghcr.io/k8s-gateway/charts/k8s-gateway
-  verify:
-    provider: cosign
