@@ -41,12 +41,19 @@ spec:
   interval: 10m
   path: ./kubernetes/apps
   prune: true
-  # disable this once the cluster has been properly bootstrapped
-  suspend: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  dependsOn:
+    - name: cluster-bootstrap
   decryption:
     provider: sops
     secretRef:
       name: sops-age
+  healthChecks:
+    # gate this kustomization with a config map that indicates whether it should
+    # be reconciled or not
+    - apiVersion: v1
+      kind: ConfigMap
+      name: gate-open
+      namespace: flux-system

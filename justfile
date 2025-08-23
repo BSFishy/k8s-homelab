@@ -60,3 +60,12 @@ bootstrap: bootstrap-crds
 # update to new changes without needing to wait for schedules
 reconcile:
   flux reconcile source git flux-system
+
+# Enable deployment of the full set of apps. This should be done only after the
+# system has been bootstrapped and if backups have been restored.
+open:
+  kubectl -n flux-system create configmap gate-open --from-literal=ok=yes
+
+# Disable deployment of the full set of apps.
+close:
+  kubectl -n flux-system delete configmap gate-open
