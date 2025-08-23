@@ -9,7 +9,6 @@ spec:
   interval: 30m
   url: https://charts.longhorn.io
   timeout: 3m
-
 ---
 # yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -34,26 +33,8 @@ spec:
     remediation:
       retries: 3
   values:
-    persistence:
-      defaultDataLocality: best-effort
-    defaultSettings:
-      createDefaultDiskLabeledNodes: true
-      defaultDataLocality: best-effort
-      defaultLonghornStaticStorageClass: longhorn
-      defaultReplicaCount: 3
-      guaranteedEngineManagerCPU: 20
-      guaranteedReplicaManagerCPU: 20
-      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      orphanAutoDeletion: true
-      replicaAutoBalance: true
-      storageMinimalAvailablePercentage: 1
-      storageReservedPercentageForDefaultDisk: 10
     ingress:
-      enabled: true
-      host: longhorn.home.mattprovost.dev
-      tls: false
-      annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+      enabled: false
     metrics:
       serviceMonitor:
         enabled: true

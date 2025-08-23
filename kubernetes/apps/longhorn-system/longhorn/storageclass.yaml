@@ -14,8 +14,9 @@ apiVersion: storage.k8s.io/v1
 metadata:
   name: media
 provisioner: driver.longhorn.io
+allowVolumeExpansion: true
 parameters:
   # this data isn't super important and takes up a lot of space
   numberOfReplicas: "2"
   staleReplicaTimeout: "30"
-  recurringJobSelector: '[{ "name":"critical", "isGroup":true }]'
+  recurringJobSelector: '[{ "name":"media", "isGroup":true }]'
