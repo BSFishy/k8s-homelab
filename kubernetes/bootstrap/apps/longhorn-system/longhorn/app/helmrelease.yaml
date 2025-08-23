@@ -48,6 +48,9 @@ spec:
       replicaAutoBalance: true
       storageMinimalAvailablePercentage: 1
       storageReservedPercentageForDefaultDisk: 10
+    defaultBackupStore:
+      backupTarget: s3://s3.us-east-005.backblazeb2.com
+      backupTargetCredentialStore: b2-longhorn
     ingress:
       enabled: true
       host: longhorn.home.mattprovost.dev
