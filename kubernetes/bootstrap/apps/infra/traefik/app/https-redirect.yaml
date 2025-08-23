@@ -3,7 +3,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: https-redirect
-  namespace: network
+  namespace: infra
 spec:
   redirectScheme:
     scheme: https
@@ -13,7 +13,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: redirect-all-to-https
-  namespace: network
+  namespace: infra
 spec:
   entryPoints: [web] # HTTP entrypoint
   routes:
