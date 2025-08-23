@@ -47,11 +47,9 @@ spec:
 
     ingressRoute:
       dashboard:
-        enabled: true
-        matchRule: Host(`traefik.home.mattprovost.dev`)
-        entryPoints: ["websecure", "traefik"]
-        middlewares:
-          - name: authentik-authentik@kubernetescrd
+        # dashboard ingress route is defined manually in full deployment because
+        # it references an authentik middleware
+        enabled: false
       healthcheck:
         enabled: true
 
