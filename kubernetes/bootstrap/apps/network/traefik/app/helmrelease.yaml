@@ -39,12 +39,6 @@ spec:
       isDefaultClass: true
 
     ports:
-      web:
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
       websecure:
         forwardedHeaders:
           trustedIPs:

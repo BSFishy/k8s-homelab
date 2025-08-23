@@ -1,0 +1,29 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: allow-matt
+  namespace: network
+spec:
+  ipWhiteList:
+    sourceRange:
+      - 10.0.2.173/32
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: internal
+  namespace: network
+spec:
+  entryPoints: [web] # HTTP only
+  routes:
+    - match: Host(`longhorn.internal`)
+      kind: Rule
+      priority: 1000 # <- higher than the catch-all redirect
+      middlewares:
+        - name: allow-matt
+          namespace: network
+      services:
+        - name: longhorn-frontend
+          namespace: longhorn-system
+          port: 80
