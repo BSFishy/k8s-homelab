@@ -1,0 +1,21 @@
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: critical
+provisioner: driver.longhorn.io
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "30"
+  recurringJobSelector: '[{ "name":"critical", "isGroup":true }]'
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: media
+provisioner: driver.longhorn.io
+parameters:
+  # this data isn't super important and takes up a lot of space
+  numberOfReplicas: "2"
+  staleReplicaTimeout: "30"
+  recurringJobSelector: '[{ "name":"critical", "isGroup":true }]'
