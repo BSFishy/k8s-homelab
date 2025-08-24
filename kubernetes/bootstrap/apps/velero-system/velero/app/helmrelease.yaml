@@ -27,6 +27,7 @@ spec:
       backupStorageLocation:
         - name: b2
           provider: velero.io/aws
+          default: true
           bucket: mattprovost-k8s-homelab
           prefix: velero
           config:
