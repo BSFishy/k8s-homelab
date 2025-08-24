@@ -17,7 +17,6 @@ spec:
   secretName: tls-ca
   issuerRef:
     name: selfsigned-root
-    namespace: cert-manager
     kind: ClusterIssuer
 ---
 apiVersion: cert-manager.io/v1
