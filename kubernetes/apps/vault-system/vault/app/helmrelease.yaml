@@ -75,6 +75,8 @@ spec:
           name: tls-server
         - type: secret
           name: tls-ca
+        - type: secret
+          name: tls-ingress
 
       dataStorage:
         enabled: true
@@ -112,8 +114,8 @@ spec:
             listener "tcp" {
               address = "[::]:8200"
               cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/tls-server/tls.crt"
-              tls_key_file = "/vault/userconfig/tls-server/tls.key"
+              tls_cert_file = "/vault/userconfig/tls-ingress/tls.crt"
+              tls_key_file = "/vault/userconfig/tls-ingress/tls.key"
             }
 
             storage "raft" {

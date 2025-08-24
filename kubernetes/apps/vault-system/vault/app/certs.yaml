@@ -32,3 +32,19 @@ spec:
   issuerRef:
     name: vault-ca-issuer
     kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-ingress
+spec:
+  secretName: tls-ingress
+  commonName: "vault.home.mattprovost.dev"
+  dnsNames:
+    - "vault.home.mattprovost.dev"
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
+  privateKey:
+    algorithm: RSA
+    size: 2048
