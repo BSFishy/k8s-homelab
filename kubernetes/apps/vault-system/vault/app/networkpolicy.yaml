@@ -1,0 +1,83 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vault-restrictive
+  namespace: vault-system
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+      app.kubernetes.io/instance: vault
+  policyTypes:
+    - Ingress
+    - Egress
+
+  # === Ingress rules ===
+  ingress:
+    # Allow API/UI :8200 ONLY from Traefik
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: infra
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+      ports:
+        - protocol: TCP
+          port: 8200
+
+    # Allow cluster traffic :8201 ONLY from other Vault server pods
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vault
+              app.kubernetes.io/instance: vault
+      ports:
+        - protocol: TCP
+          port: 8201
+
+    # (Optional) Allow kubelet node health probes hitting the pod IP.
+    # Uncomment and set your node CIDR(s) if probes get blocked.
+    - from:
+        - ipBlock:
+            cidr: 10.244.1.0/24
+      ports:
+        - protocol: TCP
+          port: 8200
+        - protocol: TCP
+          port: 8201
+
+  # === Egress rules ===
+  egress:
+    # Allow DNS for name resolution (kube-dns/CoreDNS)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+
+    # Allow Raft cluster egress to peer Vault pods on :8201
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vault
+              app.kubernetes.io/instance: vault
+      ports:
+        - protocol: TCP
+          port: 8201
+
+    # (Optional) If you use OIDC, Cloud KMS auto-unseal, telemetry, etc.,
+    # add explicit egress rules here (FQDN egress requires a CNI that supports it,
+    # otherwise use ipBlock with CIDRs).
+    # - to:
+    #     - ipBlock: { cidr: 0.0.0.0/0 }   # not recommended; be specific
+    #   ports:
+    #     - protocol: TCP
+    #       port: 443

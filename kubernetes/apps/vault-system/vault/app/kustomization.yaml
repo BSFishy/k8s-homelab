@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./certs.yaml
   - ./helmrelease.yaml
+  - ./networkpolicy.yaml
