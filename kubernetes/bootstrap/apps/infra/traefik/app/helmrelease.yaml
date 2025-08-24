@@ -45,6 +45,14 @@ spec:
             - 0.0.0.0/0
           insecure: true
 
+    experimental:
+      kubernetesGateway:
+        enabled: true
+
+    gateway:
+      # create the gateway in the full deployment for tls
+      enabled: false
+
     ingressRoute:
       dashboard:
         # dashboard ingress route is defined manually in full deployment because

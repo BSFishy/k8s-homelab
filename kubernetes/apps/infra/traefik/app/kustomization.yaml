@@ -5,6 +5,9 @@ kind: Kustomization
 resources:
   - ./https-redirect.yaml
   - ./ingressroute.yaml
+  - ./certs.yaml
+  - ./tls-store.yaml
+  - ./gateway.yaml
 
   # rbac for gateway api
   - https://raw.githubusercontent.com/traefik/traefik/v3.5/docs/content/reference/dynamic-configuration/kubernetes-gateway-rbac.yml

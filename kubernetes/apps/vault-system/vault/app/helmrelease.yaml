@@ -90,15 +90,7 @@ spec:
         enabled: false
 
       ingress:
-        enabled: true
-        hosts:
-          - host: vault.home.mattprovost.dev
-            paths:
-              - "/"
-        tls:
-          - secretName: tls-server
-            hosts:
-              - vault.home.mattprovost.dev
+        enabled: false
 
       ha:
         enabled: true

@@ -6,5 +6,3 @@ resources:
   - ./self-signed.yaml
   - ./cloudflare-secret.sops.yaml
   - ./lets-encrypt.yaml
-  - ./certs.yaml
-  - ./tls-store.yaml
