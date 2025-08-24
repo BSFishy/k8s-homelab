@@ -26,10 +26,9 @@ metadata:
 spec:
   secretName: tls-server
   dnsNames:
-    - vault.vault.svc
-    - vault.vault.svc.cluster.local
-    - vault-internal.vault.svc
-    - vault-internal.vault.svc.cluster.local
+    - vault-0.vault-internal
+    - vault-1.vault-internal
+    - vault-2.vault-internal
   issuerRef:
     name: vault-ca-issuer
     kind: Issuer
