@@ -20,6 +20,8 @@ spec:
     namespace: flux-system
   wait: true
   dependsOn:
+    - name: cluster-repositories
+      namespace: flux-system
     - name: traefik-apps
       namespace: infra
 ---
@@ -27,7 +29,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname vault
+  name: &appname secrets-operator
   namespace: &namespace vault-system
 spec:
   targetNamespace: *namespace
