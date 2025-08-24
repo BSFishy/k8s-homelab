@@ -57,6 +57,9 @@ spec:
       kubernetesCRD:
         allowCrossNamespace: true
 
+      kubernetesGateway:
+        enabled: true
+
     # register the dns record in coredns
     service:
       ipFamilyPolicy: RequireDualStack
