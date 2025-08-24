@@ -137,5 +137,7 @@ spec:
                 leader_client_key_file = "/vault/userconfig/tls-server/tls.key"
               }
             }
+
+            service_registration "kubernetes" {}
     ui:
       enabled: true
