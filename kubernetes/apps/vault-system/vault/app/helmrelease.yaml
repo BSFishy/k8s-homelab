@@ -44,15 +44,28 @@ spec:
           memory: 16Gi
           cpu: 2000m
 
-      # For HA configuration and because we need to manually init the vault,
-      # we need to define custom readiness/liveness Probe settings
       readinessProbe:
         enabled: true
-        path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+        path: "/v1/sys/health?standbyok=true&activecode=200&standbycode=200"
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        failureThreshold: 3
+        timeoutSeconds: 3
+
       livenessProbe:
         enabled: true
-        path: "/v1/sys/health?standbyok=true"
-        initialDelaySeconds: 60
+        path: "/v1/sys/health?standbyok=true&activecode=200&standbycode=204&sealedcode=204&uninitcode=204&drsecondarycode=204"
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        failureThreshold: 6
+        timeoutSeconds: 3
+
+      startupProbe:
+        enabled: true
+        path: "/v1/sys/health?standbyok=true&activecode=200&standbycode=204&sealedcode=204&uninitcode=204&drsecondarycode=204"
+        failureThreshold: 90 # ~15 minutes at 10s period
+        periodSeconds: 10
+        timeoutSeconds: 3
 
       extraEnvironmentVars:
         VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt

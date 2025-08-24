@@ -69,3 +69,7 @@ open:
 # Disable deployment of the full set of apps.
 close:
   kubectl -n flux-system delete configmap gate-open
+
+# Iterate through vault pods and ensure that they're unsealed
+unseal:
+  @bash ./scripts/unseal.sh
