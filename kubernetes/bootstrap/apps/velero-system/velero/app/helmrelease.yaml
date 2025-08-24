@@ -21,6 +21,9 @@ spec:
 
     # Provider + BSL use S3 plugin (works with B2's S3-compat)
     configuration:
+      backupSyncPeriod: 30m
+      storeValidationFrequency: 30m
+
       backupStorageLocation:
         - name: b2
           provider: velero.io/aws
