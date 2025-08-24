@@ -67,6 +67,7 @@ spec:
 
       kubernetesGateway:
         enabled: true
+        experimentalChannel: true
 
     # register the dns record in coredns
     service:
