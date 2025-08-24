@@ -43,6 +43,8 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
+    - name: traefik
+      namespace: infra
   decryption:
     provider: sops
     secretRef:

@@ -5,5 +5,3 @@ kind: Kustomization
 resources:
   - ./https-redirect.yaml
   - ./ingressroute.yaml
-  - ./certs.yaml
-  - ./tls-store.yaml
