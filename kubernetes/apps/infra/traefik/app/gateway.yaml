@@ -6,7 +6,8 @@ spec:
   gatewayClassName: traefik
   listeners:
     - name: websecure
-      port: 443
+      port: 8443
+      protocol: HTTPS
       tls:
         mode: Terminate
         certificateRefs:
@@ -17,7 +18,8 @@ spec:
           from: All
 
     - name: tls-passthrough
-      port: 443
+      port: 8443
+      protocol: TLS
       tls:
         mode: Passthrough
       allowedRoutes:
