@@ -8,6 +8,7 @@ spec:
   schedule: "0 4 * * *"
   template:
     ttl: 336h
+    storageLocation: b2
     snapshotVolumes: false
     defaultVolumesToFsBackup: false
     includedNamespaces:
@@ -51,6 +52,7 @@ spec:
   schedule: "15 4 * * *"
   template:
     ttl: 336h
+    storageLocation: b2
     snapshotVolumes: false
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
