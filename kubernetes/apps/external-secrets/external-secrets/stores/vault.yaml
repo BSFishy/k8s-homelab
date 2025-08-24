@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: vault
+spec:
+  provider:
+    vault:
+      server: "https://vault.home.mattprovost.dev"
+      path: "secret"
+      version: "v2"
+      auth:
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"

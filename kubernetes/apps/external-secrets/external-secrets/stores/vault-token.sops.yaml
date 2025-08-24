@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/v1.33.3/secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+    name: vault-token
+type: Opaque
+stringData:
+    token: ENC[AES256_GCM,data:b9dF0xdOr8bawhD7ZCcd69hwdm3kuLMKp/qsKQ==,iv:fAwRxZqkamj544jk/xZJkupnIoi/8YTyotr7Kk8/UfQ=,tag:VzKWvPGPdN0dJvppHaCiGA==,type:str]
+sops:
+    age:
+        - recipient: age16zd09xxnse2a5hqamq0u93gzr3q3jnqa6qldjrkp8h6hmgrntcuszdrf9q
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZeUZsaUovOE5CdmoxdW4x
+            dHlnMFpoc3ZZMGJOYVRoTHJDNjVuVmVmMTNFClZXUDNvcEZ3c2tOaXNPcXgyMUtY
+            L3VQbmNUQVNzbVM4VzNGSEp6bER6OW8KLS0tICt3R1pjdnBXQ24rdU0yMG93czdW
+            MjdUUTAyM0hYMm95eUdiVmMxdGIyVUEKfEUC2ObxTgPGiUvnuavCUBxirW6ebrL6
+            63dA8/vQSFKn8sNYT7D6Dnit8qpSqLsVZdmY7ooyGhnE1vpvjNR9ig==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-24T19:45:08Z"
+    mac: ENC[AES256_GCM,data:NH6LbRzPtIn6T9E8kZYvHHnCE4gHD2nGnxwaYcdq9POjH69Y+PEGqE/aTofdAxQnYVzNvLjg8TO7HcItPcsUrHZUf2utST14dYOzx3iSxV6OTd5wYe8bLkol5TwgZGaUMcYiMvEvz4C5CSnrnI3wcxCyK/Ok8pHZT1ufvVh2BNA=,iv:8xv2Y1oQ7VPXBuZPpG9odxt08e2O2Bk+9Id6+Q3bjFA=,tag:t2ieFyZsUh0mcqdp/3BPAQ==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
