@@ -5,7 +5,7 @@ metadata:
   name: allow-matt
   namespace: infra
 spec:
-  ipWhiteList:
+  ipAllowList:
     sourceRange:
       - 10.0.2.173/32
 ---
