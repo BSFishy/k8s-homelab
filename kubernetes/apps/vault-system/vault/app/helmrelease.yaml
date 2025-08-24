@@ -65,9 +65,11 @@ spec:
 
       dataStorage:
         enabled: true
+        storageClass: critical
 
       auditStorage:
         enabled: true
+        storageClass: longhorn
 
       standalone:
         enabled: false
