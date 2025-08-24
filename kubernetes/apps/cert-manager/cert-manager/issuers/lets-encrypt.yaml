@@ -15,6 +15,5 @@ spec:
               name: cloudflare-api-token-secret
               key: api-token
         selector:
-          dnsNames:
-            - "home.mattprovost.dev"
-            - "*.home.mattprovost.dev"
+          dnsZones:
+            - "mattprovost.dev"
