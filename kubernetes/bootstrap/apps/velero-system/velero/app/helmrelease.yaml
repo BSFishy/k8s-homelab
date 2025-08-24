@@ -23,6 +23,7 @@ spec:
     configuration:
       backupSyncPeriod: 30m
       storeValidationFrequency: 30m
+      defaultBackupStorageLocation: b2
 
       backupStorageLocation:
         - name: b2
