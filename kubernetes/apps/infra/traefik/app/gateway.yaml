@@ -10,7 +10,7 @@ spec:
       protocol: HTTPS
       tls:
         mode: Terminate
-        certificateRef:
+        certificateRefs:
           - kind: Secret
             name: wildcard-tls
       allowedRoutes:
