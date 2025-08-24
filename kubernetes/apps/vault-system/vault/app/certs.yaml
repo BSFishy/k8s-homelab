@@ -39,7 +39,7 @@ metadata:
   name: vault-ingress
 spec:
   secretName: tls-ingress
-  commonName: "home.mattprovost.dev"
+  commonName: "vault.home.mattprovost.dev"
   dnsNames:
     - "vault.home.mattprovost.dev"
   issuerRef:
