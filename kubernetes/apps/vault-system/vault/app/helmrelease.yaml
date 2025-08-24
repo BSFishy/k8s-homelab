@@ -79,8 +79,7 @@ spec:
         hosts:
           - host: vault.home.mattprovost.dev
             paths:
-              - path: /
-                pathType: Prefix
+              - "/"
         tls:
           - secretName: tls-server
             hosts:
