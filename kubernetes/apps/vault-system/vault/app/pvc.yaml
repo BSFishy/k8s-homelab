@@ -46,8 +46,8 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-spec:
   name: audit-vault-1
+spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
