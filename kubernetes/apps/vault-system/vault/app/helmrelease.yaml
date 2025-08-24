@@ -137,3 +137,5 @@ spec:
                 leader_client_key_file = "/vault/userconfig/tls-server/tls.key"
               }
             }
+    ui:
+      enabled: true
