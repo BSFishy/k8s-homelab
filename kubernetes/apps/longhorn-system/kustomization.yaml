@@ -6,3 +6,4 @@ namespace: longhorn-system
 resources:
   - ./longhorn/recurringjob.yaml
   - ./longhorn/storageclass.yaml
+  - ./longhorn/ingress.yaml
