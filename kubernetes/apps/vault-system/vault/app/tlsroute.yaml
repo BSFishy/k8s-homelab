@@ -5,7 +5,7 @@ metadata:
   namespace: vault-system
 spec:
   parentRefs:
-    - name: edge
+    - name: traefik-gateway
       namespace: infra
       sectionName: tls-passthrough
   hostnames: ["vault.home.mattprovost.dev"]
