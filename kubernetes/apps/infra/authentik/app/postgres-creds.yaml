@@ -1,3 +1,15 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauth_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: authentik-auth
+spec:
+  # Let this VaultAuth inherit from the global named "default" above
+  vaultAuthGlobalRef:
+    namespace: vault-system
+    name: vault-auth
+---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultdynamicsecret_v1beta1.json
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
@@ -5,7 +17,7 @@ metadata:
   name: authentik-postgres
 spec:
   # Reference your VaultAuth (how this namespace authenticates to Vault)
-  vaultAuthRef: vault-system/vault-auth
+  vaultAuthRef: authentik-auth
 
   # Path in Vault to fetch from. This is the role you defined in Vault, e.g. database/roles/app-writer
   mount: database
