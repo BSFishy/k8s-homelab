@@ -6,3 +6,4 @@ resources:
   - ./certs.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
+  - ./roles.yaml
