@@ -1,0 +1,67 @@
+# docker pull ghcr.io/goauthentik/helm-charts/authentik:2025.8.1
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: authentik
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 2025.8.1
+  url: oci://ghcr.io/goauthentik/helm-charts/authentik
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: authentik
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    authentik:
+      secret_key: file:///authentik-creds/secret-key
+      disable_update_check: true
+      postgresql:
+        host: postgres-primary.database.svc.cluster.local
+        user: file:///authentik-creds/username
+        password: file:///authentik-creds/password
+      redis:
+        host: redis-master.database.svc.cluster.local
+
+    server:
+      ingress:
+        enabled: true
+        hosts:
+          - auth.home.mattprovost.dev
+      volumes:
+        - name: authentik-creds
+          secret:
+            secretName: authentik-creds
+      volumeMounts:
+        - name: authentik-creds
+          mountPath: /authentik-creds
+          readOnly: true
+
+    worker:
+      volumes:
+        - name: authentik-creds
+          secret:
+            secretName: authentik-postgres-creds
+      volumeMounts:
+        - name: authentik-creds
+          mountPath: /authentik-creds
+          readOnly: true
