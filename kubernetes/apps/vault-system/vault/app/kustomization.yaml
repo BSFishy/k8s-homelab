@@ -6,4 +6,3 @@ resources:
   - ./certs.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
-  - ./tlsroute.yaml

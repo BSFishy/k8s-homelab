@@ -79,7 +79,11 @@ spec:
         enabled: false
 
       ingress:
-        enabled: false
+        enabled: true
+        hosts:
+          - host: vault.home.mattprovost.dev
+            paths:
+              - "/"
 
       ha:
         enabled: true
@@ -95,8 +99,7 @@ spec:
             listener "tcp" {
               address = "[::]:8200"
               cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/tls-ingress/tls.crt"
-              tls_key_file = "/vault/userconfig/tls-ingress/tls.key"
+              tls_disable = 1
             }
 
             storage "raft" {
