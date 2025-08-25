@@ -52,5 +52,5 @@ spec:
   #   - kind: Deployment
   #     name: my-app
 
-  # optional: refresh early before TTL expires
-  # refreshAfter: 5m
+  # refresh early before TTL expires
+  refreshAfter: 5m
