@@ -7,7 +7,6 @@ metadata:
 spec:
   address: https://vault.home.mattprovost.dev
   skipTLSVerify: false
-  caCertSecretRef: tls-ca
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauthglobal_v1beta1.json
 apiVersion: secrets.hashicorp.com/v1beta1
