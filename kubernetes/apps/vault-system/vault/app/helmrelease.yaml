@@ -80,6 +80,10 @@ spec:
 
       ingress:
         enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
+          traefik.ingress.kubernetes.io/service.serverstransport: vault-system-internal-tls@kubernetescrd
+
         hosts:
           - host: vault.home.mattprovost.dev
             paths:
@@ -99,7 +103,8 @@ spec:
             listener "tcp" {
               address = "[::]:8200"
               cluster_address = "[::]:8201"
-              tls_disable = 1
+              tls_cert_file = "/vault/userconfig/tls-server/tls.crt"
+              tls_key_file = "/vault/userconfig/tls-server/tls.key"
             }
 
             storage "raft" {
