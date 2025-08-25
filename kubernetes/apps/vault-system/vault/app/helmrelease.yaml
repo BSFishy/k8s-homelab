@@ -73,9 +73,6 @@ spec:
 
       ingress:
         enabled: true
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: infra-authentik@kubernetescrd
-
         hosts:
           - host: vault.home.mattprovost.dev
             paths:
