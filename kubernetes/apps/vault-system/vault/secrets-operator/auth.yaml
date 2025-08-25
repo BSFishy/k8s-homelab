@@ -1,13 +1,13 @@
 ---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultconnection_v1beta1.json
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
 metadata:
   name: vault
 spec:
   address: https://vault.home.mattprovost.dev
-  caCertSecretRef:
-    name: ca-tls
-    key: ca.crt
+  skipTLSVerify: false
+  caCertSecretRef: ca-tls
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauthglobal_v1beta1.json
 apiVersion: secrets.hashicorp.com/v1beta1
