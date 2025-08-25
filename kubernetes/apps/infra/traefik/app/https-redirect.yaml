@@ -19,7 +19,7 @@ spec:
   routes:
     - match: HostRegexp(`{host:.+}`)
       kind: Rule
-      priority: 1 # <- lower than the internal route
+      priority: 100 # <- lower than the internal route
       middlewares:
         - name: https-redirect
       services:
