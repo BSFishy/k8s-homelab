@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultdynamicsecret_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: authentik-postgres
+spec:
+  # Reference your VaultAuth (how this namespace authenticates to Vault)
+  # vaultAuthRef: vault-auth
+
+  # Path in Vault to fetch from. This is the role you defined in Vault, e.g. database/roles/app-writer
+  mount: database
+  path: roles/authentik
+
+  # Where to write the generated secret inside Kubernetes
+  destination:
+    name: authentik-postgres-creds
+    create: true
+
+  # rolloutRestartTargets:
+  #   - kind: Deployment
+  #     name: my-app
+
+  # optional: refresh early before TTL expires
+  # refreshAfter: 5m

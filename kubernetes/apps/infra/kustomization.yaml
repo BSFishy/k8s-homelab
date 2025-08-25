@@ -10,3 +10,4 @@ resources:
   - ./traefik/ks.yaml
   - ./k8s_gateway/ks.yaml
   - ./coredns/ks.yaml
+  - ./authentik/ks.yaml
