@@ -1,0 +1,23 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault
+spec:
+  address: https://vault.home.mattprovost.dev
+  caCertSecretRef:
+    name: ca-tls
+    key: ca.crt
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauthglobal_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuthGlobal
+metadata:
+  name: vault-auth
+spec:
+  defaultAuthMethod: kubernetes
+  kubernetes:
+    mount: kubernetes
+    role: vault
+    serviceAccount: vault
+  vaultConnectionRef: vault
