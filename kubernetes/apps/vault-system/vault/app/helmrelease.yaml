@@ -96,9 +96,13 @@ spec:
           config: |
             ui = true
             cluster_name = "homelab"
+
+            api_addr     = "http://$(POD_IP):8200"
+            cluster_addr = "http://$(POD_IP):8201"
+
             listener "tcp" {
-              address = "[::]:8200"
-              cluster_address = "[::]:8201"
+              address = "0.0.0.0:8200"
+              cluster_address = "0.0.0.0:8201"
               tls_disable = 1
               # tls_cert_file = "/vault/userconfig/tls-server/tls.crt"
               # tls_key_file = "/vault/userconfig/tls-server/tls.key"
