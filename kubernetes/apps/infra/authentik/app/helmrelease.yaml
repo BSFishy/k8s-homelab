@@ -33,12 +33,12 @@ spec:
       retries: 3
   values:
     authentik:
-      secret_key: file:///authentik-creds/secret-key
+      secret_key: file:///authentik-secret/SECRET_KEY
       disable_update_check: true
       postgresql:
         host: postgres-primary.database.svc.cluster.local
-        user: file:///authentik-creds/username
-        password: file:///authentik-creds/password
+        user: file:///authentik-postgres-creds/username
+        password: file:///authentik-postgres-creds/password
       redis:
         host: redis-master.database.svc.cluster.local
 
@@ -48,20 +48,32 @@ spec:
         hosts:
           - auth.home.mattprovost.dev
       volumes:
-        - name: authentik-creds
+        - name: authentik-secret
           secret:
-            secretName: authentik-creds
+            secretName: authentik-secret
+        - name: authentik-postgres-creds
+          secret:
+            secretName: authentik-postgres-creds
       volumeMounts:
-        - name: authentik-creds
-          mountPath: /authentik-creds
+        - name: authentik-secret
+          mountPath: /authentik-secret
+          readOnly: true
+        - name: authentik-postgres-creds
+          mountPath: /authentik-postgres-creds
           readOnly: true
 
     worker:
       volumes:
-        - name: authentik-creds
+        - name: authentik-secret
+          secret:
+            secretName: authentik-secret
+        - name: authentik-postgres-creds
           secret:
             secretName: authentik-postgres-creds
       volumeMounts:
-        - name: authentik-creds
-          mountPath: /authentik-creds
+        - name: authentik-secret
+          mountPath: /authentik-secret
+          readOnly: true
+        - name: authentik-postgres-creds
+          mountPath: /authentik-postgres-creds
           readOnly: true

@@ -5,7 +5,5 @@ kind: Kustomization
 resources:
   - ./postgres-creds.yaml
   - ./secret.yaml
-
-  # TODO: enable these when the secrets are ready
-  # - ./helmrelease.yaml
-  # - ./middleware.yaml
+  - ./helmrelease.yaml
+  - ./middleware.yaml
