@@ -15,6 +15,7 @@ metadata:
   name: vault-auth
 spec:
   defaultAuthMethod: kubernetes
+  allowedNamespaces: ["*"]
   kubernetes:
     mount: kubernetes
     role: vault
