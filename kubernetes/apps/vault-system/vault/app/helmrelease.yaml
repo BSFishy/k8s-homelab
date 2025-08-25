@@ -15,7 +15,7 @@ spec:
         name: hashicorp
   values:
     global:
-      tlsDisable: false
+      tlsDisable: true
       resources:
         requests:
           memory: 256Mi
@@ -47,13 +47,6 @@ spec:
         initialDelaySeconds: 30
         periodSeconds: 10
         failureThreshold: 6
-        timeoutSeconds: 3
-
-      startupProbe:
-        enabled: true
-        path: "/v1/sys/health?standbyok=true&activecode=200&standbycode=204&sealedcode=204&uninitcode=204&drsecondarycode=204"
-        failureThreshold: 90 # ~15 minutes at 10s period
-        periodSeconds: 10
         timeoutSeconds: 3
 
       extraEnvironmentVars:
