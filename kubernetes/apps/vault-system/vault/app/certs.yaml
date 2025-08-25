@@ -48,11 +48,3 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
----
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: internal-tls
-spec:
-  rootCAsSecrets:
-    - tls-ca

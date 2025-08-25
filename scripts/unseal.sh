@@ -3,7 +3,7 @@ set -euo pipefail
 
 NS="${NS:-vault-system}"
 LABEL="${LABEL:-app.kubernetes.io/name=vault,app.kubernetes.io/instance=vault}"
-IN_POD_ADDR="${IN_POD_ADDR:-https://127.0.0.1:8200}"
+IN_POD_ADDR="${IN_POD_ADDR:-http://127.0.0.1:8200}"
 
 echo "Namespace: $NS"
 read -r -s -p "Enter Unseal Key #1: " KEY1
