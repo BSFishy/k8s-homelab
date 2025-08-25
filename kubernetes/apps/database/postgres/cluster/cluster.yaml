@@ -50,11 +50,12 @@ spec:
       options: SUPERUSER
       password: &password
         type: AlphaNumeric
+
     # Applications
-    # - name: authelia
-    #   databases:
-    #     - authelia
-    #   password: *password
+    - name: authentik
+      databases:
+        - authentik
+      password: *password
 
   monitoring:
     pgmonitor:
