@@ -20,4 +20,4 @@ spec:
     mount: kubernetes
     role: vault
     serviceAccount: vault
-  vaultConnectionRef: vault
+  vaultConnectionRef: vault-system/vault
