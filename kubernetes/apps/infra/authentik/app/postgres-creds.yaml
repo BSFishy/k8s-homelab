@@ -41,7 +41,7 @@ spec:
 
   # Path in Vault to fetch from. This is the role you defined in Vault, e.g. database/roles/app-writer
   mount: database
-  path: creds/authentik
+  path: static-creds/authentik
 
   # Where to write the generated secret inside Kubernetes
   destination:
