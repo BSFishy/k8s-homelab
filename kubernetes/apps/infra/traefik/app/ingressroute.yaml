@@ -11,8 +11,8 @@ spec:
   routes:
     - kind: Rule
       match: Host(`traefik.home.mattprovost.dev`)
-      # middlewares:
-      #   - name: authentik-authentik@kubernetescrd
+      middlewares:
+        - name: authentik-authentik@kubernetescrd
       services:
         - kind: TraefikService
           name: api@internal
