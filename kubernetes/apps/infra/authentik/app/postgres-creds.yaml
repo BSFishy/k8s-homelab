@@ -50,6 +50,8 @@ spec:
   mount: kubernetes
   kubernetes:
     role: vault
+    audiences:
+      - vault
     serviceAccount: vault
     tokenExpirationSeconds: 600
 ---
