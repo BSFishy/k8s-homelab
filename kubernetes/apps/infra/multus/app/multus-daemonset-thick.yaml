@@ -204,13 +204,13 @@ spec:
                   fieldPath: spec.nodeName
       initContainers:
         - name: copy-cni-plugin
-          image: ghcr.io/k8snetworkplumbingwg/plugins:v1.2.0-amd64
+          image: ghcr.io/k8snetworkplumbingwg/plugins:v1.6.2
           command: ["/bin/sh", "-c"]
           args:
             - |
               set -e
-              cp -f /opt/cni/bin/macvlan /host/opt/cni/bin/
-              cp -f /opt/cni/bin/ipvlan  /host/opt/cni/bin/ || true
+              cp -f /usr/src/cni/bin/macvlan /host/opt/cni/bin/
+              cp -f /usr/src/cni/bin/ipvlan  /host/opt/cni/bin/ || true
               ls -l /host/opt/cni/bin/macvlan /host/opt/cni/bin/ipvlan || true
               sleep 300
           securityContext:
