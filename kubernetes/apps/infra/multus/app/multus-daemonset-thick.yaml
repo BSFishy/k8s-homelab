@@ -212,7 +212,6 @@ spec:
               cp -f /usr/src/cni/bin/macvlan /host/opt/cni/bin/
               cp -f /usr/src/cni/bin/ipvlan  /host/opt/cni/bin/ || true
               ls -l /host/opt/cni/bin/macvlan /host/opt/cni/bin/ipvlan || true
-              sleep 300
           securityContext:
             privileged: true
           volumeMounts:
