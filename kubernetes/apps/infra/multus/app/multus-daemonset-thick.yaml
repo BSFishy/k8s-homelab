@@ -203,10 +203,11 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
       initContainers:
-        - command:
-            - /install-cni.sh
-          image: ghcr.io/siderolabs/install-cni:v1.10.6
-          name: install-cni
+        - name: copy-cni-plugin
+          image: docker.io/containernetworking/plugins:v1.5.1
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp -f /opt/cni/bin/macvlan /host/opt/cni/bin/; sleep 3600
           securityContext:
             privileged: true
           volumeMounts:
