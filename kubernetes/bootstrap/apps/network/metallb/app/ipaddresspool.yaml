@@ -8,3 +8,14 @@ spec:
   addresses:
     - 10.1.4.0/24
     - 2603:8080:1e00:1b02::1/64
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: well-known
+  namespace: network
+spec:
+  avoidBuggyIPs: true
+  autoAssign: false
+  addresses:
+    - 10.1.4.0/24
