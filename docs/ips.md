@@ -23,9 +23,13 @@
 
 ## ipv6
 
+- `2603:8080:1e00:1b02:1000::/68` - static machine ips
+- `2603:8080:1e00:1b02:2000::/68` - well known services
+- `2603:8080:1e00:1b02:3000::/68` - load balancer ips
+
 ### well known ips
 
 TODO: these should probably be in a separate subnet or something
 
-- `2603:8080:1e00:1b02::2` - traefik ingress
-- `2603:8080:1e00:1b02::3` - coredns
+- `2603:8080:1e00:1b02:2000::1` - traefik ingress
+- `2603:8080:1e00:1b02:2000::2` - coredns
