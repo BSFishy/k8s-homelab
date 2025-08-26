@@ -6,5 +6,5 @@ metadata:
 spec:
   avoidBuggyIPs: true
   addresses:
-    - 10.1.3.0/24
+    - 10.1.4.0/24
     - 2603:8080:1e00:1b02::1/64
