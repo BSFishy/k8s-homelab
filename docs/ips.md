@@ -19,6 +19,7 @@
 - `10.1.3.3` - traefik ingress
 - `10.1.3.4` - coredns
 - `10.1.3.5` - k8s_gateway
+- `10.1.3.6` - home assistant
 
 ## ipv6
 

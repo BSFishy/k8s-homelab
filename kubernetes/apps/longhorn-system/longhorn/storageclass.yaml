@@ -12,11 +12,11 @@ parameters:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: media
+  name: low-priority
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 parameters:
   # this data isn't super important and takes up a lot of space
   numberOfReplicas: "2"
   staleReplicaTimeout: "30"
-  recurringJobSelector: '[{ "name":"media", "isGroup":true }]'
+  recurringJobSelector: '[{ "name":"low-priority", "isGroup":true }]'

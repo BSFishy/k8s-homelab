@@ -43,6 +43,6 @@ metadata:
 spec:
   cron: "0 3 * * *" # 04:00 nightly
   task: snapshot
-  groups: ["media"] # attach this to most volumes
+  groups: ["low-priority"] # attach this to most volumes
   retain: 14 # 14 days of backups
   concurrency: 2

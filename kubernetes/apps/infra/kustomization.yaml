@@ -7,6 +7,7 @@ resources:
   - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/experimental-install.yaml
 
   # services
+  - ./multus/ks.yaml
   - ./traefik/ks.yaml
   - ./k8s_gateway/ks.yaml
   - ./coredns/ks.yaml
