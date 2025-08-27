@@ -4,6 +4,10 @@ miscellaneous things that i dont want to waste time now setting up but that i
 need to have for long term security and stability. and also otherwise just cool
 stuff and things
 
+## miscellaneous
+
+- [ ] fix pod security admission so no namespaces are privileged
+
 ## vault
 
 - [ ] enable tls for vault. i initially disabled this because it was giving me
