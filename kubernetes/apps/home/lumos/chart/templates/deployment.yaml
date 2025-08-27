@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lumos.fullname" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "lumos.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "lumos.name" . }}
+    spec:
+      containers:
+        - name: lumos
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $k, $v := .Values.env }}
+            - name: {{ $k }}
+              value: "{{ $v }}"
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /config/config.json
+              subPath: config.json
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "lumos.fullname" . }}-config

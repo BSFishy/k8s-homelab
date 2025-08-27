@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "lumos.fullname" . }}-config
+data:
+  config.json: |
+{{ .Values.config | toJson | nindent 4 }}
