@@ -27,7 +27,7 @@ spec:
       "k8s.v1.cni.cncf.io/networks": home-assistant
 
     service:
-      type: LoadBalancer
+      type: ClusterIP
 
     ingress:
       enabled: true

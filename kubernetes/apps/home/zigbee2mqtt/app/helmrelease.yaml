@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: zigbee2mqtt
+spec:
+  interval: 30m
+  url: https://charts.zigbee2mqtt.io
+  timeout: 3m
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: zigbee2mqtt
+      version: 2.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: zigbee2mqtt
+  values:
+    statefulset:
+      storage:
+        enabled: true
+        storageClassName: longhorn
+      nodeSelector:
+        zigbee: enabled
+
+      # TODO: do i want to make this a symbolic link to a well-known path?
+      volumeMounts:
+        - name: zigbee-usb
+          mountPath: "/dev/ttyUSB0"
+      volumes:
+        - name: zigbee-usb
+          hostPath:
+            path: "/dev/ttyUSB0"
+            type: CharDevice
+
+    zigbee2mqtt:
+      timezone: America/Chicago
+      mqtt:
+        server: "mqtt://mosquitto.home.svc.cluster.local:1883"
+      serial:
+        port: "/dev/ttyUSB0"
+        adapter: zstack
+      availability:
+        enabled: true
+      advanced:
+        last_seen: "ISO_8601_local"
+
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+      hosts:
+        - host: zigbee.home.mattprovost.dev
+          paths:
+            - path: /
+              pathType: Prefix
+      tls: {}
