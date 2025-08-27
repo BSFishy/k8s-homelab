@@ -40,6 +40,9 @@ spec:
             path: "/dev/ttyUSB0"
             type: CharDevice
 
+    service:
+      type: ClusterIP
+
     zigbee2mqtt:
       timezone: America/Chicago
       mqtt:
