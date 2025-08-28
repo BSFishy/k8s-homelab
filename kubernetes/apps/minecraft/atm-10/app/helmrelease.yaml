@@ -9,6 +9,7 @@ spec:
     kind: OCIRepository
     name: minecraft
   interval: 30m
+  timeout: 30m
   values:
     resources:
       requests:
