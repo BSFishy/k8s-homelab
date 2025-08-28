@@ -37,7 +37,9 @@ spec:
     minecraftRouter:
       defaultServer:
         host: atm-10-minecraft.minecraft.svc.cluster.local
+        port: 25565
 
       mappings:
         - externalHostname: atm10.mc.mattprovost.dev
           host: atm-10-minecraft.minecraft.svc.cluster.local
+          port: 25565
