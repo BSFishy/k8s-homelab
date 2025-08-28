@@ -21,7 +21,7 @@
 - `10.1.3.3` - traefik ingress
 - `10.1.3.4` - coredns
 - `10.1.3.5` - k8s_gateway
-- `10.1.3.6` - home assistant
+- `10.1.3.6` - minecraft
 
 ## ipv6
 
@@ -35,3 +35,4 @@ TODO: these should probably be in a separate subnet or something
 
 - `2603:8080:1e00:1b02:2000::1` - traefik ingress
 - `2603:8080:1e00:1b02:2000::2` - coredns
+- `2603:8080:1e00:1b02:2000::3` - minecraft

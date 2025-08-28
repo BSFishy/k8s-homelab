@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: atm-10
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: minecraft
+  interval: 30m
+  values:
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: 2
+
+    minecraftServer:
+      eula: true
+      type: AUTO_CURSEFORGE
+
+      difficulty: normal
+      viewDistance: 12
+      motd: ATM 10 4.10
+
+      memory: 4196M
+
+      autoCurseForge:
+        apiKey:
+          existingSecret: cf-api-key
+          secretKey: key
+        pageUrl: https://www.curseforge.com/minecraft/modpacks/all-the-mods-10/files/6921534
+
+    persistence:
+      storageClass: low-priority
+
+      dataDir:
+        enabled: true
