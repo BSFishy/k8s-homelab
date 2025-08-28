@@ -38,6 +38,9 @@ spec:
           existingSecret: cf-api-key
           secretKey: key
         pageUrl: https://www.curseforge.com/minecraft/modpacks/all-the-mods-10/files/6921534
+        # its currently struggling to download all of the mods. trying this to
+        # see if it helps
+        parallelDownloads: 1
 
     persistence:
       storageClass: low-priority
