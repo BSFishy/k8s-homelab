@@ -15,6 +15,11 @@ spec:
         memory: 4Gi
         cpu: 2
 
+    startupProbe:
+      # enable startup probe so the pod doesnt get killed while its downloading
+      # mods
+      enabled: true
+
     minecraftServer:
       eula: true
       type: AUTO_CURSEFORGE
