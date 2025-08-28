@@ -19,6 +19,8 @@ spec:
       # enable startup probe so the pod doesnt get killed while its downloading
       # mods
       enabled: true
+      periodSeconds: 30
+      failureThreshold: 60
 
     minecraftServer:
       eula: true
