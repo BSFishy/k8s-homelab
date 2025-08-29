@@ -2,10 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: minecraft
-components:
-  - ../../components/common
 resources:
-  - ./mc-router/ks.yaml
-  - ./atm-10/ks.yaml
-  - ./rcon-web-admin/ks.yaml
+  - ./helmrepository.yaml
+  - ./atm-10.yaml
