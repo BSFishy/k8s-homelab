@@ -42,6 +42,11 @@ spec:
         # see if it helps
         parallelDownloads: 1
 
+      rcon:
+        enabled: true
+        existingSecret: atm-10-rcon-password
+        secretKey: password
+
     persistence:
       storageClass: low-priority
 
