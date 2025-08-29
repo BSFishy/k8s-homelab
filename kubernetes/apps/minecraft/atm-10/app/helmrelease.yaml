@@ -23,6 +23,9 @@ spec:
       periodSeconds: 30
       failureThreshold: 60
 
+    extraEnv:
+      ALLOW_FLIGHT: true
+
     minecraftServer:
       eula: true
       type: AUTO_CURSEFORGE
