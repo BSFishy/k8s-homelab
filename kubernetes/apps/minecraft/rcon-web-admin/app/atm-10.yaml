@@ -25,11 +25,12 @@ spec:
       enabled: true
       host: atm-10.home.mattprovost.dev
       pathType: Prefix
-      annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: infra-authentik@kubernetescrd
 
     rconWeb:
       isAdmin: true
+      passwordExistingSecret: rcon-password
+      passwordKey: password
+
       serverName: atm-10
       rconHost: atm-10-minecraft-rcon.svc.cluster.local
       rconPasswordExistingSecret: atm-10-rcon-password
