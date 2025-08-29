@@ -32,6 +32,6 @@ spec:
       passwordKey: password
 
       serverName: atm-10
-      rconHost: atm-10-minecraft-rcon.svc.cluster.local
+      rconHost: atm-10-minecraft-rcon.minecraft.svc.cluster.local
       rconPasswordExistingSecret: atm-10-rcon-password
       rconPasswordKey: password
