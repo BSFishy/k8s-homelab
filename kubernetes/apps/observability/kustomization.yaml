@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+components:
+  - ../../components/common
+resources:
+  # metrics server
+  - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.8.0/components.yaml
+
+  - ./kube-prometheus-stack/ks.yaml
+  - ./node-exporter/ks.yaml
