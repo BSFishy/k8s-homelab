@@ -25,3 +25,7 @@ spec:
   values:
     metrics:
       enabled: true
+
+    args:
+      - --kubelet-insecure-tls
+      - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
