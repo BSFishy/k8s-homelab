@@ -33,6 +33,7 @@ spec:
 
       extraServiceSpec:
         ipFamilyPolicy: PreferDualStack
+        externalTrafficPolicy: Local
 
     minecraftRouter:
       defaultServer:
