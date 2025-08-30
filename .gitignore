@@ -3,8 +3,11 @@
 
 # talos configurations
 /controlplane.yaml
+/controlplane.yaml.*
 /talosconfig
+/talosconfig.*
 /worker.yaml
+/worker.yaml.*
 /rendered
 
 # age

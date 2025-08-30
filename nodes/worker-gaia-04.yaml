@@ -4,9 +4,15 @@ machine:
   network:
     interfaces:
       - interface: br0
-        dhcp: true
+        dhcp: false
         addresses:
           - 10.1.2.5/16
+          - 2603:8080:1e00:1b02:1000::4/64
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.1.0.1
+          - network: ::/0
+            gateway: 2603:8080:1e00:1b02::1
         bridge:
           stp:
             enabled: false

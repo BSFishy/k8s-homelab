@@ -8,7 +8,7 @@ default:
 
 # generate talos base configuration
 talos-config-gen:
-  talosctl gen config homelab https://10.1.3.2:6443
+  talosctl gen config homelab https://10.1.3.2:6443 --additional-sans 10.1.2.2 --additional-sans k8s.internal
 
 # Paths to your base machine configs
 CONTROLPLANE := "controlplane.yaml"

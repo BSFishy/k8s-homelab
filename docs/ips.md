@@ -29,9 +29,15 @@
 - `2603:8080:1e00:1b02:2000::/68` - well known services
 - `2603:8080:1e00:1b02:3000::/68` - load balancer ips
 
-### well known ips
+### static ips
 
-TODO: these should probably be in a separate subnet or something
+- `2603:8080:1e00:1b02:1000::1` - gaia-01
+- `2603:8080:1e00:1b02:1000::2` - gaia-02
+- `2603:8080:1e00:1b02:1000::3` - gaia-03
+- `2603:8080:1e00:1b02:1000::4` - gaia-04
+- `2603:8080:1e00:1b02:1000::5` - gaia-05
+
+### well known ips
 
 - `2603:8080:1e00:1b02:2000::1` - traefik ingress
 - `2603:8080:1e00:1b02:2000::2` - coredns
