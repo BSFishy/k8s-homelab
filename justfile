@@ -18,18 +18,27 @@ WORKER       := "worker.yaml"
 render:
   @bash scripts/render.sh
 
-# Apply a rendered config to a node
+# Apply a rendered config to a node by hostname
 # Usage:
-#   just apply <name> <ip>
+#   just apply <hostname>
 # Example:
-#   just apply gaia-01 10.1.2.2
-apply name ip: render
-	talosctl apply-config --nodes {{ip}} --file rendered/{{name}}.yaml
+#   just apply gaia-01
+apply name: render
+	node_file=$(ls nodes/*{{name}}.yaml)
+	ip=$(yq -r '.machine.network.interfaces[0].addresses[0]' "$node_file" | cut -d/ -f1)
+	base=$(basename "$node_file" .yaml)
+	talosctl apply-config --nodes "$ip" --file rendered/$base.yaml
 
 # Apply a rendered config to a node. This is the same as apply but with the
-# --insecure flag
+# --insecure flag and manually specifying the IP
+# Usage:
+#   just apply-insecure <hostname> <ip>
+# Example:
+#   just apply-insecure gaia-01 10.1.2.2
 apply-insecure name ip: render
-	talosctl apply-config --insecure --nodes {{ip}} --file rendered/{{name}}.yaml
+        node_file=$(ls nodes/*{{name}}.yaml)
+        base=$(basename "$node_file" .yaml)
+        talosctl apply-config --insecure --nodes {{ip}} --file rendered/$base.yaml
 
 # Clean the rendered output
 clean:
