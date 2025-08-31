@@ -15,7 +15,7 @@ spec:
   values:
     image:
       repository: ghcr.io/bsfishy/lumos
-      tag: "main-cb96a4b"
+      tag: "main-193804e"
 
     env:
       MQTT_BROKER: mqtt://mosquitto.home.svc.cluster.local:1883
