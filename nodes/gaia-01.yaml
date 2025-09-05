@@ -25,7 +25,7 @@ machine:
     hostname: gaia-01
 
   install:
-    disk: /dev/nvme0n1
+    disk: /dev/nvme1n1
     wipe: false
 
   nodeLabels:
