@@ -80,6 +80,10 @@ spec:
         useAllNodes: true
         useAllDevices: false
         devices:
+          # gaia-02
+          - name: /dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U6NU0Y708885P
+
+          # gaia-03
           - name: /dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U6NU0Y707633R
         config:
           osdsPerDevice: "1"
