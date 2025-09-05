@@ -15,15 +15,19 @@ spec:
       repository: velero/velero
       tag: v1.16.0
 
-    # Disable CSI snapshots
-    snapshotsEnabled: false
-    deployNodeAgent: false
+    snapshotsEnabled: true
+    deployNodeAgent: true
+    nodeAgent:
+      podVolumePath: /var/lib/kubelet/pods
+      privileged: false
 
     # Provider + BSL use S3 plugin (works with B2's S3-compat)
     configuration:
+      features: EnableCSI
       backupSyncPeriod: 30m
       storeValidationFrequency: 30m
       defaultBackupStorageLocation: b2
+      defaultVolumesToFsBackup: false
 
       backupStorageLocation:
         - name: b2
@@ -40,10 +44,18 @@ spec:
     credentials:
       existingSecret: velero-cloud-credentials
 
-    # Install plugins via initContainers (AWS/S3 + CSI)
     initContainers:
+      # S3 backup location
       - name: velero-plugin-for-aws
         image: velero/velero-plugin-for-aws:v1.12.1
         volumeMounts:
           - name: plugins
             mountPath: /target
+
+      # CSI snapshots
+      - name: velero-plugin-for-csi
+        image: velero/velero-plugin-for-csi:v0.7.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
