@@ -28,6 +28,8 @@ spec:
       namespace: rook-ceph
     - name: traefik
       namespace: infra
+    - name: snapshot-controller
+      namespace: system-controllers
   values:
     monitoring:
       enabled: true
