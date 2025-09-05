@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rook-ceph-dashboard
+  namespace: rook-ceph
+spec:
+  entryPoints: [web] # HTTP only
+  routes:
+    - match: Host(`rook.internal`)
+      kind: Rule
+      priority: 1000 # <- higher than the catch-all redirect
+      middlewares:
+        - name: allow-matt
+          namespace: infra
+      services:
+        - name: rook-ceph-mgr-dashboard
+          namespace: rook-ceph
+          port: 7000
