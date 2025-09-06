@@ -15,7 +15,7 @@ spec:
       repository: velero/velero
       tag: v1.16.0
 
-    snapshotsEnabled: true
+    snapshotsEnabled: false
     deployNodeAgent: true
     nodeAgent:
       podVolumePath: /var/lib/kubelet/pods
