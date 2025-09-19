@@ -37,6 +37,10 @@
               pkgs.age
               pkgs.sops
             ];
+
+            shellHook = ''
+              export VAULT_ADDR="https://vault.home.mattprovost.dev"
+            '';
           };
         };
       }

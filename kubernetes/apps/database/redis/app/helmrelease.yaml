@@ -42,7 +42,7 @@ spec:
     master:
       persistence:
         enabled: true
-        storageClass: critical
+        storageClass: ceph-critical
 
       resources:
         requests:
@@ -54,7 +54,7 @@ spec:
     replica:
       persistence:
         enabled: true
-        storageClass: longhorn
+        storageClass: ceph-regular
 
       resources:
         requests:
