@@ -48,9 +48,11 @@ spec:
     name: authentik-postgres-creds
     create: true
 
-  # rolloutRestartTargets:
-  #   - kind: Deployment
-  #     name: my-app
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: authentik-server
+    - kind: Deployment
+      name: authentik-worker
 
   # refresh early before TTL expires
   refreshAfter: 5m
