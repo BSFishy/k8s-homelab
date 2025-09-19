@@ -2,6 +2,17 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: mosquitto
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-regular
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: mosquitto-tmp
 spec:
   accessModes: ["ReadWriteOnce"]

@@ -61,9 +61,7 @@ spec:
       config:
         enabled: true
         type: persistentVolumeClaim
-        size: 1Gi
-        accessMode: ReadWriteOnce
-        storageClass: ceph-regular
+        existingClaim: mosquitto
         advancedMounts:
           mosquitto:
             app:
