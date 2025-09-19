@@ -10,6 +10,7 @@ spec:
           - resources:
               kinds: ["PersistentVolumeClaim"]
       mutate:
+        mutateExistingOnPolicyUpdate: true
         patchesJson6902: |-
           - op: add
             path: "/metadata/labels"
