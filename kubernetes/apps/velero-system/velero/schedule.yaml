@@ -72,6 +72,7 @@ spec:
     storageLocation: b2
     ttl: 720h # 30 days
     snapshotVolumes: true
+    snapshotMoveData: true
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
     includedResources: ["pods", "persistentvolumeclaims", "persistentvolumes"]
@@ -90,6 +91,7 @@ spec:
     storageLocation: b2
     ttl: 2160h # 90 days
     snapshotVolumes: true
+    snapshotMoveData: true
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
     includedResources: ["pods", "persistentvolumeclaims", "persistentvolumes"]
@@ -108,6 +110,7 @@ spec:
     storageLocation: b2
     ttl: 1080h # 45 days
     snapshotVolumes: true
+    snapshotMoveData: true
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
     includedResources: ["pods", "persistentvolumeclaims", "persistentvolumes"]
@@ -126,6 +129,7 @@ spec:
     storageLocation: b2
     ttl: 336h # 14 days (≈2 copies at weekly cadence)
     snapshotVolumes: true
+    snapshotMoveData: true
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
     includedResources: ["pods", "persistentvolumeclaims", "persistentvolumes"]
