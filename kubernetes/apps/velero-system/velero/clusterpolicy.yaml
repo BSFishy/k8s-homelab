@@ -10,10 +10,10 @@ spec:
           - resources:
               kinds: ["PersistentVolumeClaim"]
       mutate:
-        patchesJson6902: |
+        patchesJson6902: |-
           - op: add
-            path: /metadata/labels
+            path: "/metadata/labels"
             value: {}
           - op: add
-            path: /metadata/labels/storage-tier
+            path: "/metadata/labels/storage-tier"
             value: "{{ request.object.spec.storageClassName | replace('ceph-','') }}"
