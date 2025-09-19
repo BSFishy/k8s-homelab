@@ -24,5 +24,5 @@ machine:
     hostname: gaia-02
 
   install:
-    disk: /dev/nvme1n1
+    disk: /dev/disk/by-id/nvme-TWSC_TSC3AN1T0-F6Q10S_TTSQA255FX00385
     wipe: false

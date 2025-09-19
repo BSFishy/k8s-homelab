@@ -21,5 +21,5 @@ machine:
     hostname: gaia-05
 
   install:
-    disk: /dev/nvme0n1
+    disk: /dev/disk/by-id/nvme-KINGSTON_OM8PGP41024Q-A0_50026B738300BB9C
     wipe: false
