@@ -7,6 +7,28 @@ stuff and things
 ## miscellaneous
 
 - [ ] fix pod security admission so no namespaces are privileged
+- [ ] set up gotify
+- [ ] set up forgejo
+
+## observability
+
+- [ ] set up alert manager properly
+- [ ] set up karma
+- [ ] set up basic alerts for basic stuff
+- [ ] set up grafana
+
+## media server
+
+- [ ] create volumes for shows and movies
+- [ ] get jellyfin running
+- [ ] get arrs running
+  - [ ] sonarr
+  - [ ] radarr
+  - [ ] prowlarr
+  - [ ] janitorr
+  - [ ] decluttarr
+- [ ] get qbittorrent running
+- [ ] get jellyseerr running
 
 ## vault
 
