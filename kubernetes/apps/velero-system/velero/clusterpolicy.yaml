@@ -3,18 +3,29 @@ kind: ClusterPolicy
 metadata:
   name: label-pvc-by-storageclass
 spec:
+  background: true
   rules:
-    - name: set-storage-tier-label
+    - name: label-pvc-storage-tier
       match:
         any:
           - resources:
               kinds: ["PersistentVolumeClaim"]
+      preconditions:
+        all:
+          - key: "{{ (target.spec.storageClassName || request.object.spec.storageClassName || '') }}"
+            operator: NotEquals
+            value: ""
       mutate:
         mutateExistingOnPolicyUpdate: true
-        patchesJson6902: |-
-          - op: add
-            path: "/metadata/labels"
-            value: {}
-          - op: add
-            path: "/metadata/labels/storage-tier"
-            value: "{{ replace_all('{{ request.object.spec.storageClassName }}', 'ceph-', '') }}"
+        targets:
+          - apiVersion: v1
+            kind: PersistentVolumeClaim
+        patchStrategicMerge:
+          metadata:
+            labels:
+              storage-tier: >-
+                {{ replace_all(
+                     (target.spec.storageClassName || request.object.spec.storageClassName),
+                     'ceph-',
+                     ''
+                   ) }}
