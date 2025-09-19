@@ -62,11 +62,11 @@ spec:
 
       dataStorage:
         enabled: true
-        storageClass: critical
+        storageClass: ceph-critical
 
       auditStorage:
         enabled: true
-        storageClass: longhorn
+        storageClass: ceph-low
 
       standalone:
         enabled: false
