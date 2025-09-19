@@ -45,6 +45,6 @@ spec:
 
     persistence:
       enabled: true
-      storageClass: longhorn
+      storageClass: ceph-regular
 
     deploymentStrategy: Recreate
