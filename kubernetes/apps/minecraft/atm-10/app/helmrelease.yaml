@@ -52,7 +52,7 @@ spec:
 
       dataDir:
         enabled: true
-        size: 10Gi
+        size: 200Gi
 
     extraEnv:
       USE_MEOWICE_FLAGS: true
