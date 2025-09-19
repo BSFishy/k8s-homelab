@@ -236,6 +236,8 @@ spec:
       name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
+      labels:
+        velero.io/csi-volumesnapshot-class: "true"
 
     cephFileSystems: []
     cephObjectStores: []
