@@ -16,4 +16,4 @@ spec:
             value: {}
           - op: add
             path: "/metadata/labels/storage-tier"
-            value: "{{ request.object.spec.storageClassName | replace('ceph-','') }}"
+            value: "{{ replace_all('{{ request.object.spec.storageClassName }}', 'ceph-', '') }}"
