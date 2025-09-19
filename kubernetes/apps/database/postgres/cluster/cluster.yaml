@@ -27,7 +27,7 @@ spec:
     - name: postgres
       replicas: &replica 3
       dataVolumeClaimSpec:
-        storageClassName: critical
+        storageClassName: ceph-critical
         accessModes:
           - ReadWriteOnce
         resources:
