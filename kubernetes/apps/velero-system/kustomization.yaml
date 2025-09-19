@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: velero-system
 resources:
   - ./velero/schedule.yaml
+  - ./velero/clusterpolicy.yaml
