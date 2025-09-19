@@ -30,6 +30,7 @@ spec:
       - filename: k8s.db
         domain: k8s.mattprovost.dev
         contents: |
+          k8s.mattprovost.dev. IN SOA k8s-gateway.infra.mattprovost.dev. hostmaster.k8s-gateway.infra.mattprovost.dev. 12345 7200 1800 86400 60
           k8s.mattprovost.dev. IN A 10.1.3.2
 
     servers:
