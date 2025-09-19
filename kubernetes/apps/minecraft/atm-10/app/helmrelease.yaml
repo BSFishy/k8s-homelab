@@ -48,11 +48,9 @@ spec:
         secretKey: password
 
     persistence:
-      storageClass: low-priority
-
       dataDir:
         enabled: true
-        size: 200Gi
+        existingClaim: atm-10
 
     extraEnv:
       USE_MEOWICE_FLAGS: true

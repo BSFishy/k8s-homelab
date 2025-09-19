@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./vaultsecret.yaml
   - ./secret.yaml
+  - ./pvc.yaml
   - ./helmrelease.yaml
