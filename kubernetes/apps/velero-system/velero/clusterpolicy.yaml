@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: label-pvc-by-storageclass
+spec:
+  rules:
+    - name: set-storage-tier-label
+      match:
+        any:
+          - resources:
+              kinds: ["PersistentVolumeClaim"]
+      mutate:
+        patchesJson6902: |
+          - op: add
+            path: /metadata/labels
+            value: {}
+          - op: add
+            path: /metadata/labels/storage-tier
+            value: "{{ request.object.spec.storageClassName | replace('ceph-','') }}"
