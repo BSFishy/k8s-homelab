@@ -1,0 +1,48 @@
+---
+apiVersion: velero.io/v1
+kind: VolumePolicy
+metadata:
+  name: critical-by-class
+spec:
+  selector:
+    pvcSelector:
+      matchLabels:
+        storage-tier: critical
+  snapshotApproach: volumeSnapshot
+  dataMover: velero
+---
+apiVersion: velero.io/v1
+kind: VolumePolicy
+metadata:
+  name: high-by-class
+spec:
+  selector:
+    pvcSelector:
+      matchLabels:
+        storage-tier: high
+  snapshotApproach: volumeSnapshot
+  dataMover: velero
+---
+apiVersion: velero.io/v1
+kind: VolumePolicy
+metadata:
+  name: regular-by-class
+spec:
+  selector:
+    pvcSelector:
+      matchLabels:
+        storage-tier: regular
+  snapshotApproach: volumeSnapshot
+  dataMover: velero
+---
+apiVersion: velero.io/v1
+kind: VolumePolicy
+metadata:
+  name: low-by-class
+spec:
+  selector:
+    pvcSelector:
+      matchLabels:
+        storage-tier: low
+  snapshotApproach: volumeSnapshot
+  dataMover: velero
