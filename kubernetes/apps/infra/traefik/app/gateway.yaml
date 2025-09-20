@@ -5,8 +5,23 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
+    # Exact host, raw TLS passthrough to Ceph
+    - name: tls-passthrough
+      hostname: ceph.home.mattprovost.dev
+      port: 443
+      protocol: TLS
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        kinds:
+          - kind: TLSRoute
+        namespaces:
+          from: All
+
+    # Everything else terminated at Traefik with your wildcard cert
     - name: websecure
-      port: 8443
+      hostname: "*.home.mattprovost.dev"
+      port: 443
       protocol: HTTPS
       tls:
         mode: Terminate
@@ -14,14 +29,7 @@ spec:
           - kind: Secret
             name: wildcard-tls
       allowedRoutes:
-        namespaces:
-          from: All
-
-    - name: tls-passthrough
-      port: 8443
-      protocol: TLS
-      tls:
-        mode: Passthrough
-      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
         namespaces:
           from: All
