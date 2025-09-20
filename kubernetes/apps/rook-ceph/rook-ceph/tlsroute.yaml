@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: TLSRoute
+metadata:
+  name: ceph
+spec:
+  parentRefs:
+    - name: edge
+      namespace: infra
+      sectionName: tls-passthrough
+  hostnames: ["ceph.home.mattprovost.dev"]
+  rules:
+    - backendRefs:
+        - name: rook-ceph-mgr-dashboard
+          port: 7000
