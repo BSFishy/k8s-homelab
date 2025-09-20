@@ -4,7 +4,7 @@ metadata:
   name: ceph
 spec:
   parentRefs:
-    - name: edge
+    - name: traefik-gateway
       namespace: infra
       sectionName: tls-passthrough
   hostnames: ["ceph.home.mattprovost.dev"]
