@@ -8,22 +8,3 @@ spec:
   ipAllowList:
     sourceRange:
       - 10.0.2.173/32
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: internal
-  namespace: infra
-spec:
-  entryPoints: [web] # HTTP only
-  routes:
-    - match: Host(`longhorn.internal`)
-      kind: Rule
-      priority: 1000 # <- higher than the catch-all redirect
-      middlewares:
-        - name: allow-matt
-          namespace: infra
-      services:
-        - name: longhorn-frontend
-          namespace: longhorn-system
-          port: 80

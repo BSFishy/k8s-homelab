@@ -21,5 +21,3 @@ spec:
   wait: false
   dependsOn:
     - name: mosquitto
-    - name: longhorn
-      namespace: flux-system

@@ -18,7 +18,6 @@ spec:
       - kube-public
       - kube-node-lease
       - velero-system
-      - longhorn-system
     includedResources:
       - namespaces
       - persistentvolumeclaims

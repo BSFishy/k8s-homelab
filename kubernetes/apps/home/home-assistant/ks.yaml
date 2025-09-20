@@ -22,5 +22,3 @@ spec:
   dependsOn:
     - name: multus
       namespace: infra
-    - name: longhorn
-      namespace: flux-system
