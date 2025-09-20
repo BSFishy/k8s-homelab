@@ -1,4 +1,5 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
+set unstable
 
 export TALOSCONFIG := "./talosconfig"
 
@@ -23,11 +24,12 @@ render:
 #   just apply <hostname>
 # Example:
 #   just apply gaia-01
+[script]
 apply name: render
-	node_file=$(ls nodes/*{{name}}.yaml)
-	ip=$(yq -r '.machine.network.interfaces[0].addresses[0]' "$node_file" | cut -d/ -f1)
-	base=$(basename "$node_file" .yaml)
-	talosctl apply-config --nodes "$ip" --file rendered/$base.yaml
+  node_file=$(ls nodes/*{{name}}.yaml)
+  ip=$(yq -r '.machine.network.interfaces[0].addresses[0]' "$node_file" | cut -d/ -f1)
+  base=$(basename "$node_file" .yaml)
+  talosctl apply-config --nodes "$ip" --file rendered/$base.yaml
 
 # Apply a rendered config to a node. This is the same as apply but with the
 # --insecure flag and manually specifying the IP
@@ -35,14 +37,15 @@ apply name: render
 #   just apply-insecure <hostname> <ip>
 # Example:
 #   just apply-insecure gaia-01 10.1.2.2
+[script]
 apply-insecure name ip: render
-        node_file=$(ls nodes/*{{name}}.yaml)
-        base=$(basename "$node_file" .yaml)
-        talosctl apply-config --insecure --nodes {{ip}} --file rendered/$base.yaml
+  node_file=$(ls nodes/*{{name}}.yaml)
+  base=$(basename "$node_file" .yaml)
+  talosctl apply-config --insecure --nodes {{ip}} --file rendered/$base.yaml
 
 # Clean the rendered output
 clean:
-	rm -rf rendered
+  rm -rf rendered
 
 # configure the talos endpoints to be the cluster virtual ip
 talos-endpoints:
@@ -52,7 +55,7 @@ talos-endpoints:
 # Usage:
 #   just upgrade v1.10.6 schematic-longhorn.yaml 10.1.2.2 10.1.2.3 10.1.2.4
 upgrade ver +nodes:
-	bash scripts/factory-upgrade.sh {{ver}} boot-assets.yaml {{nodes}}
+  bash scripts/factory-upgrade.sh {{ver}} boot-assets.yaml {{nodes}}
 
 # Deploy CRDs needed to bootstrap the cluster
 bootstrap-crds:

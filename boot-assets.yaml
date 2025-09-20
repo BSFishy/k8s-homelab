@@ -1,10 +1,6 @@
 customization:
   systemExtensions:
     officialExtensions:
-      # add extensions that longhorn needs
-      - siderolabs/iscsi-tools
-      - siderolabs/util-linux-tools
-
       # system firmware
       - siderolabs/amd-ucode
       - siderolabs/amdgpu

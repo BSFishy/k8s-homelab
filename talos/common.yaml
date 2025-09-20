@@ -22,16 +22,6 @@ machine:
       kube-reserved: "cpu=500m,memory=512Mi,ephemeral-storage=8Gi"
       serialize-image-pulls: "true"
 
-    extraMounts:
-      # create longhorn mount
-      - destination: /var/lib/longhorn
-        type: bind
-        source: /var/lib/longhorn
-        options:
-          - bind
-          - rshared
-          - rw
-
   features:
     # enable dns caching
     hostDNS:
