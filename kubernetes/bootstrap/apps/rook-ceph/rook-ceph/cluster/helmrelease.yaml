@@ -246,19 +246,19 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 2
           dataPools:
             - name: cephfs-data
               failureDomain: host
               replicated:
-                size: 2
+                size: 1
               parameters:
                 compression_mode: none
           preserveFilesystemOnDelete: true
           # MDS HA so RWX is reliable
           metadataServer:
-            activeCount: 2
-            activeStandby: true
+            activeCount: 1
+            activeStandby: false
         storageClass:
           enabled: true
           name: ceph-media
@@ -275,7 +275,6 @@ spec:
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             fsName: cephfs
             pool: cephfs-data
-            # If kernel CephFS module isn't present on your nodes, uncomment this:
-            # mounter: fuse
+            mounter: fuse
 
     cephObjectStores: []
