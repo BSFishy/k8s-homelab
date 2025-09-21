@@ -241,25 +241,24 @@ spec:
 
     cephFileSystems:
       - name: ceph-media
-        # pools
-        metadataPool:
-          failureDomain: host
-          replicated:
-            size: 3
-        dataPools:
-          - name: cephfs-data
+        spec:
+          # pools
+          metadataPool:
             failureDomain: host
             replicated:
               size: 3
-            parameters:
-              compression_mode: none
-        preservePoolsOnDelete: true
-
-        # MDS HA so RWX is reliable
-        metadataServer:
-          activeCount: 2
-          activeStandby: true
-
+          dataPools:
+            - name: cephfs-data
+              failureDomain: host
+              replicated:
+                size: 2
+              parameters:
+                compression_mode: none
+          preserveFilesystemOnDelete: true
+          # MDS HA so RWX is reliable
+          metadataServer:
+            activeCount: 2
+            activeStandby: true
         storageClass:
           enabled: true
           name: ceph-media
