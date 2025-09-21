@@ -231,28 +231,13 @@ spec:
             # Optional: an annotation your Velero schedule uses to EXCLUDE this class
             backup.velero.io/exclude: "true"
 
-      # ---------- NVMe tier (current) ----------
-      - name: pool-media-nvme-meta
-        spec:
-          failureDomain: host
-          crushRoot: default
-          deviceClass: nvme # change to "ssd" if your cluster labels that way
-          replicated:
-            size: 3
-          parameters:
-            compression_mode: none
-          enableRBDStats: true
-        storageClass:
-          enabled: false
-
-      - name: pool-media-nvme-ec
+      - name: pool-media-nvme
         spec:
           failureDomain: host
           crushRoot: default
           deviceClass: nvme
-          erasureCoded:
-            dataChunks: 4 # 4+2 is a solid default; scale up if you have more hosts
-            codingChunks: 2
+          replicated:
+            size: 2
           parameters:
             compression_mode: none
           enableRBDStats: true
