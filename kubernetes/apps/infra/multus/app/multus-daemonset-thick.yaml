@@ -231,7 +231,8 @@ spec:
               cp -f /usr/src/cni/bin/macvlan /host/opt/cni/bin/
               cp -f /usr/src/cni/bin/ipvlan  /host/opt/cni/bin/ || true
               cp -f /usr/src/cni/bin/static  /host/opt/cni/bin/ || true
-              ls -l /host/opt/cni/bin/macvlan /host/opt/cni/bin/ipvlan /host/opt/cni/bin/static || true
+              cp -f /usr/src/cni/bin/sbr     /host/opt/cni/bin/ || true
+              ls -l /host/opt/cni/bin/macvlan /host/opt/cni/bin/ipvlan /host/opt/cni/bin/static /host/opt/cni/bin/sbr || true
           securityContext:
             privileged: true
           volumeMounts:
