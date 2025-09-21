@@ -5,19 +5,36 @@ machine:
     interfaces:
       - interface: br0
         dhcp: false
+
         addresses:
           - 10.1.2.6/16
           - 2603:8080:1e00:1b02:1000::5/64
+
         routes:
           - network: 0.0.0.0/0
             gateway: 10.1.0.1
           - network: ::/0
             gateway: 2603:8080:1e00:1b02::1
+
         bridge:
           stp:
             enabled: false
           interfaces:
             - enp1s0
+
+        vlans:
+          # homelab
+          - vlanId: 6
+            routes:
+              - network: 10.1.0.0/16
+                gateway: 10.1.0.1
+
+          # personal devices
+          - vlanId: 3
+            routes:
+              - network: 10.0.2.0/24
+                gateway: 10.0.2.1
+
     hostname: gaia-05
 
   install:
