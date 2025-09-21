@@ -85,7 +85,7 @@ spec:
         parentRefs:
           - name: traefik-gateway
             namespace: infra
-            sectionName: https
+            sectionName: websecure
 
     persistence:
       config:
