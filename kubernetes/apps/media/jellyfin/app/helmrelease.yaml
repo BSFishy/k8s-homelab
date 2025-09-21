@@ -21,7 +21,7 @@ spec:
     controllers:
       jellyfin:
         annotations:
-          "k8s.v1.cni.cncf.io/networks": jellyfin
+          "k8s.v1.cni.cncf.io/networks": media/jellyfin
 
         containers:
           app:
