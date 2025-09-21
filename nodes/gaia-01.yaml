@@ -26,19 +26,6 @@ machine:
           interfaces:
             - enp1s0
 
-        vlans:
-          # homelab
-          - vlanId: 6
-            routes:
-              - network: 10.1.0.0/16
-                gateway: 10.1.0.1
-
-          # personal devices
-          - vlanId: 3
-            routes:
-              - network: 10.0.2.0/24
-                gateway: 10.0.2.1
-
     hostname: gaia-01
 
   install:
