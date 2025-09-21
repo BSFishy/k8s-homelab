@@ -257,8 +257,8 @@ spec:
           preserveFilesystemOnDelete: true
           # MDS HA so RWX is reliable
           metadataServer:
-            activeCount: 1
-            activeStandby: false
+            activeCount: 2
+            activeStandby: true
         storageClass:
           enabled: true
           name: ceph-media
