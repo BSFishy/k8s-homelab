@@ -240,6 +240,39 @@ spec:
         velero.io/csi-volumesnapshot-class: "true"
 
     cephFileSystems:
+      # tmp
+      - name: cephfs
+        spec:
+          metadataPool:
+            failureDomain: host
+            replicated: { size: 2 }
+          dataPools:
+            - name: data0
+              failureDomain: host
+              replicated: { size: 1 }
+              parameters:
+                compression_mode: none
+          preserveFilesystemOnDelete: true
+          metadataServer:
+            activeCount: 1
+            activeStandby: false
+        storageClass:
+          enabled: true
+          name: cephfs-media
+          isDefault: false
+          reclaimPolicy: Delete
+          allowVolumeExpansion: true
+          parameters:
+            fsName: cephfs
+            pool: data0
+            mounter: fuse
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+
       - name: ceph-media
         spec:
           # pools
