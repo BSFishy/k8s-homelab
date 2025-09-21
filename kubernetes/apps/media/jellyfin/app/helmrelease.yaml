@@ -20,8 +20,9 @@ spec:
   values:
     controllers:
       jellyfin:
-        annotations:
-          "k8s.v1.cni.cncf.io/networks": media/jellyfin
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: jellyfin
 
         containers:
           app:
