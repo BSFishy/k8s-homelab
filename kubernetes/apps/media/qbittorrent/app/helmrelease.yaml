@@ -63,7 +63,8 @@ spec:
 
     defaultPodOptions:
       annotations:
-        k8s.v1.cni.cncf.io/networks: qbittorrent
+        k8s.v1.cni.cncf.io/networks: |-
+          [{ "name": "media/qbittorrent", "interfaceRequest": "net1" }]
 
       securityContext:
         runAsNonRoot: true
