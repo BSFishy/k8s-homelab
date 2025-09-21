@@ -253,8 +253,6 @@ spec:
           parameters:
             imageFormat: "2"
             imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
-            pool: pool-media-nvme-meta
-            dataPool: pool-media-nvme-ec
             csi.storage.k8s.io/fstype: xfs
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
