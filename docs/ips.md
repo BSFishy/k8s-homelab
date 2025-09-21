@@ -22,6 +22,8 @@
 - `10.1.3.4` - coredns
 - `10.1.3.5` - k8s_gateway
 - `10.1.3.6` - minecraft
+- `10.1.3.7` - home assistant
+- `10.1.3.8` - jellyfin
 
 ## ipv6
 

@@ -231,6 +231,104 @@ spec:
             # Optional: an annotation your Velero schedule uses to EXCLUDE this class
             backup.velero.io/exclude: "true"
 
+      # ---------- NVMe tier (current) ----------
+      - name: pool-media-nvme-meta
+        spec:
+          failureDomain: host
+          crushRoot: default
+          deviceClass: nvme # change to "ssd" if your cluster labels that way
+          replicated:
+            size: 3
+          parameters:
+            compression_mode: none
+          enableRBDStats: true
+        storageClass:
+          enabled: false
+
+      - name: pool-media-nvme-ec
+        spec:
+          failureDomain: host
+          crushRoot: default
+          deviceClass: nvme
+          erasureCoded:
+            dataChunks: 4 # 4+2 is a solid default; scale up if you have more hosts
+            codingChunks: 2
+          parameters:
+            compression_mode: none
+          enableRBDStats: true
+        storageClass:
+          enabled: true
+          name: ceph-media-nvme
+          isDefault: false
+          reclaimPolicy: Retain
+          allowVolumeExpansion: true
+          volumeBindingMode: Immediate
+          # NVMe: keep TRIM on, cut atime churn
+          mountOptions: [noatime, nodiratime, discard]
+          parameters:
+            imageFormat: "2"
+            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
+            pool: pool-media-nvme-meta
+            dataPool: pool-media-nvme-ec
+            csi.storage.k8s.io/fstype: xfs
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+          annotations:
+            storage-tier: "bulk-media-nvme"
+
+      # ---------- HDD tier (future) ----------
+      - name: pool-media-hdd-meta
+        spec:
+          failureDomain: host
+          crushRoot: default
+          deviceClass: hdd
+          replicated:
+            size: 3
+          parameters:
+            compression_mode: none
+          enableRBDStats: true
+        storageClass:
+          enabled: false
+
+      - name: pool-media-hdd-ec
+        spec:
+          failureDomain: host
+          crushRoot: default
+          deviceClass: hdd
+          erasureCoded:
+            dataChunks: 6 # HDDs: 6+3 (or 7+2) often balances capacity vs. resiliency
+            codingChunks: 3
+          parameters:
+            compression_mode: none
+          enableRBDStats: true
+        storageClass:
+          enabled: true
+          name: ceph-media-hdd
+          isDefault: false
+          reclaimPolicy: Retain
+          allowVolumeExpansion: true
+          volumeBindingMode: Immediate
+          # HDD: skip discard; still cut atime churn
+          mountOptions: [noatime, nodiratime]
+          parameters:
+            imageFormat: "2"
+            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
+            pool: pool-media-hdd-meta
+            dataPool: pool-media-hdd-ec
+            csi.storage.k8s.io/fstype: xfs
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+          annotations:
+            storage-tier: "bulk-media-hdd"
+
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
