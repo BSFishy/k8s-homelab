@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      decluttarr:
+      janitorr:
         containers:
           app:
             image:
@@ -76,3 +76,11 @@ spec:
         globalMounts:
           - path: /workspace/application.yml
             subPath: application.yml
+
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          janitorr:
+            app:
+              - path: /tmp
+                subPath: tmp
