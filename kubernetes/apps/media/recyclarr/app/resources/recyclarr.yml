@@ -23,7 +23,7 @@ sonarr:
           - name: WEB-1080p
 
     media_naming:
-      series: jellyfin
+      series: jellyfin-tvdb
       season: default
       episodes:
         rename: true
@@ -55,7 +55,7 @@ radarr:
           - name: HD Bluray + WEB
 
     media_naming:
-      folder: jellyfin
+      folder: jellyfin-tmdb
       movie:
         rename: true
-        standard: jellyfin
+        standard: jellyfin-tmdb
