@@ -84,3 +84,5 @@ spec:
             app:
               - path: /tmp
                 subPath: tmp
+              - path: /logs
+                subPath: logs
