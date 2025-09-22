@@ -52,13 +52,13 @@ spec:
               - name: RUN_PERIODIC_RESCANS
                 value: |
                   {
-                    "SONARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 7},
-                    "RADARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 7}
+                    "SONARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 1},
+                    "RADARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 1}
                   }
 
               # Feature settings
               - name: PERMITTED_ATTEMPTS
-                value: 3
+                value: 10
               - name: NO_STALLED_REMOVAL_QBIT_TAG
                 value: Don't Kill
               - name: MIN_DOWNLOAD_SPEED
