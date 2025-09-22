@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: janitorr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      decluttarr:
+        containers:
+          app:
+            image:
+              # docker pull ghcr.io/schaka/janitorr:native-175-merge
+              repository: ghcr.io/schaka/janitorr
+              tag: native-stable@sha256:a21f7eb2efc4e354997e33caf9bde8f5f1cc1b9319585d35baf42ef2886cde38
+
+            env:
+              - name: RADARR_KEY
+                secretKeyRef:
+                  name: "radarr-secret"
+                  key: "RADARR__AUTH__APIKEY"
+              - name: SONARR_KEY
+                secretKeyRef:
+                  name: "sonarr-secret"
+                  key: "SONARR__AUTH__APIKEY"
+              - name: JELLYSEERR_KEY
+                secretKeyRef:
+                  name: "jellyseerr-secret"
+                  key: "API_KEY"
+              - name: JELLYFIN_KEY
+                secretKeyRef:
+                  name: "jellyfin-secret"
+                  key: "API_KEY"
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 4Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      media:
+        existingClaim: media
+        globalMounts:
+          - path: /data
+
+      config-file:
+        type: configMap
+        name: "janitorr-configmap"
+        globalMounts:
+          - path: /workspace/application.yml
+            subPath: application.yml
