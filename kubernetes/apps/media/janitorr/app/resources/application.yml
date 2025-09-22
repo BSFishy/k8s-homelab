@@ -17,7 +17,7 @@ file-system:
   free-space-check-dir: "/" # This is the default directory Janitorr uses to check how much space is left on your drives. By default, it checks the entire root - you may point it at a specific folder
 
 application:
-  dry-run: true
+  dry-run: false
   run-once: false # If you enable this, Janitorr will clean up once and then shut down.
   whole-tv-show: false # activating this will treat as a whole show as recently download/watched from a single episode, rather than that episode's season - shows will be deleted as a whole
   whole-show-seeding-check: false # Turning this off, disables the seeding check entirely if whole-tv-show is enabled. Activating this check will keep a whole TV show if any season is still seeding (requires file access).
