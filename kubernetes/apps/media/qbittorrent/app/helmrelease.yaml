@@ -20,11 +20,6 @@ spec:
   values:
     controllers:
       qbittorrent:
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |-
-              [{ "name": "qbittorrent", "interfaceRequest": "net1" }]
-
         containers:
           app:
             image:
@@ -87,7 +82,7 @@ spec:
               - name: SERVER_REGIONS
                 value: "Peru,Ecuador,Uruguay,Guatemala,Mexico,Bolivia,Argentina"
               - name: FIREWALL_OUTBOUND_SUBNETS
-                value: "10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
+                value: "1.1.1.1/32,1.0.0.1/32"
               - name: VPN_PORT_FORWARDING
                 value: "on"
               - name: VPN_PORT_FORWARDING_STATUS_FILE
