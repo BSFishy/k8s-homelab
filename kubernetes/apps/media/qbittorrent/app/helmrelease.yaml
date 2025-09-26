@@ -69,6 +69,7 @@ spec:
               limits:
                 memory: 18Gi
 
+        initContainers:
           gluetun:
             image:
               repository: ghcr.io/qdm12/gluetun
@@ -90,6 +91,14 @@ spec:
               - name: FIREWALL_OUTBOUND_SUBNETS
                 value: "10.244.0.0/24,10.96.0.0/12,1.1.1.1/32,1.0.0.1/32"
 
+              # health check
+              - name: FIREWALL_INPUT_PORTS
+                value: "80,9999"
+              - name: HEALTH_SERVER_ADDRESS
+                value: ":9999"
+              - name: HEALTH_SERVER_DISABLE_LOOP
+                value: on
+
               # port forwarding
               - name: VPN_PORT_FORWARDING
                 value: "on"
@@ -103,6 +112,26 @@ spec:
                 value: off
               - name: BLOCK_ADS
                 value: off
+
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check/
+                    port: 9999
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check/
+                    port: 9999
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 10
 
             securityContext:
               runAsUser: 0
