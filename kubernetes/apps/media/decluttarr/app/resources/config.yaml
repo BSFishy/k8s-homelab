@@ -10,9 +10,9 @@ general:
   # protected_tag: "Keep" # optional. Default: "Keep"
 
 job_defaults:
-  max_strikes: 3
-  min_days_between_searches: 7
-  max_concurrent_searches: 3
+  max_strikes: 10
+  min_days_between_searches: 1
+  max_concurrent_searches: 10
 
 jobs:
   remove_bad_files:
@@ -55,4 +55,3 @@ instances:
 download_clients:
   qbittorrent:
     - base_url: "http://qbittorrent.media"
-      # name: "qBittorrent" # (optional -> if not provided, assuming "qBittorrent". Must correspond with what is specified in your *arr as download client name)
