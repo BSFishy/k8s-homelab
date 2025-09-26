@@ -18,6 +18,14 @@ spec:
     remediation:
       retries: 3
   values:
+    defaultPodOptions:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers: ["127.0.0.1"]
+        options:
+          - name: ndots
+            value: "1"
+
     controllers:
       qbittorrent:
         containers:
@@ -83,10 +91,20 @@ spec:
                 value: "Peru,Ecuador,Uruguay,Guatemala,Mexico,Bolivia,Argentina"
               - name: FIREWALL_OUTBOUND_SUBNETS
                 value: "1.1.1.1/32,1.0.0.1/32"
+
+              # port forwarding
               - name: VPN_PORT_FORWARDING
                 value: "on"
               - name: VPN_PORT_FORWARDING_STATUS_FILE
                 value: "/gluetun/forwarded_port"
+
+              # dns
+              - name: BLOCK_MALICIOUS
+                value: off
+              - name: BLOCK_SURVEILLANCE
+                value: off
+              - name: BLOCK_ADS
+                value: off
 
             securityContext:
               runAsUser: 0
