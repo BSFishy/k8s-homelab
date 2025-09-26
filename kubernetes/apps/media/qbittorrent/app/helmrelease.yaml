@@ -113,7 +113,7 @@ spec:
             args:
               - |
                 set -eu
-                api() { wget -qO- --post-data="$1" --header="Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
+                api() { curl -XPOST -d "$1" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
                 prev=""
                 while :; do
                   if [ -f /gluetun/forwarded_port ]; then
