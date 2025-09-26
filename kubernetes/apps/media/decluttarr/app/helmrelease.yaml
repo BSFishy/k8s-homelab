@@ -69,3 +69,11 @@ spec:
         globalMounts:
           - path: /app/config/config.yaml
             subPath: config.yaml
+
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          decluttarr:
+            app:
+              - path: /tmp
+                subPath: tmp
