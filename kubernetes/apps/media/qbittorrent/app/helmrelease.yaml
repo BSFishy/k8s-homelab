@@ -78,7 +78,12 @@ spec:
             args:
               - |
                 set -eu
-                api() { curl -XPOST -d "$1" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
+                api() {
+                  # wait until host is reachable
+                  until curl -fsS --max-time 2 -o /dev/null "http://127.0.0.1:80"; do sleep 1; done
+
+                  curl -s -XPOST -d "$1" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2"
+                }
                 prev=""
                 while :; do
                   if [ -f /gluetun/forwarded_port ]; then
