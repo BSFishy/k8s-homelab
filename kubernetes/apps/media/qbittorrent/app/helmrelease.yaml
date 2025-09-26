@@ -91,10 +91,13 @@ spec:
                 value: "/gluetun/forwarded_port"
 
             securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                add: ["NET_ADMIN"]
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
+              capabilities:
+                add: ["NET_ADMIN", "NET_RAW"]
 
             resources:
               requests:
@@ -199,6 +202,7 @@ spec:
       tunnel:
         type: hostPath
         hostPath: /dev/net/tun
+        hostPathType: CharDevice
         advancedMounts:
           qbittorrent:
             gluetun:
