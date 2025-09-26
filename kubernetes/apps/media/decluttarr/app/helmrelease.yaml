@@ -29,11 +29,11 @@ spec:
             env:
               - name: TZ
                 value: America/Chicago
-              - name: SONARR_API_KEY
+              - name: RADARR_API_KEY
                 secretKeyRef:
                   name: "radarr-secret"
                   key: "RADARR__AUTH__APIKEY"
-              - name: RADARR_API_KEY
+              - name: SONARR_API_KEY
                 secretKeyRef:
                   name: "sonarr-secret"
                   key: "SONARR__AUTH__APIKEY"
