@@ -66,8 +66,6 @@ spec:
             resources:
               requests:
                 cpu: 100m
-              limits:
-                memory: 18Gi
 
           port-sync:
             image:
