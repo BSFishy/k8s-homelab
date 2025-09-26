@@ -106,8 +106,8 @@ spec:
 
           port-sync:
             image:
-              repository: alpine
-              tag: 3.20
+              repository: alpine/curl
+              tag: 8.14.1@sha256:c842d704500f0e474157fc1652b01cff239992eab854c84d9f4551f049e23160
 
             command: ["/bin/sh", "-c"]
             args:
