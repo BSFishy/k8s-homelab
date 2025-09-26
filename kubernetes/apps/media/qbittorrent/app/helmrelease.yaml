@@ -29,7 +29,9 @@ spec:
             env:
               TZ: America/Chicago
               QBT_WEBUI_PORT: &port 80
-              QBT_TORRENTING_PORT: 50469
+
+              # listen port will be set by the sidecar to match PIA
+              QBT_TORRENTING_PORT: 0
 
             probes:
               liveness: &probes
@@ -61,11 +63,75 @@ spec:
               limits:
                 memory: 18Gi
 
-    defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |-
-          [{ "name": "qbittorrent", "interfaceRequest": "net1" }]
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0@sha256:2b42bfa046757145a5155acece417b65b4443c8033fb88661a8e9dcf7fda5a00
 
+            env:
+              - name: VPN_SERVICE_PROVIDER
+                value: "private internet access"
+              - name: VPN_TYPE
+                value: "wireguard"
+              - name: WIREGUARD_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: pia-wireguard
+                    key: privatekey
+              - name: SERVER_REGIONS
+                value: "Peru"
+              - name: FIREWALL
+                value: "on"
+              - name: FIREWALL_OUTBOUND_SUBNETS
+                value: "10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
+              - name: VPN_PORT_FORWARDING
+                value: "on"
+              # tell gluetun where to write the PF port
+              - name: VPN_PORT_FORWARDING_STATUS_FILE
+                value: "/gluetun/forwarded_port"
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                add: ["NET_ADMIN"]
+              readOnlyRootFilesystem: false
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+          port-sync:
+            image:
+              repository: alpine
+              tag: 3.20
+
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -eu
+                api() { wget -qO- --post-data="$1" --header="Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
+                prev=""
+                while :; do
+                  if [ -f /gluetun/forwarded_port ]; then
+                    port="$(cat /gluetun/forwarded_port || true)"
+                    case "$port" in
+                      ''|*[!0-9]*) sleep 5; continue ;;
+                    esac
+                    if [ "$port" != "$prev" ]; then
+                      # set qBittorrent listen_port
+                      api "json={\"listen_port\":${port}}" "app/setPreferences" >/dev/null || true
+                      prev="$port"
+
+                      echo "set port to $port"
+                    fi
+                  fi
+                  sleep 10
+                done
+
+    defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -74,13 +140,13 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      app:
+      qbittorrent:
         ports:
           http:
             port: *port
 
     route:
-      app:
+      qbittorrent:
         hostnames:
           - "torrent.home.mattprovost.dev"
         parentRefs:
@@ -89,7 +155,7 @@ spec:
             sectionName: websecure
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: qbittorrent
                 port: *port
 
             filters:
@@ -109,17 +175,40 @@ spec:
     persistence:
       config:
         existingClaim: "qbittorrent-config"
-        globalMounts:
-          - path: /config
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /config
 
       config-file:
         type: configMap
         identifier: config
-        globalMounts:
-          - path: /config/.qbt.toml
-            subPath: .qbt.toml
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /config/.qbt.toml
+                subPath: .qbt.toml
 
       media:
         existingClaim: "media"
-        globalMounts:
-          - path: /media
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /media
+
+      tunnel:
+        type: hostPath
+        hostPath: /dev/net/tun
+        advancedMounts:
+          qbittorrent:
+            gluetun:
+              - path: /dev/net/tun
+
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          qbittorrent:
+            gluetun:
+              - path: /gluetun
+            port-sync:
+              - path: /gluetun
