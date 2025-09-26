@@ -23,7 +23,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/bsfishy/decluttarr:yaml_env
+              repository: ghcr.io/bsfishy/decluttarr
               tag: yaml_env@sha256:c7667c3f170cdbd7973e46e2cfc3ca0f413f78304653d9e350e7a7d71fb64dc5
 
             env:
