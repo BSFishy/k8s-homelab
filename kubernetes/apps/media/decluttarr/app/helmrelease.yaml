@@ -23,63 +23,20 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/manimatter/decluttarr
-              tag: v1.50.2@sha256:8a00eaae4331327923513f4e26fda3f130e99d8a26c8e7bc9843f8dc56774a19
+              repository: ghcr.io/bsfishy/decluttarr:yaml_env
+              tag: yaml_env@sha256:c7667c3f170cdbd7973e46e2cfc3ca0f413f78304653d9e350e7a7d71fb64dc5
 
             env:
               - name: TZ
                 value: America/Chicago
-
-              # Features
-              - name: REMOVE_TIMER
-                value: 10
-              - name: REMOVE_FAILED
-                value: True
-              - name: REMOVE_FAILED_IMPORTS
-                value: True
-              - name: REMOVE_METADATA_MISSING
-                value: True
-              - name: REMOVE_MISSING_FILES
-                value: True
-              - name: REMOVE_ORPHANS
-                value: True
-              - name: REMOVE_SLOW
-                value: True
-              - name: REMOVE_STALLED
-                value: True
-              - name: REMOVE_UNMONITORED
-                value: True
-              - name: RUN_PERIODIC_RESCANS
-                value: |
-                  {
-                    "SONARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 1},
-                    "RADARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 1}
-                  }
-
-              # Feature settings
-              - name: PERMITTED_ATTEMPTS
-                value: 10
-              - name: NO_STALLED_REMOVAL_QBIT_TAG
-                value: Don't Kill
-              - name: MIN_DOWNLOAD_SPEED
-                value: 100
-
-              - name: RADARR_URL
-                value: http://radarr.media
-              - name: RADARR_KEY
+              - name: SONARR_API_KEY
                 secretKeyRef:
                   name: "radarr-secret"
                   key: "RADARR__AUTH__APIKEY"
-
-              - name: SONARR_URL
-                value: http://sonarr.media
-              - name: SONARR_KEY
+              - name: RADARR_API_KEY
                 secretKeyRef:
                   name: "sonarr-secret"
                   key: "SONARR__AUTH__APIKEY"
-
-              - name: QBITTORRENT_URL
-                value: http://qbittorrent.media
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -105,3 +62,10 @@ spec:
         existingClaim: media
         globalMounts:
           - path: /media
+
+      config-file:
+        type: configMap
+        name: "decluttarr-config"
+        globalMounts:
+          - path: /app/config/config.yaml
+            subPath: config.yaml
