@@ -69,6 +69,34 @@ spec:
               limits:
                 memory: 18Gi
 
+          port-sync:
+            image:
+              repository: alpine/curl
+              tag: 8.14.1@sha256:c842d704500f0e474157fc1652b01cff239992eab854c84d9f4551f049e23160
+
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -eu
+                api() { curl -XPOST -d "$1" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
+                prev=""
+                while :; do
+                  if [ -f /gluetun/forwarded_port ]; then
+                    port="$(cat /gluetun/forwarded_port || true)"
+                    case "$port" in
+                      ''|*[!0-9]*) sleep 5; continue ;;
+                    esac
+                    if [ "$port" != "$prev" ]; then
+                      # set qBittorrent listen_port
+                      api "json={\"listen_port\":${port}}" "app/setPreferences" >/dev/null || true
+                      prev="$port"
+
+                      echo "set port to $port"
+                    fi
+                  fi
+                  sleep 10
+                done
+
         initContainers:
           gluetun:
             image:
@@ -150,34 +178,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-
-          port-sync:
-            image:
-              repository: alpine/curl
-              tag: 8.14.1@sha256:c842d704500f0e474157fc1652b01cff239992eab854c84d9f4551f049e23160
-
-            command: ["/bin/sh", "-c"]
-            args:
-              - |
-                set -eu
-                api() { curl -XPOST -d "$1" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:80/api/v2/$2" ; }
-                prev=""
-                while :; do
-                  if [ -f /gluetun/forwarded_port ]; then
-                    port="$(cat /gluetun/forwarded_port || true)"
-                    case "$port" in
-                      ''|*[!0-9]*) sleep 5; continue ;;
-                    esac
-                    if [ "$port" != "$prev" ]; then
-                      # set qBittorrent listen_port
-                      api "json={\"listen_port\":${port}}" "app/setPreferences" >/dev/null || true
-                      prev="$port"
-
-                      echo "set port to $port"
-                    fi
-                  fi
-                  sleep 10
-                done
 
     defaultPodOptions:
       securityContext:
