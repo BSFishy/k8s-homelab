@@ -20,6 +20,11 @@ spec:
   values:
     controllers:
       qbittorrent:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |-
+              [{ "name": "qbittorrent", "interfaceRequest": "net1" }]
+
         containers:
           app:
             image:
@@ -71,22 +76,20 @@ spec:
             env:
               - name: VPN_SERVICE_PROVIDER
                 value: "private internet access"
-              - name: VPN_TYPE
-                value: "wireguard"
-              - name: WIREGUARD_PRIVATE_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: pia-wireguard
-                    key: privatekey
+              - name: OPENVPN_USER
+                secretKeyRef:
+                  name: pia-creds
+                  key: username
+              - name: OPENVPN_PASSWORD
+                secretKeyRef:
+                  name: pia-creds
+                  key: password
               - name: SERVER_REGIONS
                 value: "Peru"
-              - name: FIREWALL
-                value: "on"
               - name: FIREWALL_OUTBOUND_SUBNETS
                 value: "10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
               - name: VPN_PORT_FORWARDING
                 value: "on"
-              # tell gluetun where to write the PF port
               - name: VPN_PORT_FORWARDING_STATUS_FILE
                 value: "/gluetun/forwarded_port"
 
