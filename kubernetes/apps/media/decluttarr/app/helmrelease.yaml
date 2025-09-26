@@ -29,8 +29,6 @@ spec:
             env:
               - name: TZ
                 value: America/Chicago
-              - name: TEST
-                value: example
               - name: SONARR_API_KEY
                 secretKeyRef:
                   name: "radarr-secret"
