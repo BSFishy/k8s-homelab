@@ -20,6 +20,9 @@ spec:
   values:
     controllers:
       qbittorrent:
+        pod:
+          shareProcessNamespace: true
+
         containers:
           app:
             image:
