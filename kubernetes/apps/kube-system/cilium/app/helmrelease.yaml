@@ -123,6 +123,6 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    enableIPv6: true
+    ipv6:
+      enabled: true
     enableIPv6Masquerade: true
-    tunnel: "disabled"
