@@ -137,6 +137,9 @@ spec:
                 value: "/gluetun/forwarded_port"
 
               # dns
+              - name: DOT_PROVIDERS
+                # getting issues connecting to 1.1.1.1, gonna try google
+                value: google
               - name: BLOCK_MALICIOUS
                 value: off
               - name: BLOCK_SURVEILLANCE
