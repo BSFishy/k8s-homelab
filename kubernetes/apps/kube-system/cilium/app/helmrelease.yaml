@@ -66,6 +66,12 @@ spec:
         enabled: true
       ui:
         enabled: true
+        ingress:
+          enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: infra-authentik@kubernetescrd
+          hosts:
+            - hubble.home.mattprovost.dev
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
