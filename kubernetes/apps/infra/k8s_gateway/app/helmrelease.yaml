@@ -25,7 +25,10 @@ spec:
 
     service:
       type: LoadBalancer
-      loadBalancerIP: 10.1.3.5
+      labels:
+        well-known: "true"
+      annotations:
+        "lbipam.cilium.io/ips": "10.1.3.5"
 
     debug:
       enabled: true

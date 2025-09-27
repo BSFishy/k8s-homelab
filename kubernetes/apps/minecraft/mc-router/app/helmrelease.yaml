@@ -25,7 +25,7 @@ spec:
   interval: 30m
   postRenderers:
     - kustomize:
-        patchesJson6902:
+        patches:
           - target:
               version: v1
               kind: Service
