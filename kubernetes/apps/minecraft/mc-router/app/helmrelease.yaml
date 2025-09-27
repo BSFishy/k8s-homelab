@@ -31,7 +31,7 @@ spec:
               kind: Service
               name: router-mc-router
               namespace: minecraft
-            patch:
+            patch: |
               - op: add
                 path: /metadata/labels/well-known
                 value: "true"
