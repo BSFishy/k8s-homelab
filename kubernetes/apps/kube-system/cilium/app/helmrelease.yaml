@@ -63,7 +63,7 @@ spec:
     hubble:
       enabled: true
       relay:
-        enalbed: true
+        enabled: true
       ui:
         enabled: true
     ipam:
