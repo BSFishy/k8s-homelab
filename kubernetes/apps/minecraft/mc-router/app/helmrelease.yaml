@@ -23,12 +23,25 @@ spec:
     kind: OCIRepository
     name: mc-router
   interval: 30m
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              version: v1
+              kind: Service
+              name: router-mc-router
+              namespace: minecraft
+            patch:
+              - op: add
+                path: /metadata/labels
+                value:
+                  well-known: true
   values:
     services:
       minecraft:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: "10.1.3.6,2603:8080:1e00:1b02:2000::3"
+          "lbipam.cilium.io/ips": "10.1.3.6,2603:8080:1e00:1b02:2000::3"
           "coredns.io/hostname": "mc.mattprovost.dev"
 
       extraServiceSpec:

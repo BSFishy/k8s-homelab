@@ -3,8 +3,23 @@
 apiVersion: cilium.io/v2
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: pool
+  name: default
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
     - cidr: 10.1.4.0/24
+    - cidr: 2603:8080:1e00:1b02:3000::/68
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/cilium.io/ciliumloadbalancerippool_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: well-known
+spec:
+  allowFirstLastIPs: "Yes"
+  blocks:
+    - cidr: 10.1.3.0/24
+    - cidr: 2603:8080:1e00:1b02:2000::/68
+  serviceSelector:
+    matchLabels:
+      well-known: true

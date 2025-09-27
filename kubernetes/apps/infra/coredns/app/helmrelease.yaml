@@ -18,6 +18,9 @@ spec:
       monitor:
         enabled: true
 
+    customLabels:
+      well-known: true
+
     service:
       ipFamilyPolicy: RequireDualStack
       annotations:

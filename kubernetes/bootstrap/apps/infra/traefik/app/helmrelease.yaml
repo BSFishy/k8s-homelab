@@ -80,6 +80,8 @@ spec:
     # register the dns record in coredns
     service:
       ipFamilyPolicy: RequireDualStack
+      labels:
+        well-known: true
       annotations:
         "lbipam.cilium.io/ips": "10.1.3.3,2603:8080:1e00:1b02:2000::1"
         "coredns.io/hostname": "traefik.home.mattprovost.dev"
