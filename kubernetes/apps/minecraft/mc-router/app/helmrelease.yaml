@@ -33,9 +33,8 @@ spec:
               namespace: minecraft
             patch:
               - op: add
-                path: /metadata/labels
-                value:
-                  well-known: "true"
+                path: /metadata/labels/well-known
+                value: "true"
   values:
     services:
       minecraft:
