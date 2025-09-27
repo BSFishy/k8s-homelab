@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/cilium.io/ciliumloadbalancerippool_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: pool
+spec:
+  allowFirstLastIPs: "Yes"
+  cidrs:
+    - cidr: 10.1.4.0/24
