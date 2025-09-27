@@ -31,6 +31,11 @@ spec:
       advertisements:
         matchLabels:
           advertise: bgp
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: bgp
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/cilium.io/ciliumbgpclusterconfig_v2.json
 apiVersion: cilium.io/v2
@@ -48,5 +53,10 @@ spec:
         - name: unifi
           peerASN: 65000
           peerAddress: 10.1.0.1
+          peerConfigRef:
+            name: l3-bgp-peer-config
+        - name: unifi-v6
+          peerASN: 65000
+          peerAddress: 2603:8080:1e00:1b02::1
           peerConfigRef:
             name: l3-bgp-peer-config
