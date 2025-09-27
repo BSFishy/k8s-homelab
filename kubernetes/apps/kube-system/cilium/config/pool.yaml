@@ -22,4 +22,4 @@ spec:
     - cidr: 2603:8080:1e00:1b02:2000::/68
   serviceSelector:
     matchLabels:
-      well-known: true
+      well-known: "true"

@@ -35,7 +35,7 @@ spec:
               - op: add
                 path: /metadata/labels
                 value:
-                  well-known: true
+                  well-known: "true"
   values:
     services:
       minecraft:

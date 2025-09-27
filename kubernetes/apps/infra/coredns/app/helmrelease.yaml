@@ -19,7 +19,7 @@ spec:
         enabled: true
 
     customLabels:
-      well-known: true
+      well-known: "true"
 
     service:
       ipFamilyPolicy: RequireDualStack
