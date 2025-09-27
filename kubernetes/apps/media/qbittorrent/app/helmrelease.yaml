@@ -137,8 +137,6 @@ spec:
                 value: "/gluetun/forwarded_port"
 
               # dns
-              - name: DOT
-                value: off
               - name: BLOCK_MALICIOUS
                 value: off
               - name: BLOCK_SURVEILLANCE
