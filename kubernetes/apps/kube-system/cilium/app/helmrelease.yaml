@@ -43,7 +43,7 @@ spec:
       id: 1
       name: main
     cni:
-      exclusive: false
+      exclusive: true
     dashboards:
       enabled: true
       annotations:
@@ -78,13 +78,13 @@ spec:
     # ipv6NativeRoutingCIDR: fd0e:6ba2:48d4:100::/56
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
-    kubeProxyReplacement: true
+    kubeProxyReplacement: "strict"
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: false
     loadBalancer:
       algorithm: maglev
-      mode: dsr
+      mode: snat
     localRedirectPolicy: true
     operator:
       dashboards:
