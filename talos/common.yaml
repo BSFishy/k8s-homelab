@@ -38,13 +38,13 @@ machine:
     # disable accepting ipv6 RAs
     net.ipv6.conf.all.accept_ra: "0"
     net.ipv6.conf.default.accept_ra: "0"
-    net.ipv6.conf.br0.accept_ra: "0"
+    net.ipv6.conf.bond0.accept_ra: "0"
     net.ipv6.conf.all.autoconf: "0"
     net.ipv6.conf.default.autoconf: "0"
-    net.ipv6.conf.br0.autoconf: "0"
+    net.ipv6.conf.bond0.autoconf: "0"
     net.ipv6.conf.all.use_tempaddr: "0"
     net.ipv6.conf.default.use_tempaddr: "0"
-    net.ipv6.conf.br0.use_tempaddr: "0"
+    net.ipv6.conf.bond0.use_tempaddr: "0"
 
 cluster:
   network:

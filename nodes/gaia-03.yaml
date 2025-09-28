@@ -3,7 +3,7 @@
 machine:
   network:
     interfaces:
-      - interface: br0
+      - interface: bond0
         dhcp: false
         mtu: 1500
 
@@ -20,9 +20,7 @@ machine:
         vip:
           ip: 10.1.3.2
 
-        bridge:
-          stp:
-            enabled: false
+        bond:
           interfaces:
             - enp1s0
 

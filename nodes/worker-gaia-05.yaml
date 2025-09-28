@@ -3,7 +3,7 @@
 machine:
   network:
     interfaces:
-      - interface: br0
+      - interface: bond0
         dhcp: false
 
         addresses:
@@ -16,9 +16,7 @@ machine:
           - network: ::/0
             gateway: 2603:8080:1e00:1b02::1
 
-        bridge:
-          stp:
-            enabled: false
+        bond:
           interfaces:
             - enp1s0
 
