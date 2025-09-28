@@ -26,6 +26,7 @@ machine:
     # enable dns caching
     hostDNS:
       enabled: true
+      forwardKubeDNSToHost: false
 
     kubePrism:
       enabled: true
@@ -44,10 +45,19 @@ machine:
     net.ipv6.conf.br0.use_tempaddr: "0"
 
 cluster:
+  apiServer:
+    disablePodSecurityPolicy: true
+
   network:
     podSubnets:
       - 10.244.0.0/16
-      - 2001:db8:42:0::/56
+      - fd0e:6ba2:48d4:100::/56
     serviceSubnets:
       - 10.96.0.0/12
-      - 2001:db8:42:1::/112
+      - fd0e:6ba2:48d4:112::/112
+
+    cni:
+      name: none
+
+  proxy:
+    disabled: true

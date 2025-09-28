@@ -32,6 +32,13 @@ apply name: render
   talosctl apply-config --nodes "$ip" --file rendered/$base.yaml
   echo "Successfully applied {{name}} to $ip"
 
+# Reboot a node by hostname
+[script]
+reboot name: render
+  node_file=$(ls nodes/*{{name}}.yaml)
+  ip=$(yq -r '.machine.network.interfaces[0].addresses[0]' "$node_file" | cut -d/ -f1)
+  talosctl --nodes "$ip" reboot
+
 # Apply a rendered config to a node. This is the same as apply but with the
 # --insecure flag and manually specifying the IP
 # Usage:
