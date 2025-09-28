@@ -45,9 +45,6 @@ machine:
     net.ipv6.conf.br0.use_tempaddr: "0"
 
 cluster:
-  apiServer:
-    disablePodSecurityPolicy: true
-
   network:
     podSubnets:
       - 10.244.0.0/16

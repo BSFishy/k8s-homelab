@@ -4,6 +4,11 @@ cluster:
   # allow scheduling work on controlplane nodes
   allowSchedulingOnControlPlanes: true
 
+  apiServer:
+    disablePodSecurityPolicy: true
+    extraArgs:
+      disable-admission-plugins: PodSecurity
+
 machine:
   nodeLabels:
     # allow load balancing from controlplane nodes
