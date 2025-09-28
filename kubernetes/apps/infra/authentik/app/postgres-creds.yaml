@@ -53,6 +53,3 @@ spec:
       name: authentik-server
     - kind: Deployment
       name: authentik-worker
-
-  # refresh early before TTL expires
-  refreshAfter: 5m
