@@ -21,7 +21,7 @@ spec:
             listener 1883
             per_listener_settings false
             persistence true
-            persistence_location /config
+            persistence_location /mosquitto/config
 
     controllers:
       mosquitto:
