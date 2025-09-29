@@ -15,71 +15,76 @@ spec:
   values:
     image:
       repository: ghcr.io/bsfishy/lumos
-      tag: "main-193804e"
+      tag: "main-0860eac"
 
     env:
       MQTT_BROKER: mqtt://mosquitto.home.svc.cluster.local:1883
 
     config:
       timestep: "250ms"
+      transition:
+        min: "5s"
+        max: "30s"
+      hold:
+        min: "0s"
+        max: "15s"
+
       groups:
-        lumos_primary:
-          transition:
-            min: "5s"
-            max: "30s"
-          hold:
-            min: "0s"
-            max: "15s"
-          ambient:
+        # ambient
+        - colors:
             - "oklch(57.7% 0.245 27.325)"
             - "oklch(64.6% 0.222 41.116)"
             - "oklch(64.8% 0.2 131.684)"
             - "oklch(54.6% 0.245 262.881)"
             - "oklch(54.1% 0.281 293.009)"
             - "oklch(66.7% 0.295 322.15)"
-          time:
-            - colors:
-                # Orange
-                - "oklch(75% 0.183 55.934)"
-                - "oklch(70.5% 0.213 47.604)"
-                # Red
-                - "oklch(70.4% 0.191 22.216)"
-                - "oklch(63.7% 0.237 25.331)"
-                # Yellow
-                - "oklch(82.8% 0.189 84.429)"
-                - "oklch(85.2% 0.199 91.936)"
-                - "oklch(79.5% 0.184 86.047)"
-                # Amber
-                - "oklch(76.9% 0.188 70.08)"
-              fade_in:
-                start: "7:00PM"
-                end: "10:00PM"
-              fade_out:
-                start: "8:00AM"
-                end: "10:00AM"
-          seasonal:
-            - colors:
-                # Orange
-                - "oklch(55.3% 0.195 38.402)"
-                - "oklch(64.6% 0.222 41.116)"
-                - "oklch(70.5% 0.213 47.604)"
-                # Amber
-                - "oklch(55.5% 0.163 48.998)"
-                - "oklch(66.6% 0.179 58.318)"
-                - "oklch(76.9% 0.188 70.08)"
 
-                # Fuchsia
-                - "oklch(51.8% 0.253 323.949)"
-                - "oklch(66.7% 0.295 322.15)"
-                # Purple
-                - "oklch(49.6% 0.265 301.924)"
-                - "oklch(62.7% 0.265 303.9)"
-                # Violet
-                - "oklch(49.1% 0.27 292.581)"
-                - "oklch(60.6% 0.25 292.717)"
-              fade_in:
-                start: "10-01"
-                end: "10-20"
-              fade_out:
-                start: "11-01"
-                end: "11-07"
+        # warm mornings and evenings
+        - colors:
+            # Orange
+            - "oklch(75% 0.183 55.934)"
+            - "oklch(70.5% 0.213 47.604)"
+            # Red
+            - "oklch(70.4% 0.191 22.216)"
+            - "oklch(63.7% 0.237 25.331)"
+            # Yellow
+            - "oklch(82.8% 0.189 84.429)"
+            - "oklch(85.2% 0.199 91.936)"
+            - "oklch(79.5% 0.184 86.047)"
+            # Amber
+            - "oklch(76.9% 0.188 70.08)"
+          time:
+            fade_in:
+              start: "7:00PM"
+              end: "10:00PM"
+            fade_out:
+              start: "8:00AM"
+              end: "10:00AM"
+
+        # halloween
+        - colors:
+            # Orange
+            - "oklch(55.3% 0.195 38.402)"
+            - "oklch(64.6% 0.222 41.116)"
+            - "oklch(70.5% 0.213 47.604)"
+            # Amber
+            - "oklch(55.5% 0.163 48.998)"
+            - "oklch(66.6% 0.179 58.318)"
+            - "oklch(76.9% 0.188 70.08)"
+
+            # Fuchsia
+            - "oklch(51.8% 0.253 323.949)"
+            - "oklch(66.7% 0.295 322.15)"
+            # Purple
+            - "oklch(49.6% 0.265 301.924)"
+            - "oklch(62.7% 0.265 303.9)"
+            # Violet
+            - "oklch(49.1% 0.27 292.581)"
+            - "oklch(60.6% 0.25 292.717)"
+          date:
+            fade_in:
+              start: "10-01"
+              end: "10-20"
+            fade_out:
+              start: "11-01"
+              end: "11-07"
