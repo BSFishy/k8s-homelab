@@ -19,10 +19,12 @@
               pkgs.just
               pkgs.jq
               pkgs.yq
+              pkgs.dig
 
               # cluster management
               pkgs.talosctl
               pkgs.k9s
+              pkgs.cilium-cli
 
               # k8s management
               pkgs.kubectl

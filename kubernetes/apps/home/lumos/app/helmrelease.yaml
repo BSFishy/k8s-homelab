@@ -83,17 +83,17 @@ spec:
         # this is at the end so it gets highest priority
         - colors:
             # red
-            - "oklch(93.6% 0.032 17.717)"
             - "oklch(88.5% 0.062 18.334)"
+            - "oklch(80.8% 0.114 19.571)"
             # orange
-            - "oklch(95.4% 0.038 75.164)"
             - "oklch(90.1% 0.076 70.697)"
+            - "oklch(83.7% 0.128 66.29)"
             # amber
-            - "oklch(96.2% 0.059 95.617)"
             - "oklch(92.4% 0.12 95.746)"
+            - "oklch(87.9% 0.169 91.605)"
             # yellow
-            - "oklch(97.3% 0.071 103.193)"
             - "oklch(94.5% 0.129 101.54)"
+            - "oklch(90.5% 0.182 98.111)"
           time:
             fade_in:
               start: "7:00PM"
