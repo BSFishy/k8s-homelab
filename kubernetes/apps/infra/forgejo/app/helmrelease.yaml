@@ -65,6 +65,8 @@ spec:
         database:
           DB_TYPE: postgres
           SSL_MODE: require
+          HOST: postgres-primary.database.svc.cluster.local
+          name: forgejo
         mailer:
           ENABLED: false
         migrations:
@@ -121,36 +123,24 @@ spec:
           provider: openidConnect
           scopes: openid profile email
 
-  # valuesFrom:
-  #   - kind: Secret
-  #     name: &dbSecret forgejo-init-db
-  #     valuesKey: INIT_POSTGRES_HOST
-  #     targetPath: gitea.config.database.HOST
-  #   - kind: Secret
-  #     name: *dbSecret
-  #     valuesKey: INIT_POSTGRES_DBNAME
-  #     targetPath: gitea.config.database.NAME
-  #   - kind: Secret
-  #     name: *dbSecret
-  #     valuesKey: INIT_POSTGRES_USER
-  #     targetPath: gitea.config.database.USER
-  #   - kind: Secret
-  #     name: *dbSecret
-  #     valuesKey: INIT_POSTGRES_PASS
-  #     targetPath: gitea.config.database.PASSWD
-  #   - kind: Secret
-  #     name: &adminSecret forgejo-admin-secret
-  #     valuesKey: email
-  #     targetPath: gitea.admin.email
-  #   - kind: Secret
-  #     name: &secret forgejo-secret
-  #     valuesKey: secret-key
-  #     targetPath: gitea.config.security.SECRET_KEY
-  #   - kind: Secret
-  #     name: *secret
-  #     valuesKey: minio-access-key-id
-  #     targetPath: gitea.config.storage.MINIO_ACCESS_KEY_ID
-  #   - kind: Secret
-  #     name: *secret
-  #     valuesKey: minio-secret-access-key
-  #     targetPath: gitea.config.storage.MINIO_SECRET_ACCESS_KEY
+  valuesFrom:
+    - kind: Secret
+      name: &s3Secret forgejo-s3
+      valuesKey: key_id
+      targetPath: gitea.config.security.SECRET_KEY
+    - kind: Secret
+      name: *s3Secret
+      valuesKey: secret_key
+      targetPath: gitea.config.storage.MINIO_SECRET_ACCESS_KEY
+    - kind: Secret
+      name: forgejo-secret
+      valuesKey: secret
+      targetPath: gitea.config.security.SECRET_KEY
+    - kind: Secret
+      name: &dbSecret forgejo-postgres-creds
+      valuesKey: username
+      targetPath: gitea.config.database.USER
+    - kind: Secret
+      name: *dbSecret
+      valuesKey: password
+      targetPath: gitea.config.database.PASSWD

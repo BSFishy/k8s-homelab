@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauth_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: forgejo-auth
+spec:
+  vaultConnectionRef: vault
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: vault
+    audiences:
+      - vault
+    serviceAccount: vault
+    tokenExpirationSeconds: 600
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultdynamicsecret_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: forgejo-postgres
+spec:
+  # Reference your VaultAuth (how this namespace authenticates to Vault)
+  vaultAuthRef: forgejo-auth
+
+  # Path in Vault to fetch from. This is the role you defined in Vault, e.g. database/roles/app-writer
+  mount: database
+  path: static-creds/forgejo
+
+  # Where to write the generated secret inside Kubernetes
+  destination:
+    name: forgejo-postgres-creds
+    create: true
+
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: forgejo
