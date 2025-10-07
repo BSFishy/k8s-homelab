@@ -125,7 +125,7 @@ spec:
     - kind: Secret
       name: &s3Secret forgejo-s3
       valuesKey: key_id
-      targetPath: gitea.config.security.SECRET_KEY
+      targetPath: gitea.config.storage.MINIO_ACCESS_KEY_ID
     - kind: Secret
       name: *s3Secret
       valuesKey: secret_key
