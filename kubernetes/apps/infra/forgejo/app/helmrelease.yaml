@@ -71,7 +71,7 @@ spec:
           ALLOWED_DOMAINS: "github.com,*.github.com,gitlab.com,*.gitlab.com,*.mattprovost.dev"
         oauth2:
           ACCOUNT_LINKING: auto
-          ENABLE_AUTO_REGISTRATION: false
+          ENABLE_AUTO_REGISTRATION: true
           OPENID_CONNECT_SCOPES: "openid email groups"
           UPDATE_AVATAR: true
           USERNAME: nickname
@@ -93,7 +93,7 @@ spec:
           SSH_PORT: 22
         service:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
-          DISABLE_REGISTRATION: true
+          DISABLE_REGISTRATION: false
           ENABLE_NOTIFY_MAIL: true
           REQUIRE_SIGNIN_VIEW: true
           SHOW_REGISTRATION_BUTTON: false
