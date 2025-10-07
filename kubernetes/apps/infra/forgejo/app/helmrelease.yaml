@@ -53,8 +53,6 @@ spec:
       enabled: false
 
     gitea:
-      admin:
-        existingSecret: forgejo-admin-secret
       # See https://forgejo.org/docs/latest/admin/config-cheat-sheet/
       config:
         actions:
