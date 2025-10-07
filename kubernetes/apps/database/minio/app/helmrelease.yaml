@@ -42,6 +42,9 @@ spec:
               # MINIO_PROMETHEUS_URL: https://prometheus.storage.18b.haus
               MINIO_SERVER_URL: https://s3.home.mattprovost.dev
               MINIO_UPDATE: "off"
+            envFrom:
+              - secretRef:
+                  name: *app
             args:
               - server
               - /data
