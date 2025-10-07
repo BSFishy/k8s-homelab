@@ -57,6 +57,11 @@ spec:
         - authentik
       password: *password
 
+    - name: forgejo
+      databases:
+        - forgejo
+      password: *password
+
   monitoring:
     pgmonitor:
       exporter:

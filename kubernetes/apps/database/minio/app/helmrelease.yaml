@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app minio
+spec:
+  interval: 2h
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      minio:
+        replicas: 1
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2025-02-28T09-55-16Z
+            env:
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.home.mattprovost.dev,https://s3.home.mattprovost.dev
+              MINIO_BROWSER_REDIRECT_URL: https://minio.home.mattprovost.dev
+              MINIO_IDENTITY_OPENID_CLIENT_ID: minio
+              MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.home.mattprovost.dev/application/o/minio/.well-known/openid-configuration
+              MINIO_IDENTITY_OPENID_DISPLAY_NAME: Authentik
+              MINIO_IDENTITY_OPENID_SCOPES: openid,profile,email,minio
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_PROMETHEUS_JOB_ID: minio
+              # MINIO_PROMETHEUS_URL: https://prometheus.storage.18b.haus
+              MINIO_SERVER_URL: https://s3.home.mattprovost.dev
+              MINIO_UPDATE: "off"
+            args:
+              - server
+              - /data
+              - --console-address
+              - :9001
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /minio/health/live
+                    port: &s3Port 9000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 9
+                  failureThreshold: 6
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 100m
+                memory: 500Mi
+              limits:
+                memory: 3Gi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 9001
+          s3:
+            port: *s3Port
+    serviceMonitor:
+      app:
+        enabled: true
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
+        serviceName: *app
+    route:
+      app:
+        hostnames:
+          - minio.home.mattprovost.dev
+        parentRefs:
+          - name: traefik-gateway
+            namespace: infra
+            sectionName: websecure
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+      s3:
+        hostnames:
+          - s3.home.mattprovost.dev
+        parentRefs:
+          - name: traefik-gateway
+            namespace: infra
+            sectionName: websecure
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *s3Port
+    persistence:
+      config:
+        type: persistentVolumeClaim
+        existingClaim: minio
+        globalMounts:
+          - path: /data
