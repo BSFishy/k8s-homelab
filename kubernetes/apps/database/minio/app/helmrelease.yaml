@@ -36,7 +36,7 @@ spec:
               MINIO_IDENTITY_OPENID_CLIENT_ID: minio
               MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.home.mattprovost.dev/application/o/minio/.well-known/openid-configuration
               MINIO_IDENTITY_OPENID_DISPLAY_NAME: Authentik
-              MINIO_IDENTITY_OPENID_SCOPES: openid,profile,email,minio
+              MINIO_IDENTITY_OPENID_SCOPES: openid,profile,email
               MINIO_PROMETHEUS_AUTH_TYPE: public
               MINIO_PROMETHEUS_JOB_ID: minio
               # MINIO_PROMETHEUS_URL: https://prometheus.storage.18b.haus
