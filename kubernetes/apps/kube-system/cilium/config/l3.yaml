@@ -31,6 +31,14 @@ spec:
       advertisements:
         matchLabels:
           advertise: bgp
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/cilium.io/ciliumbgppeerconfig_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: l3-bgp-peer-config-ipv6
+spec:
+  families:
     - afi: ipv6
       safi: unicast
       advertisements:
@@ -59,4 +67,4 @@ spec:
           peerASN: 65000
           peerAddress: 2603:8080:1e00:1b02::1
           peerConfigRef:
-            name: l3-bgp-peer-config
+            name: l3-bgp-peer-config-ipv6
