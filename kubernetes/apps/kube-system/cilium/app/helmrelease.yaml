@@ -43,7 +43,7 @@ spec:
       id: 1
       name: main
     cni:
-      exclusive: true
+      exclusive: false
     dashboards:
       enabled: true
       annotations:
