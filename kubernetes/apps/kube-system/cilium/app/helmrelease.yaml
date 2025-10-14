@@ -29,7 +29,8 @@ spec:
       bbr: true
       enabled: true
     bgpControlPlane:
-      enabled: true
+      # TODO: get a router that suports configuring ecmp and turn bgp on again
+      enabled: false
     bpf:
       datapathMode: netkit
       masquerade: true
@@ -81,7 +82,7 @@ spec:
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
-      enabled: false
+      enabled: true
     loadBalancer:
       algorithm: maglev
       mode: snat
