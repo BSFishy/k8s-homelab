@@ -21,13 +21,13 @@ spec:
       MQTT_BROKER: mqtt://mosquitto.home.svc.cluster.local:1883
 
     config:
-      timestep: "250ms"
+      timestep: "1s"
       transition:
-        min: "5s"
+        min: "10s"
         max: "30s"
       hold:
         min: "0s"
-        max: "15s"
+        max: "30s"
 
       groups:
         # ambient
