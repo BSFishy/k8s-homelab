@@ -9,3 +9,4 @@ resources:
   - ./metrics-server/ks.yaml
   - ./loki/ks.yaml
   - ./grafana/ks.yaml
+  - ./alloy/ks.yaml
