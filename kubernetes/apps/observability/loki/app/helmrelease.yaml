@@ -81,7 +81,7 @@ spec:
       replicas: 1
       persistence:
         enabled: true
-        storageClass: ceph-block
+        storageClass: ceph-regular
         size: 50Gi
     test:
       enabled: false
