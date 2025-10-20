@@ -12,7 +12,6 @@ spec:
     tag: 9.4.4
   url: oci://ghcr.io/grafana/helm-charts/grafana
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -171,7 +170,7 @@ spec:
       GF_AUTH_ANONYMOUS_ENABLED: false
       GF_AUTH_BASIC_ENABLED: false
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
-      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /tmp/dashboards/home.json
+      # GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /tmp/dashboards/home.json
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_LOG_MODE: console
@@ -184,7 +183,8 @@ spec:
       enabled: true
 
     persistence:
-      enabled: false
+      enabled: true
+      existingClaim: grafana
 
     plugins:
       - grafana-clock-panel
