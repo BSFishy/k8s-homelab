@@ -148,6 +148,10 @@ spec:
             isDefault: true
             jsonData:
               prometheusType: Prometheus
+          - access: proxy
+            name: Loki
+            type: loki
+            url: http://loki-headless.observability.svc.cluster.local:3100
           # - name: Alertmanager
           #   type: alertmanager
           #   access: proxy
