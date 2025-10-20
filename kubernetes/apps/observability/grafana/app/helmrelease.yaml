@@ -28,6 +28,9 @@ spec:
 
     replicas: 1
 
+    deploymentStrategy:
+      type: Recreate
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
