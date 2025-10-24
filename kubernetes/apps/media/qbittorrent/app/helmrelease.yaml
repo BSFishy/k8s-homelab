@@ -40,7 +40,23 @@ spec:
               QBT_TORRENTING_PORT: 0
 
             probes:
-              liveness: &probes
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - |
+                        # Fail unless connection_status == "connected"
+                        [ "$(curl -fsS --max-time 5 http://127.0.0.1:80/api/v2/transfer/info \
+                            | jq -r '.connection_status')" = "connected" ]
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 6 # ~1 minute of not-connected before restart
+                  initialDelaySeconds: 30
+              readiness:
                 enabled: true
                 custom: true
                 spec:
@@ -51,7 +67,6 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
               startup:
                 enabled: true
                 spec:
