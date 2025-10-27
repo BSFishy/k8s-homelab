@@ -137,6 +137,7 @@ spec:
               name: loki-s3
               key: secret_key
     gateway:
+      enabled: true
       # replicas: 2
     singleBinary:
       replicas: 0
