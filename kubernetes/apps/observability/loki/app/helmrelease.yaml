@@ -26,14 +26,40 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   valuesFrom:
+    # Provided by rook-ceph-operator. See https://rook.io/docs/rook/v1.9/Storage-Configuration/Object-Storage-RGW/ceph-object-bucket-claim/
+    - targetPath: loki.storage.bucketNames.chunks
+      kind: ConfigMap
+      name: &cephBucket loki-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.bucketNames.ruler
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.bucketNames.admin
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_NAME
+    # This one is needed to avoid the loki helm chart magically prepending the bucket name to the endpoint
+    - targetPath: loki.structuredConfig.common.storage.s3.endpoint
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_HOST
+    - targetPath: loki.storage.s3.endpoint
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_HOST
+    - targetPath: loki.storage.s3.region
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_REGION
     - targetPath: loki.storage.s3.accessKeyId
       kind: Secret
-      name: &s3Secret loki-s3
-      valuesKey: key_id
+      name: *cephBucket
+      valuesKey: AWS_ACCESS_KEY_ID
     - targetPath: loki.storage.s3.secretAccessKey
       kind: Secret
-      name: *s3Secret
-      valuesKey: secret_key
+      name: *cephBucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
   values:
     deploymentMode: SimpleScalable
 
@@ -45,10 +71,6 @@ spec:
         replication_factor: 2
       ingester:
         chunk_encoding: snappy
-
-      extraMemberlistConfig:
-        randomize_node_name: false
-        advertise_addr: ${POD_IP}
 
       compactor:
         working_directory: /var/loki/compactor/retention
@@ -74,34 +96,86 @@ spec:
       storage:
         type: s3
         s3:
-          endpoint: s3.home.mattprovost.dev:9000
-          region: us-east-1
           s3ForcePathStyle: true
           insecure: true
 
         bucketNames:
-          chunks: loki-chunks
-          ruler: loki-ruler
-          admin: loki-admin
+          chunks: *cephBucket
 
-    backend: &service
+    backend:
       replicas: 2
-      extraArgs:
-        - -config.expand-env=true
-      extraEnv:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-    read: *service
-    write: *service
+      persistence:
+        storageClass: ceph-regular
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules/fake
+        - name: scratch
+          mountPath: /tmp/scratch
+      extraVolumes:
+        - name: rules
+          configMap:
+            name: loki-alerting-rules
+        - name: scratch
+          emptyDir: {}
+
+    write:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: write
+                topologyKey: kubernetes.io/hostname
+      persistence:
+        size: 5Gi
+        storageClass: ceph-regular
+
+    read:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: read
+                topologyKey: kubernetes.io/hostname
+      extraVolumeMounts:
+        - name: loki-rules
+          mountPath: /rules
+        - name: loki-rules-tmp
+          mountPath: /tmp/scratch
+        - name: loki-tmp
+          mountPath: /tmp/loki-tmp
+      extraVolumes:
+        - name: loki-rules
+          emptyDir: {}
+          readonly: false
+        - name: loki-rules-tmp
+          emptyDir: {}
+          readonly: false
+        - name: loki-tmp
+          emptyDir: {}
+          readonly: false
+      persistence:
+        size: 5Gi
+        storageClass: ceph-regular
+
     gateway:
+      enabled: true
       replicas: 2
-
-    chunksCache:
-      enabled: true
-    resultsCache:
-      enabled: true
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: loki
+              app.kubernetes.io/component: gateway
 
     sidecar:
       image:
@@ -111,6 +185,27 @@ spec:
       rules:
         searchNamespace: ALL
         folder: /rules/fake
+
+    monitoring:
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: loki
+        labels:
+          grafana_dashboard: "1"
+      serviceMonitor:
+        enabled: true
+        metricsInstance:
+          enabled: false
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+      rules:
+        enabled: true
+        alerting: true
+      alerts:
+        enabled: true
 
     lokiCanary:
       enabled: false
