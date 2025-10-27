@@ -25,6 +25,15 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  valuesFrom:
+    - targetPath: loki.storage.s3.accessKeyId
+      kind: Secret
+      name: &s3Secret loki-s3
+      valuesKey: key_id
+    - targetPath: loki.storage.s3.secretAccessKey
+      kind: Secret
+      name: *s3Secret
+      valuesKey: secret_key
   values:
     deploymentMode: SimpleScalable
 
@@ -70,16 +79,12 @@ spec:
           s3ForcePathStyle: true
           insecure: true
 
-          # pull from env (set below)
-          accessKeyId: ${S3_ACCESS_KEY_ID}
-          secretAccessKey: ${S3_SECRET_ACCESS_KEY}
-
         bucketNames:
           chunks: loki-chunks
           ruler: loki-ruler
           admin: loki-admin
 
-    backend:
+    backend: &service
       replicas: 2
       extraArgs:
         - -config.expand-env=true
@@ -88,77 +93,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        - name: S3_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: key_id
-        - name: S3_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: secret_key
-    read:
-      replicas: 2
-      extraArgs:
-        - -config.expand-env=true
-      extraEnv:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: S3_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: key_id
-        - name: S3_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: secret_key
-    write:
-      replicas: 2
-      extraArgs:
-        - -config.expand-env=true
-      extraEnv:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: S3_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: key_id
-        - name: S3_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: secret_key
-    queryScheduler:
-      replicas: 2
-      extraArgs:
-        - -config.expand-env=true
-      extraEnv:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: S3_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: key_id
-        - name: S3_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: loki-s3
-              key: secret_key
+    read: *service
+    write: *service
     gateway:
       replicas: 2
-    singleBinary:
-      replicas: 0
 
     chunksCache:
       enabled: true
