@@ -33,7 +33,7 @@ spec:
         reporting_enabled: false
       auth_enabled: false
       commonConfig:
-        replication_factor: 1
+        replication_factor: 2
       ingester:
         chunk_encoding: snappy
 
@@ -80,7 +80,7 @@ spec:
           admin: loki-admin
 
     backend:
-      # replicas: 2
+      replicas: 2
       extraArgs:
         - -config.expand-env=true
       extraEnv:
@@ -99,7 +99,7 @@ spec:
               name: loki-s3
               key: secret_key
     read:
-      # replicas: 2
+      replicas: 2
       extraArgs:
         - -config.expand-env=true
       extraEnv:
@@ -137,8 +137,7 @@ spec:
               name: loki-s3
               key: secret_key
     gateway:
-      enabled: true
-      # replicas: 2
+      replicas: 2
     singleBinary:
       replicas: 0
 
