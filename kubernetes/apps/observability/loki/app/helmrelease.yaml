@@ -74,7 +74,7 @@ spec:
       storage:
         type: s3
         s3:
-          endpoint: minio.database.svc.cluster.local:9000
+          endpoint: s3.home.mattprovost.dev:9000
           region: us-east-1
           s3ForcePathStyle: true
           insecure: true
