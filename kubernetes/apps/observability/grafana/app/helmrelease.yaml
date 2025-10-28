@@ -154,7 +154,7 @@ spec:
           - access: proxy
             name: Loki
             type: loki
-            url: http://loki-headless.observability.svc.cluster.local:3100
+            url: http://loki-gateway.observability.svc.cluster.local:3100
           # - name: Alertmanager
           #   type: alertmanager
           #   access: proxy
