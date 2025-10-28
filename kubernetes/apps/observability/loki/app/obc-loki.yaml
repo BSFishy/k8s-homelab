@@ -6,4 +6,4 @@ metadata:
   namespace: observability
 spec:
   bucketName: loki
-  storageClassName: ceph-regular
+  storageClassName: ceph-block
