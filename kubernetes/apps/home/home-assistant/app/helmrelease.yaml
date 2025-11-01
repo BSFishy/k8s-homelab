@@ -29,10 +29,8 @@ spec:
     service:
       type: ClusterIP
 
-    livenessProbe:
-      timeoutSeconds: 5
-    readinessProbe:
-      timeoutSeconds: 5
+    livenessProbe: {}
+    readinessProbe: {}
 
     ingress:
       enabled: true
