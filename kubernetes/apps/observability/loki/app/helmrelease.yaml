@@ -71,7 +71,7 @@ spec:
         replication_factor: 2
       ingester:
         chunk_encoding: snappy
-        max_chunk_age: 1440h
+        max_chunk_age: 2880h
 
       compactor:
         working_directory: /var/loki/compactor/retention
