@@ -265,7 +265,13 @@ spec:
           isDefault: false
           reclaimPolicy: Delete
           allowVolumeExpansion: true
-          mountOptions: [rw]
+          mountOptions:
+            - rw
+            - noatime
+            - nolock
+            - readdir_max_entries=1024
+            - client_mount_timeout=30
+            - client_oc_size=524288
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
