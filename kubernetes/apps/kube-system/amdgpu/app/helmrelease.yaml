@@ -27,3 +27,7 @@ spec:
   values:
     labeller:
       enabled: true
+
+    node_selector_enabled: true
+    node_selector:
+      kubernetes.io/arch: amd64
