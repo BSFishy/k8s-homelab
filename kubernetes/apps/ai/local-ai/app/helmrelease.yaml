@@ -19,6 +19,8 @@ spec:
         tag: latest-gpu-hipblas
       env:
         HIP_VISIBLE_DEVICES: "0"
+      strategy:
+        type: Recreate
 
     resources:
       limits:
