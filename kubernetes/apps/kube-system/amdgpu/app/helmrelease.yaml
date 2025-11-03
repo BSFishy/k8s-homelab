@@ -31,3 +31,4 @@ spec:
     node_selector_enabled: true
     node_selector:
       kubernetes.io/arch: amd64
+      feature.node.kubernetes.io/pci-0300_1002.present: ""
