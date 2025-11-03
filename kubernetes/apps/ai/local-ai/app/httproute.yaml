@@ -13,3 +13,4 @@ spec:
     - backendRefs:
         - kind: Service
           name: local-ai
+          port: 80
