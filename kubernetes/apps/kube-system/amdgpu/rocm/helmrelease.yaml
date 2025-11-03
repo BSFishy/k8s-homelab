@@ -27,5 +27,3 @@ spec:
   values:
     labeller:
       enabled: true
-
-    node_selector_enabled: true
