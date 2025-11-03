@@ -200,7 +200,7 @@ spec:
           {{- if $pvc.enabled }}
         - name: {{ $key }}
           persistentVolumeClaim:
-            claimName: {{ ternary $pvc.existingClaim (printf "%s-%s" (include "local-ai.fullname" $) $key) }}
+            claimName: {{ ternary $pvc.existingClaim (printf "%s-%s" (include "local-ai.fullname" $) $key) (not (empty $pvc.existingClaim)) }}
           {{- end }}
         {{- end }}
         - name: prompt-templates
