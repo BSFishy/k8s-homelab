@@ -15,10 +15,11 @@ spec:
   values:
     deployment:
       image:
-        repository: localai/localai
+        repository: quay.io/go-skynet/local-ai
         tag: latest-gpu-hipblas
       env:
         HIP_VISIBLE_DEVICES: "0"
+        LOCALAI_EXTERNAL_BACKENDS: "llama-cpp,vllm"
       strategy:
         type: Recreate
 
@@ -35,3 +36,7 @@ spec:
         enabled: true
         existingClaim: local-ai-output
         globalMount: /tmp/generated
+      backends:
+        enabled: true
+        existingClaim: local-ai-backends
+        globalMount: /usr/share/localai/backends
