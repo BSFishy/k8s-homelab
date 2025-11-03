@@ -17,6 +17,8 @@ spec:
       image:
         repository: localai/localai
         tag: latest-gpu-hipblas
+      env:
+        HIP_VISIBLE_DEVICES: "0"
 
     resources:
       limits:
