@@ -6,3 +6,4 @@ resources:
   - ./secret.yaml
   - ./postgres-creds.yaml
   - ./helmrelease.yaml
+  - ./httproute.yaml
