@@ -35,16 +35,19 @@ spec:
       model_list:
         - model_name: qwen-2b
           litellm_params:
-            model: qwen3-vl-2b-instruct
+            model: openai/qwen3-vl-2b-instruct
             api_base: http://local-ai.ai.svc.cluster.local
+            api_key: unused
         - model_name: qwen-30b
           litellm_params:
-            model: qwen3-vl-30b-instruct
+            model: openai/qwen3-vl-30b-instruct
             api_base: http://local-ai.ai.svc.cluster.local
+            api_key: unused
         - model_name: gpt-oss
           litellm_params:
-            model: gpt-oss-20b
+            model: openai/gpt-oss-20b
             api_base: http://local-ai.ai.svc.cluster.local
+            api_key: unused
 
     db:
       useExisting: true
