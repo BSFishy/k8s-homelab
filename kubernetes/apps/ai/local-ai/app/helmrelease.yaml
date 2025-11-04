@@ -18,14 +18,9 @@ spec:
         repository: quay.io/go-skynet/local-ai
         tag: latest
       env:
-        HIP_VISIBLE_DEVICES: "0"
-        LOCALAI_EXTERNAL_BACKENDS: "llama-cpp,vllm"
+        LOCALAI_EXTERNAL_BACKENDS: "llama-cpp"
       strategy:
         type: Recreate
-
-    resources:
-      limits:
-        amd.com/gpu: 1
 
     persistence:
       models:

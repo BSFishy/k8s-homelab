@@ -33,21 +33,15 @@ spec:
 
     proxy_config:
       model_list:
-        - model_name: qwen-2b
+        - model_name: local-ai/*
           litellm_params:
-            model: openai/qwen3-vl-2b-instruct
+            model: openai/*
             api_base: http://local-ai.ai.svc.cluster.local
             api_key: unused
-        - model_name: qwen-30b
-          litellm_params:
-            model: openai/qwen3-vl-30b-a3b-instruct
-            api_base: http://local-ai.ai.svc.cluster.local
-            api_key: unused
-        - model_name: gpt-oss
-          litellm_params:
-            model: openai/gpt-oss-20b
-            api_base: http://local-ai.ai.svc.cluster.local
-            api_key: unused
+
+      litellm_settings:
+        # discover models for wildcards
+        check_provier_endpoint: true
 
     db:
       useExisting: true
