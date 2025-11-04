@@ -1,0 +1,53 @@
+---
+# --- ServiceAccount that VSO will use to auth to Vault
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultconnection_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault
+spec:
+  address: http://vault-active.vault-system:8200
+  skipTLSVerify: false
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauth_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: litellm-auth
+spec:
+  vaultConnectionRef: vault
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: vault
+    audiences:
+      - vault
+    serviceAccount: vault
+    tokenExpirationSeconds: 600
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultdynamicsecret_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: litellm-postgres
+spec:
+  # Reference your VaultAuth (how this namespace authenticates to Vault)
+  vaultAuthRef: litellm-auth
+
+  # Path in Vault to fetch from. This is the role you defined in Vault, e.g. database/roles/app-writer
+  mount: database
+  path: static-creds/litellm
+
+  # Where to write the generated secret inside Kubernetes
+  destination:
+    name: litellm-postgres-creds
+    create: true
+
+  # rolloutRestartTargets:
+  #   - kind: Deployment
+  #     name: litellm-server
