@@ -40,7 +40,7 @@ spec:
             api_key: unused
         - model_name: qwen-30b
           litellm_params:
-            model: openai/qwen3-vl-30b-instruct
+            model: openai/qwen3-vl-30b-a3b-instruct
             api_base: http://local-ai.ai.svc.cluster.local
             api_key: unused
         - model_name: gpt-oss
