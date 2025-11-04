@@ -48,6 +48,6 @@ spec:
     name: litellm-postgres-creds
     create: true
 
-  # rolloutRestartTargets:
-  #   - kind: Deployment
-  #     name: litellm-server
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: litellm-gateway
