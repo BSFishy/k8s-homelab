@@ -31,7 +31,7 @@ spec:
             command: ["/bin/sh", "-c"]
             args:
               - |
-                export LETTA_PG_URI="postgres://${LETTA_PG_USER}:${LETTA_PG_PASSWORD}@${LETTA_PG_HOST}/${LETTA_PG_DB}"
+                export LETTA_PG_URI="postgresql://${LETTA_PG_USER}:${LETTA_PG_PASSWORD}@${LETTA_PG_HOST}/${LETTA_PG_DB}"
                 exec /app/letta/server/startup.sh
 
             env:
@@ -50,7 +50,7 @@ spec:
                   key: data
 
               - name: LETTA_PG_HOST
-                value: postgres-primary.database.svc.cluster.local:5432
+                value: postgres-primary.database.svc.cluster.local
               - name: LETTA_PG_DB
                 value: letta
               - name: LETTA_PG_USER
