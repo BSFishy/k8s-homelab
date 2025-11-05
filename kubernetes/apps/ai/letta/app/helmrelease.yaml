@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: letta
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      letta:
+        containers:
+          letta:
+            image:
+              repository: letta/letta
+              tag: 0.13.0
+
+            # letta only supports supplying a full uri so we need to construct
+            # it manually before the startup script runs
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                export LETTA_PG_URI="postgres://${LETTA_PG_USER}:${LETTA_PG_PASSWORD}@${LETTA_PG_HOST}/${LETTA_PG_DB}"
+                exec /app/letta/server/startup.sh
+
+            env:
+              - name: SECURE
+                value: true
+              - name: LETTA_SERVER_PASSWORD
+                secretKeyRef:
+                  name: letta-secret
+                  key: data
+
+              - name: OPENAI_API_BASE
+                value: "http://litellm-gateway.ai.svc.cluster.local:4000/v1"
+              - name: OPENAI_API_KEY
+                secretKeyRef:
+                  name: litellm-secret
+                  key: data
+
+              - name: LETTA_PG_HOST
+                value: postgres-primary.database.svc.cluster.local
+              - name: LETTA_PG_DB
+                value: letta
+              - name: LETTA_PG_USER
+                secretKeyRef:
+                  name: letta-postgres-creds
+                  key: username
+              - name: LETTA_PG_PASSWORD
+                secretKeyRef:
+                  name: letta-postgres-creds
+                  key: password
+
+            ports:
+              - containerPort: &port 8283
+                name: http
+
+    service:
+      app:
+        ports:
+          app:
+            port: *port
+
+    route:
+      app:
+        hostnames:
+          - "letta.home.mattprovost.dev"
+        parentRefs:
+          - name: traefik-gateway
+            namespace: infra
+            sectionName: websecure

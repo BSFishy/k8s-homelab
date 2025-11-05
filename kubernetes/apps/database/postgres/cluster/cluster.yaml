@@ -12,6 +12,10 @@ spec:
       crunchy-userinit.drummyfloyd.github.com/enabled: "true"
       crunchy-userinit.drummyfloyd.github.com/superuser: postgres
 
+  databaseInitSQL:
+    key: init.sql
+    name: init-sql
+
   patroni: # turn on sync writes to at least 1 other replica
     dynamicConfiguration:
       synchronous_mode: true
@@ -65,6 +69,11 @@ spec:
     - name: litellm
       databases:
         - litellm
+      password: *password
+
+    - name: letta
+      databases:
+        - letta
       password: *password
 
   monitoring:

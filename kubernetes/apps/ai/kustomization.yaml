@@ -8,3 +8,4 @@ components:
 resources:
   - ./local-ai/ks.yaml
   - ./litellm-gateway/ks.yaml
+  - ./letta/ks.yaml

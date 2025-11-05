@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/v1.33.3/configmap.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-sql
+data:
+  init.sql: |-
+    \c letta\\
+    CREATE EXTENSION IF NOT EXISTS vector;
