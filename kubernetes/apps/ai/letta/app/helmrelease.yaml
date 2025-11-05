@@ -50,7 +50,7 @@ spec:
                   key: data
 
               - name: LETTA_PG_HOST
-                value: postgres-primary.database.svc.cluster.local
+                value: postgres-primary.database.svc.cluster.local:5432
               - name: LETTA_PG_DB
                 value: letta
               - name: LETTA_PG_USER
