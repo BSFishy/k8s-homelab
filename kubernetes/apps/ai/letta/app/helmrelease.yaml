@@ -43,11 +43,9 @@ spec:
                   key: data
 
               - name: OPENAI_API_BASE
-                value: "http://litellm-gateway.ai.svc.cluster.local:4000/v1"
+                value: "http://local-ai.ai.svc.cluster.local:80"
               - name: OPENAI_API_KEY
-                secretKeyRef:
-                  name: litellm-secret
-                  key: data
+                value: unused
 
               - name: LETTA_PG_HOST
                 value: postgres-primary.database.svc.cluster.local
