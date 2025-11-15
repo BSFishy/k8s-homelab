@@ -47,6 +47,8 @@ spec:
           device_failure_prediction_mode: local # requires mgr module
         mgr:
           mgr/crash/warn_recent_interval: "7200" # 2h
+        mds:
+          mds_cache_memory_limit: "4294967296" # 4GiB cache for large media trees
 
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
@@ -246,12 +248,12 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 2
+              size: 3
           dataPools:
             - name: data0
               failureDomain: host
               replicated:
-                size: 1
+                size: 2
               parameters:
                 compression_mode: none
           preserveFilesystemOnDelete: true
@@ -259,6 +261,12 @@ spec:
           metadataServer:
             activeCount: 2
             activeStandby: true
+            resources:
+              requests:
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
         storageClass:
           enabled: true
           name: ceph-media
@@ -268,9 +276,8 @@ spec:
           mountOptions:
             - rw
             - noatime
-            - nolock
             - readdir_max_entries=1024
-            - client_mount_timeout=30
+            - client_mount_timeout=120
             - client_oc_size=524288
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
@@ -281,7 +288,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             fsName: ceph-media
             pool: ceph-media-data0
-            mounter: fuse
+            mounter: kernel
 
     cephObjectStores:
       - name: ceph-objectstore

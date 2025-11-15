@@ -103,6 +103,7 @@ spec:
         existingClaim: "media"
         globalMounts:
           - path: /media
+            readOnly: true
 
       tmpfs:
         type: emptyDir
