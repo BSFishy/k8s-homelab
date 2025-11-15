@@ -29,8 +29,8 @@ spec:
     service:
       type: ClusterIP
 
-    livenessProbe: {}
-    readinessProbe: {}
+    livenessProbe: null
+    readinessProbe: null
 
     ingress:
       enabled: true
