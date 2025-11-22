@@ -50,9 +50,6 @@ spec:
       containers:
         - name: nginx
           image: docker.io/library/nginx:1.27
-          args:
-            - "-c"
-            - /etc/nginx/nginx.conf
           ports:
             - name: prom
               containerPort: 8080
