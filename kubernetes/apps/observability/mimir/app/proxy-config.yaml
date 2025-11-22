@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-ceph-proxy-nginx
+  namespace: observability
+data:
+  nginx.conf: |
+    events {}
+    http {
+      upstream mimir_prometheus {
+        server mimir-nginx.observability.svc.cluster.local:80;
+      }
+      upstream mimir_alertmanager {
+        server mimir-alertmanager.observability.svc.cluster.local:8080;
+      }
+
+      server {
+        listen 8080;
+        location / {
+          proxy_set_header X-Scope-OrgID anonymous;
+          proxy_pass http://mimir_prometheus/prometheus/;
+        }
+      }
+
+      server {
+        listen 8081;
+        location / {
+          proxy_set_header X-Scope-OrgID anonymous;
+          proxy_pass http://mimir_alertmanager/;
+        }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mimir-ceph-proxy
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir-ceph-proxy
+  template:
+    metadata:
+      labels:
+        app: mimir-ceph-proxy
+    spec:
+      containers:
+        - name: nginx
+          image: docker.io/library/nginx:1.27
+          args:
+            - "-c"
+            - /etc/nginx/nginx.conf
+          ports:
+            - name: prom
+              containerPort: 8080
+            - name: alert
+              containerPort: 8081
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: config
+          configMap:
+            name: mimir-ceph-proxy-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir-ceph-proxy
+  namespace: observability
+spec:
+  selector:
+    app: mimir-ceph-proxy
+  ports:
+    - name: prom
+      port: 8080
+      targetPort: prom
+    - name: alert
+      port: 8081
+      targetPort: alert
