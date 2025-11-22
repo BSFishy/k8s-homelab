@@ -47,6 +47,9 @@ spec:
       name: *bucketSource
       valuesKey: AWS_SECRET_ACCESS_KEY
   values:
+    # bucket credentials are inserted in plaintext here
+    configStorageType: Secret
+
     minio:
       enabled: false
 
@@ -58,8 +61,7 @@ spec:
           storage:
             backend: s3
             s3:
-              http:
-                insecure_skip_verify: true
+              insecure: true
 
         blocks_storage:
           backend: s3
