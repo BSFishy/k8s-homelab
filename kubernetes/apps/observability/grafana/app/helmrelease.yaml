@@ -167,9 +167,9 @@ spec:
           - name: Alertmanager
             type: alertmanager
             access: proxy
-            url: http://mimir-alertmanager.observability.svc.cluster.local:9095
+            url: http://mimir-alertmanager.observability.svc.cluster.local:8080
             jsonData:
-              implementation: prometheus
+              implementation: mimir
 
         deleteDatasources:
           - name: Alertmanager
