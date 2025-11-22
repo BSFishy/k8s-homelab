@@ -135,3 +135,34 @@ loki.write "default" {
     url = "http://loki-gateway.observability.svc.cluster.local:80/loki/api/v1/push"
   }
 }
+
+prometheus.remote_write "mimir" {
+  endpoint {
+    url = "http://mimir-nginx.observability.svc.cluster.local/api/v1/push"
+    headers = {
+      "X-Scope-OrgID" = "anonymous",
+    }
+  }
+
+  external_labels = {
+    cluster = "main",
+  }
+}
+
+prometheus.operator.servicemonitors "cluster" {
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
+
+prometheus.operator.podmonitors "cluster" {
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
+
+prometheus.operator.probes "cluster" {
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
+
+mimir.rules.kubernetes "cluster" {
+  address = "http://mimir-nginx.observability.svc.cluster.local"
+  tenant_id = "anonymous"
+  prometheus_http_prefix = "/prometheus"
+}

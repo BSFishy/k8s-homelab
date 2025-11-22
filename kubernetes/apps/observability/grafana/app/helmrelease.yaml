@@ -147,23 +147,17 @@ spec:
           - access: proxy
             name: Prometheus
             type: prometheus
-            url: http://prometheus-operated.observability.svc.cluster.local:9090
+            url: http://mimir-gateway.observability.svc.cluster.local/prometheus
             isDefault: true
             jsonData:
-              prometheusType: Prometheus
+              prometheusType: Mimir
+              httpHeaderName1: X-Scope-OrgID
+            secureJsonData:
+              httpHeaderValue1: anonymous
           - access: proxy
             name: Loki
             type: loki
             url: http://loki-gateway.observability.svc.cluster.local:80
-          - access: proxy
-            name: Mimir
-            type: prometheus
-            url: http://mimir-gateway.observability.svc.cluster.local/prometheus
-            jsonData:
-              httpHeaderName1: X-Scope-OrgID
-              prometheusType: Mimir
-            secureJsonData:
-              httpHeaderValue1: anonymous
           - name: Alertmanager
             type: alertmanager
             access: proxy
