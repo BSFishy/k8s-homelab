@@ -115,6 +115,7 @@ spec:
           per_stream_rate_limit_burst: 128M
           reject_old_samples: false
           reject_old_samples_max_age: 168h
+          creation_grace_period: 72h
           retention_period: 20d
           shard_streams:
             enabled: true
