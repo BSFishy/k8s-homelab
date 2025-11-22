@@ -23,30 +23,7 @@ spec:
     ### Component values
     ###
     alertmanager:
-      route:
-        main:
-          enabled: true
-          hostnames:
-            - alertmanager.home.mattprovost.dev
-          parentRefs:
-            - name: traefik-gateway
-              namespace: infra
-              sectionName: websecure
-
-      alertmanagerSpec:
-        alertmanagerConfiguration:
-          name: alertmanager
-          global:
-            resolveTimeout: 5m
-
-        externalUrl: https://alertmanager.home.mattprovost.dev
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: ceph-regular
-              resources:
-                requests:
-                  storage: 1Gi
+      enabled: false
 
     kubeApiServer:
       enabled: true

@@ -104,7 +104,7 @@ spec:
               store: memberlist
 
         ruler:
-          alertmanager_url: http://kube-prometheus-stack-alertmanager.observability.svc:9093
+          alertmanager_url: http://mimir-alertmanager.observability.svc:8080
           enable_api: true
 
     distributor:
