@@ -155,12 +155,21 @@ spec:
             name: Loki
             type: loki
             url: http://loki-gateway.observability.svc.cluster.local:80
-          # - name: Alertmanager
-          #   type: alertmanager
-          #   access: proxy
-          #   url: http://alertmanager-operated.observability.svc.cluster.local:9093
-          #   jsonData:
-          #     implementation: prometheus
+          - access: proxy
+            name: Mimir
+            type: prometheus
+            url: http://mimir-gateway.observability.svc.cluster.local/prometheus
+            jsonData:
+              httpHeaderName1: X-Scope-OrgID
+              prometheusType: Mimir
+            secureJsonData:
+              httpHeaderValue1: anonymous
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://mimir-alertmanager.observability.svc.cluster.local:9095
+            jsonData:
+              implementation: prometheus
 
         deleteDatasources:
           - name: Alertmanager
@@ -168,6 +177,8 @@ spec:
           - name: Prometheus
             orgId: 1
           - name: Loki
+            orgId: 1
+          - name: Mimir
             orgId: 1
 
     env:
