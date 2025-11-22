@@ -170,6 +170,9 @@ spec:
             url: http://mimir-alertmanager.observability.svc.cluster.local:8080
             jsonData:
               implementation: mimir
+              httpHeaderName1: X-Scope-OrgID
+            secureJsonData:
+              httpHeaderValue1: anonymous
 
         deleteDatasources:
           - name: Alertmanager
