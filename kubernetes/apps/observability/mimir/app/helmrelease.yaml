@@ -65,21 +65,18 @@ spec:
           backend: s3
           tsdb:
             dir: /data/mimir/tsdb
-          s3:
-            storage_prefix: blocks
+          storage_prefix: blocks
 
         alertmanager_storage:
           backend: s3
-          s3:
-            storage_prefix: alertmanager
+          storage_prefix: alertmanager
 
         ruler_storage:
           backend: s3
-          s3:
-            storage_prefix: ruler
+          storage_prefix: ruler
 
         compactor:
-          working_directory: /data/mimir/compactor
+          data_dir: /data/mimir/compactor
 
         limits:
           accept_ha_samples: true
@@ -98,7 +95,7 @@ spec:
               store: memberlist
 
         ruler:
-          alertmanager_url: http://prometheus-alertmanager.monitoring.svc:9093
+          alertmanager_url: http://kube-prometheus-stack-alertmanager.observability.svc:9093
           enable_api: true
 
     distributor:

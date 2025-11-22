@@ -138,7 +138,7 @@ spec:
               directory: /rules
           rule_path: /tmp/scratch
           enable_alertmanager_v2: true
-          alertmanager_url: http://prometheus-alertmanager.monitoring.svc:9093
+          alertmanager_url: http://kube-prometheus-stack-alertmanager.observability.svc:9093
           enable_api: true
 
       server:
