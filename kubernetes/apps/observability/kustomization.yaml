@@ -8,5 +8,6 @@ resources:
   - ./node-exporter/ks.yaml
   - ./metrics-server/ks.yaml
   - ./loki/ks.yaml
+  - ./mimir/ks.yaml
   - ./grafana/ks.yaml
   - ./alloy/ks.yaml
