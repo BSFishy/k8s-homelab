@@ -60,7 +60,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: true
-        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+        prometheusEndpoint: http://mimir-gateway.observability.svc.cluster.local/prometheus:9090
 
       mgr:
         modules:
