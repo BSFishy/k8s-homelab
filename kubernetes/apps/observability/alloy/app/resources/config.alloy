@@ -99,6 +99,11 @@ loki.process "pod_logs" {
       }
   }
 
+  // Drop log entries older than the window Loki still accepts
+  stage.drop {
+    older_than = "72h"
+  }
+
 	forward_to = [loki.write.default.receiver]
 }
 
@@ -127,6 +132,10 @@ loki.process "cluster_events" {
     values = {
       kubernetes_cluster_events = "job",
     }
+  }
+
+  stage.drop {
+    older_than = "72h"
   }
 }
 
