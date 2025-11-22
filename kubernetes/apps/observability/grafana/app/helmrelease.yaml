@@ -171,6 +171,7 @@ spec:
             jsonData:
               implementation: mimir
               httpHeaderName1: X-Scope-OrgID
+              handleGrafanaManagedAlerts: true
             secureJsonData:
               httpHeaderValue1: anonymous
 
