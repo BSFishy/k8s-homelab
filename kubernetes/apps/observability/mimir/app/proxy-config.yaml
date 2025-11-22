@@ -8,18 +8,13 @@ data:
   nginx.conf: |
     events {}
     http {
-      upstream mimir_prometheus {
-        server mimir-nginx.observability.svc.cluster.local:80;
-      }
-      upstream mimir_alertmanager {
-        server mimir-alertmanager.observability.svc.cluster.local:8080;
-      }
+      resolver kube-dns.kube-system.svc.cluster.local valid=30s ipv6=off;
 
       server {
         listen 8080;
         location / {
           proxy_set_header X-Scope-OrgID anonymous;
-          proxy_pass http://mimir_prometheus/prometheus/;
+          proxy_pass http://mimir-nginx.observability.svc.cluster.local/prometheus/;
         }
       }
 
@@ -27,7 +22,7 @@ data:
         listen 8081;
         location / {
           proxy_set_header X-Scope-OrgID anonymous;
-          proxy_pass http://mimir_alertmanager/;
+          proxy_pass http://mimir-alertmanager.observability.svc.cluster.local/;
         }
       }
     }
