@@ -85,6 +85,11 @@ spec:
           ha_cluster_label: cluster
           ha_replica_label: __replica__
           compactor_blocks_retention_period: 30d
+          ingestion_rate: 200000
+          ingestion_burst_size: 400000
+          max_global_series_per_user: 750000
+          out_of_order_time_window: 30m
+          max_cache_freshness: 30m
           native_histograms_ingestion_enabled: true
 
         frontend:
