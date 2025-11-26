@@ -103,6 +103,9 @@ spec:
             kvstore:
               store: memberlist
 
+        ingester:
+          push_grpc_method_enabled: true
+
         ingest_storage:
           enabled: false
 
