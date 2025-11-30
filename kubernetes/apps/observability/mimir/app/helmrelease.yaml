@@ -87,7 +87,7 @@ spec:
           compactor_blocks_retention_period: 30d
           ingestion_rate: 200000
           ingestion_burst_size: 400000
-          max_global_series_per_user: 750000
+          max_global_series_per_user: 5000000
           out_of_order_time_window: 30m
           max_cache_freshness: 30m
           ruler_max_rule_groups_per_tenant: 2000
