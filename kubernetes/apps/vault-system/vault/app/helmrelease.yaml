@@ -124,6 +124,12 @@ spec:
             }
 
             service_registration "kubernetes" {}
+
+            telemetry {
+              disable_hostname = true
+              prometheus_retention_time = "12h"
+            }
+
     ui:
       enabled: true
 
