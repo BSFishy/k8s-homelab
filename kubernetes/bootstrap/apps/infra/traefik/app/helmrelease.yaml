@@ -85,3 +85,20 @@ spec:
       annotations:
         "lbipam.cilium.io/ips": "10.1.3.3,2603:8080:1e00:1b02:2000::1"
         "coredns.io/hostname": "traefik.home.mattprovost.dev"
+
+    metrics:
+      prometheus:
+        serviceMonitor:
+          enabled: true
+        prometheusRule:
+          enabled: true
+          rules:
+            - alert: TraefikDown
+              expr: up{job="traefik"} == 0
+              for: 5m
+              labels:
+                context: traefik
+                severity: warning
+              annotations:
+                summary: "Traefik Down"
+                description: "{{ $labels.pod }} on {{ $labels.nodename }} is down"
