@@ -101,8 +101,6 @@ spec:
               # tls_key_file = "/vault/userconfig/tls-server/tls.key"
 
               telemetry {
-                disable_hostname = true
-                prometheus_retention_time = "12h"
                 unauthenticated_metrics_access = true
               }
             }
@@ -130,6 +128,11 @@ spec:
             }
 
             service_registration "kubernetes" {}
+
+            telemetry {
+              disable_hostname = true
+              prometheus_retention_time = "12h"
+            }
 
     ui:
       enabled: true
