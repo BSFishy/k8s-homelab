@@ -99,6 +99,12 @@ spec:
               tls_disable = 1
               # tls_cert_file = "/vault/userconfig/tls-server/tls.crt"
               # tls_key_file = "/vault/userconfig/tls-server/tls.key"
+
+              telemetry {
+                disable_hostname = true
+                prometheus_retention_time = "12h"
+                unauthenticated_metrics_access = true
+              }
             }
 
             storage "raft" {
@@ -124,12 +130,6 @@ spec:
             }
 
             service_registration "kubernetes" {}
-
-            telemetry {
-              disable_hostname = true
-              prometheus_retention_time = "12h"
-              unauthenticated_metrics_access = true
-            }
 
     ui:
       enabled: true
