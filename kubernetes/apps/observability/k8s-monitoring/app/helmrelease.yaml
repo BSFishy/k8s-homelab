@@ -31,6 +31,10 @@ spec:
     cluster:
       name: main
 
+    global:
+      scrapeClassicHistograms: true
+      scrapeNativeHistograms: true
+
     destinations:
       - name: mimir
         type: prometheus
@@ -43,9 +47,6 @@ spec:
 
     clusterMetrics:
       enabled: true
-      global:
-        scrapeClassicHistograms: true
-        scrapeNativeHistograms: true
       controlPlane:
         enabled: true
 
