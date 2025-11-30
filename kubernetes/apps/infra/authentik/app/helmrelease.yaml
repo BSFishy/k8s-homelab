@@ -47,6 +47,10 @@ spec:
         enabled: true
         hosts:
           - auth.home.mattprovost.dev
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
       volumes:
         - name: authentik-secret
           secret:
@@ -63,6 +67,10 @@ spec:
           readOnly: true
 
     worker:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
       volumes:
         - name: authentik-secret
           secret:
@@ -77,3 +85,7 @@ spec:
         - name: authentik-postgres-creds
           mountPath: /authentik-postgres-creds
           readOnly: true
+
+    prometheus:
+      rules:
+        enabled: true
