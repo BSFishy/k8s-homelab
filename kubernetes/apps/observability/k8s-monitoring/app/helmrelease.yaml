@@ -57,11 +57,18 @@ spec:
       apiServer:
         jobLabel: apiserver
       kubelet:
+        jobLabel: kubelet
         nodeAddressFormat: proxy
       kubeletResource:
+        jobLabel: resources
         nodeAddressFormat: proxy
       cadvisor:
+        jobLabel: cadvisor
         nodeAddressFormat: proxy
+      kubeDNS:
+        jobLabel: kube-dns
+      node-exporter:
+        jobLabel: node-exporter
 
     clusterEvents:
       enabled: true
@@ -87,8 +94,6 @@ spec:
         deploy: true
 
     integrations:
-      destinations:
-        - mimir
       grafana:
         instances:
           - name: grafana
