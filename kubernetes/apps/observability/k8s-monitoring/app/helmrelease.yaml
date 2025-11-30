@@ -34,6 +34,11 @@ spec:
     global:
       scrapeClassicHistograms: true
       scrapeNativeHistograms: true
+      scrapeProtocols:
+        - OpenMetricsText1.0.0
+        - OpenMetricsText0.0.1
+        - PrometheusText0.0.4
+        - PrometheusProto
 
     destinations:
       - name: mimir
