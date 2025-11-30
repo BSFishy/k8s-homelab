@@ -54,6 +54,17 @@ spec:
       enabled: true
       controlPlane:
         enabled: true
+      apiServer:
+        jobLabel: apiserver
+      kubelet:
+        nodeAddressFormat: proxy
+      kubeletResource:
+        nodeAddressFormat: proxy
+      kubeletProbes:
+        enabled: true
+        nodeAddressFormat: proxy
+      cadvisor:
+        nodeAddressFormat: proxy
 
     clusterEvents:
       enabled: true
