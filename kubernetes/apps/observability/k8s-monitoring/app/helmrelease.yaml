@@ -58,11 +58,6 @@ spec:
         jobLabel: apiserver
       kubelet:
         nodeAddressFormat: proxy
-      kubeletResource:
-        nodeAddressFormat: proxy
-      kubeletProbes:
-        enabled: true
-        nodeAddressFormat: proxy
       cadvisor:
         nodeAddressFormat: proxy
 
