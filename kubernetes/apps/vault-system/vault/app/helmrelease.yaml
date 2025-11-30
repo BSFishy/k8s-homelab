@@ -126,3 +126,9 @@ spec:
             service_registration "kubernetes" {}
     ui:
       enabled: true
+
+    serverTelemetry:
+      serviceMonitor:
+        enabled: true
+      prometheusRules:
+        enabled: true
