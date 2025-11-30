@@ -43,6 +43,9 @@ spec:
 
     clusterMetrics:
       enabled: true
+      global:
+        scrapeClassicHistograms: true
+        scrapeNativeHistograms: true
       controlPlane:
         enabled: true
 
