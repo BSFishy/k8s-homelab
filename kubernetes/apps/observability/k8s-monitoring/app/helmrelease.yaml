@@ -59,6 +59,11 @@ spec:
       kubelet:
         jobLabel: kubelet
         nodeAddressFormat: proxy
+        extraDiscoveryRules: |
+          rule {
+            target_label = "metrics_path"
+            replacement = "/metrics"
+          }
       kubeletResource:
         jobLabel: resources
         nodeAddressFormat: proxy
