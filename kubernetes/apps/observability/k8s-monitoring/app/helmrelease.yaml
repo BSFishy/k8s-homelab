@@ -74,6 +74,8 @@ spec:
         jobLabel: kube-dns
       node-exporter:
         jobLabel: node-exporter
+      kube-state-metrics:
+        jobLabel: kube-state-metrics
 
     clusterEvents:
       enabled: true
