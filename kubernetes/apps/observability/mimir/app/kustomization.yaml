@@ -6,3 +6,4 @@ resources:
   - ./obc-mimir.yaml
   - ./helmrelease.yaml
   - ./proxy-config.yaml
+  - ./prometheusrules.yaml
