@@ -154,3 +154,7 @@ spec:
 
     nginx:
       replicas: 2
+
+    metaMonitoring:
+      serviceMonitor:
+        enabled: true
