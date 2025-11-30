@@ -10,4 +10,4 @@ resources:
   - ./loki/ks.yaml
   - ./mimir/ks.yaml
   - ./grafana/ks.yaml
-  - ./alloy/ks.yaml
+  - ./k8s-monitoring/ks.yaml
