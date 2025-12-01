@@ -81,8 +81,6 @@ spec:
       app:
         enabled: true
         className: traefik
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: infra-authentik@kubernetescrd
         hosts:
           - host: gotify.home.mattprovost.dev
             paths:
