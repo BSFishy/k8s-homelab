@@ -5,10 +5,10 @@ alertmanager:
     - name: mimir
       uri: http://mimir-alertmanager.observability.svc.cluster.local:8080
       proxy: true
-annotations:
-  default:
-    hidden_suffixes:
-      - _job
+# annotations:
+#   default:
+#     hidden_suffixes:
+#       - _job
 filters:
   default:
     - "cluster=main"
