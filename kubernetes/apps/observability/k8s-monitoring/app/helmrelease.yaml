@@ -64,40 +64,16 @@ spec:
             target_label = "metrics_path"
             replacement = "/metrics"
           }
-        extraMetricProcessingRules: |
-          rule {
-            action = "replace"
-            source_labels = ["node"]
-            target_label = "instance"
-          }
       kubeletResource:
         jobLabel: resources
         nodeAddressFormat: proxy
-        extraMetricProcessingRules: |
-          rule {
-            action = "replace"
-            source_labels = ["node"]
-            target_label = "instance"
-          }
       cadvisor:
         jobLabel: cadvisor
         nodeAddressFormat: proxy
-        extraMetricProcessingRules: |
-          rule {
-            action = "replace"
-            source_labels = ["node"]
-            target_label = "instance"
-          }
       kubeDNS:
         jobLabel: kube-dns
       node-exporter:
         jobLabel: node-exporter
-        extraMetricProcessingRules: |
-          rule {
-            action = "replace"
-            source_labels = ["node"]
-            target_label = "instance"
-          }
         metricsTuning:
           includeMetrics:
             - node_uname_info
