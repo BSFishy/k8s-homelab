@@ -63,6 +63,9 @@ spec:
             s3:
               insecure: true
 
+        api:
+          alertmanager_http_prefix: ""
+
         blocks_storage:
           backend: s3
           tsdb:
@@ -114,15 +117,6 @@ spec:
           enable_api: true
         alertmanager:
           external_url: https://alertmanager.home.mattprovost.dev
-          http_prefix: /
-
-        receivers:
-          - name: gotify
-            webhook_configs:
-              - url: http://alertmanager-gotify-bridge.observability.svc.cluster.local/webhook
-                send_resolved: true
-        route:
-          receiver: gotify
 
     distributor:
       replicas: 2
@@ -162,6 +156,14 @@ spec:
 
     alertmanager:
       replicas: 2
+      fallbackConfig: |
+        receivers:
+          - name: gotify
+            webhook_configs:
+              - url: http://alertmanager-gotify-bridge.observability.svc.cluster.local/webhook
+                send_resolved: true
+        route:
+          receiver: gotify
 
     nginx:
       replicas: 2
