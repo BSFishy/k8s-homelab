@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prymitive/karma/main/docs/schema.json
+alertmanager:
+  interval: 1m
+  servers:
+    - name: mimir
+      uri: http://mimir-alertmanager.observability.svc.cluster.local:8080
+      proxy: true
+annotations:
+  default:
+    hidden_suffixes:
+      - _job
+filters:
+  default:
+    - "cluster=main"
+grid:
+  order: label
+  sorting:
+    label_values:
+      - severity
+karma:
+  name: Homelab Alert Console
+  help:
+    - url: https://grafana.com/docs/alerting
+      text: Alerting docs
+labels:
+  color:
+    static:
+      severity:
+        critical: '#ef4444'
+        warning: '#f97316'
+        info: '#0ea5e9'
+  keep:
+    - cluster
+    - namespace
+    - pod
+listen:
+  address: 0.0.0.0
+  port: 8080
+log:
+  config: true
+  level: info
+silenceForm:
+  strip_labels:
+    - pod
+    - container
