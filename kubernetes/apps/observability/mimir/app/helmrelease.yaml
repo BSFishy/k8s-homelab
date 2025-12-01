@@ -151,6 +151,14 @@ spec:
 
     alertmanager:
       replicas: 2
+      fallbackConfig: |
+        receivers:
+          - name: gotify
+            webhook_configs:
+              - url: http://alertmanager-gotify-bridge.observability.svc.cluster.local/webhook
+                send_resolved: true
+        route:
+          receiver: gotify
 
     nginx:
       replicas: 2

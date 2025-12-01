@@ -9,3 +9,4 @@ resources:
   - ./mimir/ks.yaml
   - ./grafana/ks.yaml
   - ./k8s-monitoring/ks.yaml
+  - ./alertmanager-gotify-bridge/ks.yaml
