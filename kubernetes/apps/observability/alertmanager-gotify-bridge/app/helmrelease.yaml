@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/druggeri/alertmanager_gotify_bridge
-              tag: v2.3.2
+              tag: 2.3.2
             env:
               GOTIFY_ENDPOINT: http://gotify.home.svc.cluster.local/message
               PORT: "8080"
