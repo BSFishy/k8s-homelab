@@ -91,6 +91,16 @@ spec:
 
     alloy-metrics:
       enabled: true
+      extraConfig: |
+        mimir.rules.kubernetes "cluster" {
+          address               = "http://mimir-gateway.observability.svc.cluster.local"
+          tenant_id             = "anonymous"
+          prometheus_http_prefix = "/prometheus"
+
+          selector {
+            matchers = []
+          }
+        }
 
     alloy-logs:
       enabled: true
