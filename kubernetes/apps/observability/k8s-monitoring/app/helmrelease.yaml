@@ -98,6 +98,9 @@ spec:
             source_labels = ["node"]
             target_label = "instance"
           }
+        metricsTuning:
+          includeMetrics:
+            - node_uname_info
       kube-state-metrics:
         jobLabel: kube-state-metrics
 
