@@ -92,6 +92,6 @@ spec:
       config:
         enabled: true
         type: configMap
-        identifier: karma-config
+        name: karma-config
         globalMounts:
           - path: /config
