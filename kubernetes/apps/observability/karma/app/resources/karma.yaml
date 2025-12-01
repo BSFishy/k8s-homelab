@@ -13,15 +13,10 @@ filters:
   default:
     - "cluster=main"
 grid:
-  order: label
   sorting:
-    label_values:
-      - severity
+    order: label
 karma:
   name: Homelab Alert Console
-  help:
-    - url: https://grafana.com/docs/alerting
-      text: Alerting docs
 labels:
   color:
     static:
@@ -37,6 +32,7 @@ log:
   config: true
   level: info
 silenceForm:
-  strip_labels:
-    - pod
-    - container
+  strip:
+    labels:
+      - pod
+      - container
