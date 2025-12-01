@@ -25,10 +25,7 @@ karma:
 labels:
   color:
     static:
-      severity:
-        critical: '#ef4444'
-        warning: '#f97316'
-        info: '#0ea5e9'
+      - job
   keep:
     - cluster
     - namespace
