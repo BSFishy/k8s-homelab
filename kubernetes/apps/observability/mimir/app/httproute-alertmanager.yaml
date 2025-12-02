@@ -28,5 +28,5 @@ spec:
               - name: X-Scope-OrgID
                 value: anonymous
       backendRefs:
-        - name: mimir-alertmanager
-          port: 8080
+        - name: mimir-gateway
+          port: 80
