@@ -113,11 +113,7 @@ spec:
           alertmanager_url: http://mimir-alertmanager.observability.svc:8080/alertmanager
           enable_api: true
         alertmanager:
-          # external_url: https://alertmanager.home.mattprovost.dev
-          # http_prefix: /
           enable_api: false
-        # alertmanager:
-        #   external_url: "https://alertmanager.home.mattprovost.dev"
 
     distributor:
       replicas: 2
@@ -165,6 +161,8 @@ spec:
                 send_resolved: true
         route:
           receiver: gotify
+          group_by:
+            - alertname
 
     nginx:
       replicas: 2
