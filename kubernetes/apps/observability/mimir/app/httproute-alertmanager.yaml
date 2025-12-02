@@ -12,12 +12,21 @@ spec:
   hostnames:
     - alertmanager.home.mattprovost.dev
   rules:
-    - backendRefs:
-        - name: mimir-alertmanager
-          port: 8080
+    - matches:
+        - path:
+            type: PathMatchPrefix
+            value: /
       filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /alertmanager
         - type: RequestHeaderModifier
           requestHeaderModifier:
             set:
               - name: X-Scope-OrgID
                 value: anonymous
+      backendRefs:
+        - name: mimir-alertmanager
+          port: 8080
