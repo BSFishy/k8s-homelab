@@ -110,7 +110,7 @@ spec:
           enabled: false
 
         ruler:
-          alertmanager_url: http://mimir-alertmanager.observability.svc:8080
+          alertmanager_url: http://mimir-alertmanager.observability.svc:8080/alertmanager
           enable_api: true
         # alertmanager:
         #   external_url: "https://alertmanager.home.mattprovost.dev"
