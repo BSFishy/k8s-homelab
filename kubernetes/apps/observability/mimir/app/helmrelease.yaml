@@ -113,7 +113,7 @@ spec:
           alertmanager_url: http://mimir-alertmanager.observability.svc:8080
           enable_api: true
         alertmanager:
-          external_url: https://alertmanager.home.mattprovost.dev
+          external_url: "https://alertmanager.home.mattprovost.dev/"
 
     distributor:
       replicas: 2
