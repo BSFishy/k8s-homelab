@@ -63,9 +63,6 @@ spec:
             s3:
               insecure: true
 
-        api:
-          alertmanager_http_prefix: ""
-
         blocks_storage:
           backend: s3
           tsdb:
