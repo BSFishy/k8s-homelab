@@ -153,8 +153,6 @@ spec:
 
     alertmanager:
       replicas: 2
-      extraArgs:
-        "http.alertmanager-http-prefix": "/"
       fallbackConfig: |
         receivers:
           - name: gotify
