@@ -15,3 +15,9 @@ spec:
     - backendRefs:
         - name: mimir-alertmanager
           port: 8080
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Scope-OrgID
+                value: anonymous
