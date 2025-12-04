@@ -191,6 +191,7 @@ spec:
           replicated:
             size: 2
             min_size: 1
+            requireSafeReplicaSize: false
         storageClass:
           enabled: true
           name: ceph-low
@@ -219,6 +220,7 @@ spec:
           replicated:
             size: 2
             min_size: 1
+            requireSafeReplicaSize: false
         storageClass:
           enabled: true
           name: ceph-extra-low
@@ -264,6 +266,7 @@ spec:
               replicated:
                 size: 2
                 min_size: 1
+                requireSafeReplicaSize: false
               parameters:
                 compression_mode: none
           preserveFilesystemOnDelete: true
