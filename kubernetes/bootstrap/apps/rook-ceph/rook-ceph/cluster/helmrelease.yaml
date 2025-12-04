@@ -61,8 +61,7 @@ spec:
         urlPrefix: /
         ssl: true
         prometheusEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8080
-        # THIS IS BREAKING SHIT
-        # alertmanagerEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8081/alertmanager
+        alertmanagerEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8081/alertmanager
 
       mgr:
         modules:
@@ -191,6 +190,7 @@ spec:
           failureDomain: host
           replicated:
             size: 2
+            min_size: 1
         storageClass:
           enabled: true
           name: ceph-low
@@ -218,6 +218,7 @@ spec:
           failureDomain: host
           replicated:
             size: 2
+            min_size: 1
         storageClass:
           enabled: true
           name: ceph-extra-low
@@ -262,6 +263,7 @@ spec:
               failureDomain: host
               replicated:
                 size: 2
+                min_size: 1
               parameters:
                 compression_mode: none
           preserveFilesystemOnDelete: true
