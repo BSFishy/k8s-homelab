@@ -61,7 +61,8 @@ spec:
         urlPrefix: /
         ssl: true
         prometheusEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8080
-        alertmanagerEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8081/alertmanager
+        # THIS IS BREAKING SHIT
+        # alertmanagerEndpoint: http://mimir-ceph-proxy.observability.svc.cluster.local:8081/alertmanager
 
       mgr:
         modules:
