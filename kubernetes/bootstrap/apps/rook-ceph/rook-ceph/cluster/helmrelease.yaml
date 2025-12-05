@@ -261,7 +261,7 @@ spec:
             replicated:
               size: 3
           dataPools:
-            - name: data0
+            - name: cephfs-data
               failureDomain: host
               replicated:
                 size: 2
@@ -300,7 +300,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             fsName: ceph-media
-            pool: ceph-media-data0
+            pool: ceph-media-cephfs-data
             mounter: kernel
 
     cephObjectStores:
