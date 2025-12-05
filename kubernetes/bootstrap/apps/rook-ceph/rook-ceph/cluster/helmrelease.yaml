@@ -325,9 +325,6 @@ spec:
               limits:
                 memory: 5Gi
             instances: 1
-          healthCheck:
-            bucket:
-              interval: 60s
         storageClass:
           enabled: true
           name: ceph-block
