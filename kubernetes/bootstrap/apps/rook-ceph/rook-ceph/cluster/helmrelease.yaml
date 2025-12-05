@@ -310,9 +310,6 @@ spec:
             failureDomain: host
             replicated:
               size: 3
-            parameters:
-              # Hint autoscaler so it keeps enough PGs for upgrades.
-              target_size_ratio: "0.01"
           dataPool:
             failureDomain: host
             erasureCoded:
