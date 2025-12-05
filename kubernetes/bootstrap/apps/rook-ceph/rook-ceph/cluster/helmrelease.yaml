@@ -261,7 +261,7 @@ spec:
             replicated:
               size: 3
           dataPools:
-            - name: data0
+            - name: ceph-media-data
               failureDomain: host
               replicated:
                 size: 2
@@ -269,7 +269,7 @@ spec:
                 requireSafeReplicaSize: false
               parameters:
                 compression_mode: none
-          preserveFilesystemOnDelete: true
+          preserveFilesystemOnDelete: false # allow rebuild of filesystem/pools when needed
           # MDS HA so RWX is reliable
           metadataServer:
             activeCount: 2
@@ -300,7 +300,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             fsName: ceph-media
-            pool: ceph-media-data0
+            pool: ceph-media-ceph-media-data
             mounter: kernel
 
     cephObjectStores:
