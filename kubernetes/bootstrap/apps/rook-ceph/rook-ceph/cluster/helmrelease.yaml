@@ -310,10 +310,11 @@ spec:
             failureDomain: host
             replicated:
               size: 3
-            # Autoscaler kept this pool at 8 PGs which collapsed replicas onto a
-            # single OSD; pin higher counts until we add more OSD capacity.
-            pgNum: 64
-            pgpNum: 64
+            parameters:
+              # Autoscaler kept this pool at 8 PGs which collapsed replicas onto a
+              # single OSD; pin higher counts until we add more OSD capacity.
+              pg_num: 64
+              pgp_num: 64
           dataPool:
             failureDomain: host
             erasureCoded:
