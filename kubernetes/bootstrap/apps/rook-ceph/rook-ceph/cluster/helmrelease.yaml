@@ -311,10 +311,8 @@ spec:
             replicated:
               size: 3
             parameters:
-              # Autoscaler kept this pool at 8 PGs which collapsed replicas onto a
-              # single OSD; pin higher counts until we add more OSD capacity.
-              pgNum: 64
-              pgpNum: 64
+              # Hint autoscaler so it keeps enough PGs for upgrades.
+              target_size_ratio: "0.01"
           dataPool:
             failureDomain: host
             erasureCoded:
