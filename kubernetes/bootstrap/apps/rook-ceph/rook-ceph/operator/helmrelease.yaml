@@ -42,17 +42,6 @@ spec:
     monitoring:
       enabled: true
 
-    rookCephOperator:
-      env:
-        - name: ROOK_ENABLE_LVM_FALLBACK
-          value: "true"
-        - name: ROOK_HOSTPATH_BIN_PATH
-          value: /usr/sbin:/sbin:/usr/bin:/bin
-        - name: ROOK_CEPH_VOLUME_UDEV_TIMEOUT
-          value: "0"
-        - name: ROOK_CEPH_VOLUME_UDEV_SYNC
-          value: "0"
-
     resources:
       requests:
         memory: 128Mi # unchangable
