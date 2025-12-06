@@ -82,7 +82,6 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: "^/dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_[A-Z0-9]+$"
         devices:
           # gaia-01
           - name: /dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U6NU0Y716078M
