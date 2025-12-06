@@ -299,8 +299,8 @@ spec:
             csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
-            fsName: ceph-media
-            pool: ceph-media-cephfs-data
+            # fsName: ceph-media
+            # pool: ceph-media-cephfs-data
             mounter: kernel
 
     cephObjectStores:
