@@ -13,7 +13,7 @@ spec:
     # Use the official 1.16 image
     image:
       repository: velero/velero
-      tag: v1.16.0
+      tag: v1.17.1
 
     snapshotsEnabled: false
     deployNodeAgent: true
