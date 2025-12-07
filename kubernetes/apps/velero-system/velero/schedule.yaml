@@ -131,7 +131,7 @@ spec:
     snapshotMoveData: true
     defaultVolumesToFsBackup: false
     includedNamespaces: ["*"]
-    includedResources: ["persistentvolumeclaims"]
+    includedResources: ["persistentvolumeclaims", "persistentvolumes"]
     labelSelector:
       matchLabels:
         storage-tier: "low"
