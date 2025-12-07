@@ -70,6 +70,7 @@ spec:
   wait: false
   dependsOn:
     - name: vault
+      namespace: vault-system
     - name: tofu-controller
       namespace: flux-system
   decryption:
