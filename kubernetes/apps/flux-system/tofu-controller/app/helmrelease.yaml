@@ -24,6 +24,7 @@ spec:
     name: tofu-controller
   interval: 30m
   values:
+    allowCrossNamespaceRefs: true
     metrics:
       enabled: true
       serviceMonitor:
