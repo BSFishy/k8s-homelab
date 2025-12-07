@@ -15,9 +15,7 @@ spec:
   approvePlan: auto
   destroyResourcesOnDeletion: false
   retryInterval: 20s
-  runnerPodTemplate:
-    spec:
-      serviceAccountName: vault-terraform
+  serviceAccountName: vault-terraform
   varsFrom:
     - kind: Secret
       name: vault-terraform-vars
