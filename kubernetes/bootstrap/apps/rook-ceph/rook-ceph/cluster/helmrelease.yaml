@@ -299,6 +299,14 @@ spec:
             mounter: fuse
             fuseMountOptions: rw
 
+    cephFileSystemVolumeSnapshotClass:
+      enabled: true
+      name: csi-ceph-filesystem
+      isDefault: false
+      deletionPolicy: Delete
+      labels:
+        velero.io/csi-volumesnapshot-class: "true"
+
     cephObjectStores:
       - name: ceph-objectstore
         spec:
