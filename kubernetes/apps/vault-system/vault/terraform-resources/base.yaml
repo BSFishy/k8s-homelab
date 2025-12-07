@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/flux-iac/tofu-controller/main/docs/release/schemas/terraform.json
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: vault-base-config
+  namespace: vault-system
+spec:
+  interval: 10m
+  path: ./kubernetes/apps/vault-system/vault/terraform/base
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  approvePlan: auto
+  destroyResourcesOnDeletion: false
+  retryInterval: 20s
+  runnerPodTemplate:
+    spec:
+      serviceAccountName: vault-terraform
+  varsFrom:
+    - kind: Secret
+      name: vault-terraform-vars
+  writeOutputsToSecret:
+    name: vault-base-config-outputs
