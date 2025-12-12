@@ -74,6 +74,9 @@ spec:
           - name: rook
             enabled: true
 
+      priorityClassNames:
+        all: system-cluster-critical
+
       network:
         provider: host
         connections:
@@ -277,9 +280,11 @@ spec:
             resources:
               requests:
                 cpu: 500m
-                memory: 2Gi
-              limits:
                 memory: 4Gi
+              limits:
+                cpu: 500m
+                memory: 4Gi
+            priorityClassName: system-cluster-critical
         storageClass:
           enabled: true
           name: ceph-media
