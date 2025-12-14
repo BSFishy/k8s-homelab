@@ -1,0 +1,64 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: tempo-rules
+  namespace: observability
+spec:
+  groups:
+    - name: tempo.rules
+      interval: 30s
+      rules:
+        - alert: TempoDistributorDown
+          expr: up{job=~".*tempo-distributor.*"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Tempo distributor {{ $labels.instance }} is down"
+            description: "Tempo distributor {{ $labels.instance }} has been down for more than 5 minutes"
+
+        - alert: TempoIngesterDown
+          expr: up{job=~".*tempo-ingester.*"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Tempo ingester {{ $labels.instance }} is down"
+            description: "Tempo ingester {{ $labels.instance }} has been down for more than 5 minutes"
+
+        - alert: TempoQuerierDown
+          expr: up{job=~".*tempo-querier.*"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Tempo querier {{ $labels.instance }} is down"
+            description: "Tempo querier {{ $labels.instance }} has been down for more than 5 minutes"
+
+        - alert: TempoCompactorDown
+          expr: up{job=~".*tempo-compactor.*"} == 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Tempo compactor {{ $labels.instance }} is down"
+            description: "Tempo compactor {{ $labels.instance }} has been down for more than 15 minutes"
+
+        - alert: TempoHighIngestionRate
+          expr: rate(tempo_distributor_spans_received_total[5m]) > 10000
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High trace ingestion rate on {{ $labels.instance }}"
+            description: "Tempo is receiving {{ $value }} spans per second, which is unusually high"
+
+        - alert: TempoIngesterFlushErrors
+          expr: rate(tempo_ingester_flush_failed_retries_total[5m]) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Tempo ingester flush errors on {{ $labels.instance }}"
+            description: "Tempo ingester is experiencing flush errors at {{ $value }} per second"

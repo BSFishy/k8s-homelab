@@ -83,6 +83,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/mimir
+          - name: tempo
+            orgId: 1
+            folder: Tempo
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/tempo
 
     dashboards:
       default:
@@ -231,6 +239,23 @@ spec:
           url: https://raw.githubusercontent.com/grafana/mimir/main/operations/mimir-mixin-compiled/dashboards/rollout-operator.json
           datasource: Prometheus
 
+      tempo:
+        tempo-operational:
+          url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-operational.json
+          datasource: Prometheus
+        tempo-reads:
+          url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-reads.json
+          datasource: Prometheus
+        tempo-writes:
+          url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-writes.json
+          datasource: Prometheus
+        tempo-resources:
+          url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-resources.json
+          datasource: Prometheus
+        tempo-rollout-progress:
+          url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-rollout-progress.json
+          datasource: Prometheus
+
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -249,6 +274,45 @@ spec:
             name: Loki
             type: loki
             url: http://loki-gateway.observability.svc.cluster.local:80
+            jsonData:
+              derivedFields:
+                - datasourceName: Tempo
+                  matcherRegex: "traceID=(\\w+)"
+                  name: TraceID
+                  url: "$${__value.raw}"
+                  datasourceUid: tempo
+          - access: proxy
+            name: Tempo
+            type: tempo
+            url: http://tempo-gateway.observability.svc.cluster.local:80
+            uid: tempo
+            jsonData:
+              httpMethod: GET
+              tracesToLogsV2:
+                datasourceUid: loki
+                spanStartTimeShift: -1h
+                spanEndTimeShift: 1h
+                tags: ['job', 'instance', 'pod', 'namespace']
+                filterByTraceID: false
+                filterBySpanID: false
+                customQuery: true
+                query: '{$${__tags}} |= "$${__span.traceId}"'
+              tracesToMetrics:
+                datasourceUid: prometheus
+                spanStartTimeShift: -1h
+                spanEndTimeShift: 1h
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+                queries:
+                  - name: 'Sample query'
+                    query: 'sum(rate(traces_spanmetrics_latency_bucket{$${__tags}}[5m]))'
+              serviceMap:
+                datasourceUid: prometheus
+              nodeGraph:
+                enabled: true
+              search:
+                hide: false
+              lokiSearch:
+                datasourceUid: loki
           - name: Alertmanager
             type: alertmanager
             access: proxy
@@ -268,6 +332,8 @@ spec:
           - name: Loki
             orgId: 1
           - name: Mimir
+            orgId: 1
+          - name: Tempo
             orgId: 1
 
     env:

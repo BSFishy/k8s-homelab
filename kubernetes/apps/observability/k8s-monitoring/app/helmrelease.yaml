@@ -27,6 +27,8 @@ spec:
       namespace: observability
     - name: loki
       namespace: observability
+    - name: tempo
+      namespace: observability
   values:
     cluster:
       name: main
@@ -49,6 +51,10 @@ spec:
       - name: loki
         type: loki
         url: http://loki-gateway.observability.svc.cluster.local/loki/api/v1/push
+      - name: tempo
+        type: otlp
+        url: http://tempo-distributor.observability.svc.cluster.local:4317
+        protocol: grpc
 
     clusterMetrics:
       enabled: true
@@ -89,6 +95,38 @@ spec:
     podLogs:
       enabled: true
 
+    applicationObservability:
+      enabled: true
+      receivers:
+        grpc:
+          enabled: true
+          port: 4317
+        http:
+          enabled: true
+          port: 4318
+        zipkin:
+          enabled: true
+          port: 9411
+        jaeger:
+          grpc:
+            enabled: true
+            port: 14250
+          thriftHttp:
+            enabled: true
+            port: 14268
+          thriftCompact:
+            enabled: true
+            port: 6831
+          thriftBinary:
+            enabled: true
+            port: 6832
+      processors:
+        batch:
+          maxSize: 100
+          timeout: 10s
+        resourceDetection:
+          enabled: true
+
     alloy-metrics:
       enabled: true
       extraConfig: |
@@ -128,6 +166,15 @@ spec:
             labelSelectors:
               app.kubernetes.io/name: mimir
             logs:
+              enabled: true
+      tempo:
+        instances:
+          - name: tempo
+            labelSelectors:
+              app.kubernetes.io/name: tempo
+            logs:
+              enabled: true
+            traces:
               enabled: true
 
     selfReporting:

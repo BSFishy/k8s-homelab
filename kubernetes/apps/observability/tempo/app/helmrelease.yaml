@@ -1,0 +1,262 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: tempo
+spec:
+  interval: 10m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.19.0
+  url: oci://ghcr.io/grafana/helm-charts/tempo
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tempo
+spec:
+  interval: 30m
+  timeout: 15m
+  chartRef:
+    kind: OCIRepository
+    name: tempo
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  valuesFrom:
+    # S3 configuration from Ceph Object Bucket Claim
+    - targetPath: tempo.storage.trace.s3.endpoint
+      kind: ConfigMap
+      name: &cephBucket tempo-bucket
+      valuesKey: BUCKET_HOST
+    - targetPath: tempo.storage.trace.s3.bucket
+      kind: ConfigMap
+      name: *cephBucket
+      valuesKey: BUCKET_NAME
+    - targetPath: tempo.storage.trace.s3.access_key
+      kind: Secret
+      name: *cephBucket
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: tempo.storage.trace.s3.secret_key
+      kind: Secret
+      name: *cephBucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
+  values:
+    deploymentMode: SimpleScalable
+
+    tempo:
+      reportingEnabled: false
+      metricsGenerator:
+        enabled: true
+        remoteWriteUrl: http://mimir-gateway.observability.svc.cluster.local/prometheus/api/v1/push
+
+      storage:
+        trace:
+          backend: s3
+          s3:
+            insecure: true
+            forcepathstyle: true
+
+      structuredConfig:
+        compactor:
+          compaction:
+            block_retention: 48h
+
+        distributor:
+          receivers:
+            jaeger:
+              protocols:
+                grpc:
+                  endpoint: 0.0.0.0:14250
+                thrift_binary:
+                  endpoint: 0.0.0.0:6832
+                thrift_compact:
+                  endpoint: 0.0.0.0:6831
+                thrift_http:
+                  endpoint: 0.0.0.0:14268
+            otlp:
+              protocols:
+                grpc:
+                  endpoint: 0.0.0.0:4317
+                http:
+                  endpoint: 0.0.0.0:4318
+            zipkin:
+              endpoint: 0.0.0.0:9411
+
+        ingester:
+          max_block_duration: 5m
+
+        metrics_generator:
+          processor:
+            service_graphs:
+              dimensions:
+                - http.method
+                - http.target
+                - http.status_code
+              histogram_buckets: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
+            span_metrics:
+              dimensions:
+                - http.method
+                - http.target
+                - http.status_code
+              histogram_buckets: [0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384]
+          registry:
+            external_labels:
+              cluster: home
+          storage:
+            path: /var/tempo/wal
+            remote_write:
+              - url: http://mimir-gateway.observability.svc.cluster.local/prometheus/api/v1/push
+                send_exemplars: true
+                headers:
+                  X-Scope-OrgID: anonymous
+
+        overrides:
+          defaults:
+            metrics_generator:
+              processors: [service-graphs, span-metrics]
+
+        querier:
+          max_concurrent_queries: 20
+          frontend_worker:
+            frontend_address: tempo-query-frontend-discovery:9095
+
+        query_frontend:
+          search:
+            max_duration: 0s
+
+        server:
+          http_listen_port: 3100
+          log_level: info
+          grpc_server_max_recv_msg_size: 8388608
+          grpc_server_max_send_msg_size: 8388608
+
+        storage:
+          trace:
+            backend: s3
+            wal:
+              path: /var/tempo/wal
+            s3:
+              insecure: true
+              forcepathstyle: true
+
+    distributor:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: distributor
+                topologyKey: kubernetes.io/hostname
+
+    ingester:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: ingester
+                topologyKey: kubernetes.io/hostname
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: ceph-regular
+
+    compactor:
+      replicas: 1
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: ceph-regular
+
+    querier:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: querier
+                topologyKey: kubernetes.io/hostname
+
+    queryFrontend:
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: query-frontend
+                topologyKey: kubernetes.io/hostname
+
+    gateway:
+      enabled: true
+      replicas: 2
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: tempo
+              app.kubernetes.io/component: gateway
+
+    metricsGenerator:
+      enabled: true
+      replicas: 1
+      persistence:
+        enabled: true
+        size: 5Gi
+        storageClass: ceph-regular
+
+    monitoring:
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: tempo
+        labels:
+          grafana_dashboard: "1"
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+
+    traces:
+      otlp:
+        grpc:
+          enabled: true
+        http:
+          enabled: true
+      jaeger:
+        grpc:
+          enabled: true
+        thriftBinary:
+          enabled: true
+        thriftCompact:
+          enabled: true
+        thriftHttp:
+          enabled: true
+      zipkin:
+        enabled: true
+
+    metaMonitoring:
+      serviceMonitor:
+        enabled: true
+
+    test:
+      enabled: false
