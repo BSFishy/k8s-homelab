@@ -53,7 +53,7 @@ spec:
         url: http://loki-gateway.observability.svc.cluster.local/loki/api/v1/push
       - name: tempo
         type: otlp
-        url: http://tempo-distributor.observability.svc.cluster.local:4317
+        url: http://tempo.observability.svc.cluster.local:4317
         protocol: grpc
 
     clusterMetrics:

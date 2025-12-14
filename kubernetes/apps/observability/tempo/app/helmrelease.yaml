@@ -44,7 +44,7 @@ spec:
       name: *cephBucket
       valuesKey: AWS_SECRET_ACCESS_KEY
   values:
-    deploymentMode: SimpleScalable
+    deploymentMode: SingleBinary
 
     tempo:
       reportingEnabled: false
@@ -142,84 +142,19 @@ spec:
               insecure: true
               forcepathstyle: true
 
-    distributor:
-      replicas: 2
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/component: distributor
-                topologyKey: kubernetes.io/hostname
-
-    ingester:
-      replicas: 2
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/component: ingester
-                topologyKey: kubernetes.io/hostname
-      persistence:
-        enabled: true
-        size: 10Gi
-        storageClass: ceph-regular
-
-    compactor:
+    singleBinary:
       replicas: 1
       persistence:
         enabled: true
         size: 10Gi
         storageClass: ceph-regular
-
-    querier:
-      replicas: 2
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/component: querier
-                topologyKey: kubernetes.io/hostname
-
-    queryFrontend:
-      replicas: 2
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/component: query-frontend
-                topologyKey: kubernetes.io/hostname
-
-    gateway:
-      enabled: true
-      replicas: 2
-      topologySpreadConstraints:
-        - maxSkew: 2
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: tempo
-              app.kubernetes.io/component: gateway
-
-    metricsGenerator:
-      enabled: true
-      replicas: 1
-      persistence:
-        enabled: true
-        size: 5Gi
-        storageClass: ceph-regular
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: "2"
+          memory: 2Gi
 
     monitoring:
       dashboards:
