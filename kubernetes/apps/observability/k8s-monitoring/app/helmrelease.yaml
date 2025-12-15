@@ -29,6 +29,8 @@ spec:
       namespace: observability
     - name: tempo
       namespace: observability
+    - name: pyroscope
+      namespace: observability
   values:
     cluster:
       name: main
@@ -58,6 +60,12 @@ spec:
         metrics: { enabled: false }
         logs: { enabled: false }
         traces: { enabled: true }
+      - name: pyroscope
+        type: pyroscope
+        url: http://pyroscope.observability.svc.cluster.local:4040
+        metrics: { enabled: false }
+        logs: { enabled: false }
+        profiles: { enabled: true }
 
     clusterMetrics:
       enabled: true
@@ -176,6 +184,16 @@ spec:
             metrics:
               enabled: true
               portName: prom-metrics
+            logs:
+              enabled: true
+      pyroscope:
+        instances:
+          - name: pyroscope
+            labelSelectors:
+              app.kubernetes.io/name: pyroscope
+            metrics:
+              enabled: true
+              portName: http2
             logs:
               enabled: true
 

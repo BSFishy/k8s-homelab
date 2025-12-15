@@ -1,0 +1,53 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pyroscope
+  namespace: observability
+spec:
+  groups:
+    - name: pyroscope
+      interval: 1m
+      rules:
+        - alert: PyroscopeDown
+          expr: up{job="pyroscope"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Pyroscope instance is down
+            description: "Pyroscope instance {{ $labels.instance }} has been down for more than 5 minutes."
+
+        - alert: PyroscopeHighMemoryUsage
+          expr: |
+            (
+              process_resident_memory_bytes{job="pyroscope"}
+              /
+              kube_pod_container_resource_limits{resource="memory", container="pyroscope"}
+            ) > 0.90
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Pyroscope high memory usage
+            description: "Pyroscope instance {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its memory limit."
+
+        - alert: PyroscopeHighCPUUsage
+          expr: |
+            rate(process_cpu_seconds_total{job="pyroscope"}[5m]) > 0.90
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: Pyroscope high CPU usage
+            description: "Pyroscope instance {{ $labels.pod }} is using {{ $value | humanizePercentage }} CPU."
+
+        - alert: PyroscopeStorageErrors
+          expr: |
+            rate(pyroscope_storage_errors_total[5m]) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: Pyroscope storage errors detected
+            description: "Pyroscope instance {{ $labels.pod }} is experiencing storage errors."

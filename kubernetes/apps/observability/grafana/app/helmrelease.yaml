@@ -91,6 +91,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/tempo
+          - name: pyroscope
+            orgId: 1
+            folder: Pyroscope
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/pyroscope
 
     dashboards:
       default:
@@ -256,6 +264,11 @@ spec:
           url: https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin-compiled/dashboards/tempo-rollout-progress.json
           datasource: Prometheus
 
+      pyroscope:
+        pyroscope-overview:
+          url: https://raw.githubusercontent.com/grafana/pyroscope/main/operations/pyroscope/dashboards/overview.json
+          datasource: Prometheus
+
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -314,6 +327,14 @@ spec:
                 hide: false
               lokiSearch:
                 datasourceUid: loki
+          - access: proxy
+            name: Pyroscope
+            type: grafana-pyroscope-datasource
+            url: http://pyroscope.observability.svc.cluster.local:4040
+            uid: pyroscope
+            jsonData:
+              keepCookies: []
+              minStep: 15s
           - name: Alertmanager
             type: alertmanager
             access: proxy
@@ -335,6 +356,8 @@ spec:
           - name: Mimir
             orgId: 1
           - name: Tempo
+            orgId: 1
+          - name: Pyroscope
             orgId: 1
 
     env:
