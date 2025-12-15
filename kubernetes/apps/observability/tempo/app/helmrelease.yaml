@@ -50,7 +50,15 @@ spec:
       reportingEnabled: false
       metricsGenerator:
         enabled: true
-        remoteWriteUrl: http://mimir-gateway.observability.svc.cluster.local/prometheus/api/v1/push
+        remoteWriteUrl: "http://mimir-gateway.observability.svc.cluster.local/api/v1/push"
+
+      # Enable metrics generator processors via overrides
+      overrides:
+        defaults:
+          metrics_generator:
+            processors:
+              - service-graphs
+              - span-metrics
 
       storage:
         trace:
@@ -88,35 +96,7 @@ spec:
         ingester:
           max_block_duration: 5m
 
-        metrics_generator:
-          processor:
-            service_graphs:
-              dimensions:
-                - http.method
-                - http.target
-                - http.status_code
-              histogram_buckets: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
-            span_metrics:
-              dimensions:
-                - http.method
-                - http.target
-                - http.status_code
-              histogram_buckets: [0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384]
-          registry:
-            external_labels:
-              cluster: home
-          storage:
-            path: /var/tempo/wal
-            remote_write:
-              - url: http://mimir-gateway.observability.svc.cluster.local/prometheus/api/v1/push
-                send_exemplars: true
-                headers:
-                  X-Scope-OrgID: anonymous
 
-        overrides:
-          defaults:
-            metrics_generator:
-              processors: [service-graphs, span-metrics]
 
         querier:
           max_concurrent_queries: 20
@@ -156,6 +136,12 @@ spec:
           cpu: "2"
           memory: 2Gi
 
+    serviceMonitor:
+      enabled: true
+      interval: "30s"
+      scrapeTimeout: "10s"
+      labels: {}
+
     monitoring:
       dashboards:
         enabled: true
@@ -163,9 +149,6 @@ spec:
           grafana_folder: tempo
         labels:
           grafana_dashboard: "1"
-      serviceMonitor:
-        enabled: true
-        interval: 30s
       selfMonitoring:
         enabled: false
         grafanaAgent:

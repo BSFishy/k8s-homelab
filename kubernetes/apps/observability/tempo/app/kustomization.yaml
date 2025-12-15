@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./obc-tempo.yaml
   - ./helmrelease.yaml
-  - ./servicemonitor.yaml
   - ./prometheus-rule.yaml

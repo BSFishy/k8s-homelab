@@ -55,6 +55,9 @@ spec:
         type: otlp
         url: http://tempo.observability.svc.cluster.local:4317
         protocol: grpc
+        metrics: {enabled: false}
+        logs: {enabled: false}
+        traces: {enabled: true}
 
     clusterMetrics:
       enabled: true
@@ -172,9 +175,10 @@ spec:
           - name: tempo
             labelSelectors:
               app.kubernetes.io/name: tempo
-            logs:
+            metrics:
               enabled: true
-            traces:
+              portName: prom-metrics
+            logs:
               enabled: true
 
     selfReporting:
