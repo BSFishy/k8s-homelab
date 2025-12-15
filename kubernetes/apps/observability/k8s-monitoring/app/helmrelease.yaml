@@ -55,9 +55,9 @@ spec:
         type: otlp
         url: http://tempo.observability.svc.cluster.local:4317
         protocol: grpc
-        metrics: {enabled: false}
-        logs: {enabled: false}
-        traces: {enabled: true}
+        metrics: { enabled: false }
+        logs: { enabled: false }
+        traces: { enabled: true }
 
     clusterMetrics:
       enabled: true
@@ -101,28 +101,29 @@ spec:
     applicationObservability:
       enabled: true
       receivers:
-        grpc:
-          enabled: true
-          port: 4317
-        http:
-          enabled: true
-          port: 4318
-        zipkin:
-          enabled: true
-          port: 9411
-        jaeger:
+        otlp:
           grpc:
             enabled: true
-            port: 14250
-          thriftHttp:
+            port: 4317
+          http:
             enabled: true
-            port: 14268
-          thriftCompact:
+            port: 4318
+          zipkin:
             enabled: true
-            port: 6831
-          thriftBinary:
-            enabled: true
-            port: 6832
+            port: 9411
+          jaeger:
+            grpc:
+              enabled: true
+              port: 14250
+            thriftHttp:
+              enabled: true
+              port: 14268
+            thriftCompact:
+              enabled: true
+              port: 6831
+            thriftBinary:
+              enabled: true
+              port: 6832
       processors:
         batch:
           maxSize: 100
@@ -143,6 +144,9 @@ spec:
       enabled: true
 
     alloy-singleton:
+      enabled: true
+
+    alloy-receiver:
       enabled: true
 
     prometheusOperatorObjects:
