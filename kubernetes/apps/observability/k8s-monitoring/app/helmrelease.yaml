@@ -124,10 +124,6 @@ spec:
             thriftBinary:
               enabled: true
               port: 6832
-      processors:
-        batch:
-          maxSize: 100
-          timeout: 10s
 
     alloy-metrics:
       enabled: true
