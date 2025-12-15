@@ -151,6 +151,9 @@ spec:
     alloy-receiver:
       enabled: true
 
+    alloy-profiles:
+      enabled: true
+
     prometheusOperatorObjects:
       enabled: true
       crds:
@@ -196,6 +199,12 @@ spec:
               portName: http2
             logs:
               enabled: true
+
+    profiling:
+      enabled: true
+
+    profilesReceiver:
+      enabled: true
 
     selfReporting:
       enabled: false
