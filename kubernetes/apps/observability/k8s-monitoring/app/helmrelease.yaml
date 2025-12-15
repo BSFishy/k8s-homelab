@@ -128,8 +128,6 @@ spec:
         batch:
           maxSize: 100
           timeout: 10s
-        resourceDetection:
-          enabled: true
 
     alloy-metrics:
       enabled: true
