@@ -156,6 +156,10 @@ spec:
             port: 4040
             targetPort: 4040
             protocol: TCP
+          - name: otlp-grpc
+            port: 4317
+            targetPort: 4317
+            protocol: TCP
 
     alloy-profiles:
       enabled: true
