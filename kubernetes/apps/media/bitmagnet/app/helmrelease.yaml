@@ -1,0 +1,115 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bitmagnet
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      bitmagnet:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bitmagnet-io/bitmagnet
+              tag: v0.10.0
+
+            command:
+              - bitmagnet
+              - worker
+              - run
+              - --keys=http_server
+              - --keys=queue_server
+              - --keys=dht_crawler
+
+            env:
+              TZ: America/Chicago
+              POSTGRES_HOST: postgres-primary.database.svc.cluster.local
+              POSTGRES_PORT: "5432"
+              POSTGRES_NAME: bitmagnet
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: bitmagnet-postgres-creds
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: bitmagnet-postgres-creds
+                    key: password
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: 3333
+
+      torrent:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: "10.1.3.9"
+        externalTrafficPolicy: Cluster
+        ports:
+          tcp:
+            port: 3334
+            protocol: TCP
+          udp:
+            port: 3334
+            protocol: UDP
+
+    route:
+      app:
+        hostnames:
+          - "bitmagnet.home.mattprovost.dev"
+        parentRefs:
+          - name: traefik-gateway
+            namespace: infra
+            sectionName: websecure
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 3333
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: authentik
+
+    persistence:
+      config:
+        existingClaim: bitmagnet-config
+        globalMounts:
+          - path: /root/.config/bitmagnet

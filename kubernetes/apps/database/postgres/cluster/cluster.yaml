@@ -61,6 +61,11 @@ spec:
         - authentik
       password: *password
 
+    - name: bitmagnet
+      databases:
+        - bitmagnet
+      password: *password
+
     - name: forgejo
       databases:
         - forgejo

@@ -24,6 +24,7 @@
 - `10.1.3.6` - minecraft
 - `10.1.3.7` - home assistant
 - `10.1.3.8` - jellyfin
+- `10.1.3.9` - bitmagnet
 
 ## ipv6
 

@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/v1/ServiceAccount.json
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultconnection_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault
+spec:
+  address: http://vault-active.vault-system:8200
+  skipTLSVerify: false
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultauth_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: bitmagnet-auth
+spec:
+  vaultConnectionRef: vault
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: vault
+    audiences:
+      - vault
+    serviceAccount: vault
+    tokenExpirationSeconds: 600
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/secrets.hashicorp.com/vaultdynamicsecret_v1beta1.json
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: bitmagnet-postgres
+spec:
+  vaultAuthRef: bitmagnet-auth
+  mount: database
+  path: static-creds/bitmagnet
+  destination:
+    name: bitmagnet-postgres-creds
+    create: true
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: bitmagnet

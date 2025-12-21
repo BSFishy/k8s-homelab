@@ -14,3 +14,4 @@ resources:
   - ./jellyseerr/ks.yaml
   - ./decluttarr/ks.yaml
   - ./janitorr/ks.yaml
+  - ./bitmagnet/ks.yaml
