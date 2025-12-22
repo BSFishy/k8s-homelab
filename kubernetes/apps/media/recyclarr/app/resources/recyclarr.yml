@@ -22,9 +22,9 @@ sonarr:
           - name: WEB-1080p
       - trash_ids:
           - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
-        score: -10
         assign_scores_to:
           - name: WEB-1080p
+            score: -10
 
     media_naming:
       series: jellyfin-tvdb
@@ -58,9 +58,9 @@ radarr:
           - name: HD Bluray + WEB
       - trash_ids:
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
-        score: -10
         assign_scores_to:
           - name: HD Bluray + WEB
+            score: -10
 
     media_naming:
       folder: jellyfin-tmdb
