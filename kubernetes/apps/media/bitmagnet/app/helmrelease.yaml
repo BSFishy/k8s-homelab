@@ -115,3 +115,9 @@ spec:
         existingClaim: bitmagnet-config
         globalMounts:
           - path: /root/.config/bitmagnet
+      classifier:
+        type: configMap
+        name: bitmagnet-classifier
+        globalMounts:
+          - path: /root/.config/bitmagnet/classifier.yml
+            subPath: classifier.yml

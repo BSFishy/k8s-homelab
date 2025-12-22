@@ -6,3 +6,10 @@ resources:
   - ./postgres-creds.yaml
   - ./pvc.yaml
   - ./helmrelease.yaml
+
+configMapGenerator:
+  - name: bitmagnet-classifier
+    files:
+      - classifier.yml=classifier/classifier.yml
+generatorOptions:
+  disableNameSuffixHash: true
