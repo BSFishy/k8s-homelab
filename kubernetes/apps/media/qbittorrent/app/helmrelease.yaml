@@ -53,8 +53,8 @@ spec:
                         [ "$(curl -fsS --max-time 5 http://127.0.0.1:80/api/v2/transfer/info \
                             | jq -r '.connection_status')" = "connected" ]
                   periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 6 # ~1 minute of not-connected before restart
+                  timeoutSeconds: 10
+                  failureThreshold: 12 # give ~2 minutes for ceph blips before restart
                   initialDelaySeconds: 30
               readiness:
                 enabled: true
@@ -65,13 +65,23 @@ spec:
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
+                  timeoutSeconds: 3
+                  failureThreshold: 5
               startup:
                 enabled: true
                 spec:
                   failureThreshold: 30
                   periodSeconds: 10
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - |
+                      # Try to let CephFS flush/umount gracefully before the pod dies.
+                      umount -l /media 2>/dev/null || true
+                      sleep 5
 
             securityContext:
               allowPrivilegeEscalation: false

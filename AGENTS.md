@@ -25,10 +25,10 @@ as secrets and prefer sealed-secrets or SOPS in Git.
 
 ## Agent Execution Boundaries
 
-Never interact with Talos, Kubernetes, Flux, or any other cluster resources.
-Interactions with this repository must be restrained to code edits. Do not run
-any `just` commands, Flux commands, `kubectl` commands, or anything that may
-interact with the cluster.
+Unless explicitly allowed by the user, never interact with Talos, Kubernetes,
+Flux, or any other cluster resources. Interactions with this repository must be
+restrained to code edits. Do not run any `just` commands, Flux commands,
+`kubectl` commands, or anything that may interact with the cluster.
 
 Also never run commands to interact with secret data (e.g. `just talos-config-gen`).
 The user will always handle any secret-related operations.

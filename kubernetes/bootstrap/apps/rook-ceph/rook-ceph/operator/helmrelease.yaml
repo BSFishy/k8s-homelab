@@ -36,6 +36,9 @@ spec:
       serviceMonitor:
         enabled: true
 
+      cephcsi:
+        tag: v3.15.1
+
     image:
       repository: ghcr.io/rook/ceph
 
