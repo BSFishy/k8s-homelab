@@ -55,15 +55,13 @@ spec:
         # priority is top to bottom, so this is the first schedule that applies
         - colors:
             # red
-            - "oklch(70.4% 0.191 22.216)"
+            - "oklch(88.5% 0.062 18.334)"
             # orange
-            - "oklch(75% 0.183 55.934)"
+            - "oklch(90.1% 0.076 70.697)"
             # amber
-            - "oklch(87.9% 0.169 91.605)"
-            - "oklch(82.8% 0.189 84.429)"
+            - "oklch(92.4% 0.12 95.746)"
             # yellow
-            - "oklch(90.5% 0.182 98.111)"
-            - "oklch(85.2% 0.199 91.936)"
+            - "oklch(94.5% 0.129 101.54)"
           # time:
           #   fade_in:
           #     start: "7:00PM"
