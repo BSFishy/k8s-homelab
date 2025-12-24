@@ -6,6 +6,7 @@ resources:
   - ./postgres-creds.yaml
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ./servicemonitor.yaml
 
 configMapGenerator:
   - name: bitmagnet-classifier
