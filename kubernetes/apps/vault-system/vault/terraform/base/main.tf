@@ -21,42 +21,23 @@ resource "vault_kubernetes_auth_backend_role" "vault" {
   bound_service_account_names = ["vault"]
   bound_service_account_namespaces = ["vault-system", "infra", "minecraft", "media"]
 
-  token_policies = ["p-vso-infra"]
+  token_policies = [vault_policy.vso.name]
 }
 
-# Example: Create a base policy for read-only access to kv-v2
-resource "vault_policy" "readonly" {
-  name = "readonly"
+resource "vault_policy" "vso" {
+  name = "p-vso-infra"
 
   policy = <<EOT
-# Allow read access to kv-v2 secrets
-path "secret/data/*" {
-  capabilities = ["read", "list"]
+path "database/static-creds/*" {
+  capabilities = ["read"]
 }
 
-# Allow listing secret paths
-path "secret/metadata/*" {
-  capabilities = ["list"]
-}
-EOT
+path "kv/data/curseforge/*" {
+  capabilities = ["read"]
 }
 
-# Example: Create a base policy for app access
-resource "vault_policy" "app_default" {
-  name = "app-default"
-
-  policy = <<EOT
-# Default policy for applications
-# Customize based on your needs
-
-# Allow renewing tokens
-path "auth/token/renew-self" {
-  capabilities = ["update"]
-}
-
-# Allow revoking tokens
-path "auth/token/revoke-self" {
-  capabilities = ["update"]
+path "kv/metadata/curseforge/*" {
+  capabilities = ["list", "read"]
 }
 EOT
 }
