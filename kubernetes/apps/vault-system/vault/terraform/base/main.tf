@@ -3,7 +3,6 @@ provider "vault" {
   token   = var.vault_token
 }
 
-# Example: Enable Kubernetes auth method
 resource "vault_auth_backend" "kubernetes" {
   type = "kubernetes"
   path = "kubernetes"
@@ -11,10 +10,18 @@ resource "vault_auth_backend" "kubernetes" {
   description = "Kubernetes auth backend for ${var.cluster_name}"
 }
 
-# Example: Configure Kubernetes auth backend
 resource "vault_kubernetes_auth_backend_config" "config" {
   backend         = vault_auth_backend.kubernetes.path
   kubernetes_host = "https://kubernetes.default.svc.cluster.local"
+}
+
+resource "vault_kubernetes_auth_backend_role" "vault" {
+  backend = vault_auth_backend.kubernetes.path
+  role_name = "vault"
+  bound_service_account_names = ["vault"]
+  bound_service_account_namespaces = ["vault-system", "infra", "minecraft", "media"]
+
+  token_policies = ["p-vso-infra"]
 }
 
 # Example: Create a base policy for read-only access to kv-v2
