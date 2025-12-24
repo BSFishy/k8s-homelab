@@ -22,9 +22,9 @@ spec:
       bitmagnet:
         pod:
           annotations:
-            pyroscope.grafana.com/cpu.scrape: "true"
-            pyroscope.grafana.com/cpu.port: "3333"
-            pyroscope.grafana.com/cpu.path: "/debug/pprof/profile?seconds=10"
+            profiles.grafana.com/cpu.scrape: "true"
+            profiles.grafana.com/cpu.port: "3333"
+            profiles.grafana.com/cpu.path: "/debug/pprof/profile?seconds=10"
 
         containers:
           app:
