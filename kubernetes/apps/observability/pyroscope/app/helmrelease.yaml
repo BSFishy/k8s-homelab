@@ -52,6 +52,10 @@ spec:
     microservices:
       enabled: false
 
+    # Alloy provided by k8s-monitoring
+    alloy:
+      enabled: false
+
     # Pyroscope configuration
     pyroscope:
       extraArgs:
@@ -87,7 +91,3 @@ spec:
       interval: "30s"
       scrapeTimeout: "10s"
       labels: {}
-
-    # Disable test pods
-    test:
-      enabled: false
