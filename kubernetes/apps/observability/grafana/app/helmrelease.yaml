@@ -99,6 +99,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/pyroscope
+          - name: bitmagnet
+            orgId: 1
+            folder: Bitmagnet
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/bitmagnet
 
     dashboards:
       default:
@@ -267,6 +275,11 @@ spec:
       pyroscope:
         pyroscope-overview:
           url: https://raw.githubusercontent.com/grafana/pyroscope/main/operations/pyroscope/dashboards/overview.json
+          datasource: Prometheus
+
+      bitmagnet:
+        bitmagnet-overview:
+          url: https://raw.githubusercontent.com/bitmagnet-io/bitmagnet/refs/heads/main/observability/grafana-dashboards/bitmagnet.json
           datasource: Prometheus
 
     datasources:
