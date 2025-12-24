@@ -24,7 +24,7 @@ spec:
           annotations:
             profiles.grafana.com/cpu.scrape: "true"
             profiles.grafana.com/cpu.port: "3333"
-            profiles.grafana.com/cpu.path: "/debug/pprof/profile?seconds=10"
+            profiles.grafana.com/cpu.path: "/debug/pprof/profile"
 
         containers:
           app:
@@ -39,6 +39,9 @@ spec:
               - --keys=http_server
               - --keys=queue_server
               - --keys=dht_crawler
+
+            ports:
+              - containerPort: 3333
 
             env:
               TZ: America/Chicago
