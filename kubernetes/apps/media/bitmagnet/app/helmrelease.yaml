@@ -25,6 +25,18 @@ spec:
             profiles.grafana.com/cpu.scrape: "true"
             profiles.grafana.com/cpu.port: "3333"
             profiles.grafana.com/cpu.path: "/debug/pprof/profile"
+            profiles.grafana.com/memory.scrape: "true"
+            profiles.grafana.com/memory.port: "3333"
+            profiles.grafana.com/memory.path: "/debug/pprof/heap"
+            profiles.grafana.com/mutex.scrape: "true"
+            profiles.grafana.com/mutex.port: "3333"
+            profiles.grafana.com/mutex.path: "/debug/pprof/mutex"
+            profiles.grafana.com/block.scrape: "true"
+            profiles.grafana.com/block.port: "3333"
+            profiles.grafana.com/block.path: "/debug/pprof/block"
+            profiles.grafana.com/goroutine.scrape: "true"
+            profiles.grafana.com/goroutine.port: "3333"
+            profiles.grafana.com/goroutine.path: "/debug/pprof/goroutine"
 
         containers:
           app:
