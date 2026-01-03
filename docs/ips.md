@@ -25,6 +25,7 @@
 - `10.1.3.7` - home assistant
 - `10.1.3.8` - jellyfin
 - `10.1.3.9` - bitmagnet
+- `10.1.3.10` - samba
 
 ## ipv6
 
