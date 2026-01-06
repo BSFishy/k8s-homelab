@@ -15,13 +15,14 @@ spec:
   values:
     image:
       repository: ghcr.io/bsfishy/lumos
-      tag: "main-91fd73c"
+      tag: "main-06bcda8"
 
     env:
       MQTT_BROKER: mqtt://mosquitto.home.svc.cluster.local:1883
 
     config:
       timestep: "1s"
+      steps: 5
       transition:
         min: "10s"
         max: "30s"
