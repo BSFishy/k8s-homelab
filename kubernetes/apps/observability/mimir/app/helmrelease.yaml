@@ -157,7 +157,7 @@ spec:
         receivers:
           - name: gotify
             webhook_configs:
-              - url: http://alertmanager-gotify-bridge.observability.svc.cluster.local/webhook
+              - url: https://gotify.home.mattprovost.dev/plugin/2/custom/P10AdPhVo7Ma4sf/alert
                 send_resolved: true
         route:
           receiver: gotify
