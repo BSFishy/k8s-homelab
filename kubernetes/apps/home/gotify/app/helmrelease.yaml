@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bsfishy/gotify-alertmanager-plugin
-              tag: main-ee99705
+              tag: main-3c7f6f3
             env:
               - name: GOTIFY_SERVER_PORT
                 value: &port "80"
