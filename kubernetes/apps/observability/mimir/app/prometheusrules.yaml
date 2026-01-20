@@ -1400,7 +1400,7 @@ spec:
               }} consistently sees a lower than expected number of gossip members.
             runbook_url: https://grafana.com/docs/mimir/latest/operators-guide/mimir-runbooks/#mimirgossipmemberstoolow
           expr:
-            'min by (cluster, namespace) (memberlist_client_cluster_members_count)
+            'min by (cluster, namespace) (memberlist_client_cluster_members_count{app="mimir"})
 
             <
 
