@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v1.18.8
+    tag: v1.19.0
   url: oci://ghcr.io/rook/rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -38,10 +38,10 @@ spec:
     toolbox:
       enabled: true
 
-    cephClusterSpec:
-      cephVersion:
-        image: quay.io/ceph/ceph:v20.2.0
+    cephImage:
+      tag: v20.3.0
 
+    cephClusterSpec:
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
