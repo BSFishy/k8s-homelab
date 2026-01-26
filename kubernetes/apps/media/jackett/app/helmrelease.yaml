@@ -26,19 +26,19 @@ spec:
               repository: ghcr.io/home-operations/jackett
               tag: 0.24.932@sha256:bd8fb88a44a94ad91941a9fddab16d07867cc1abf8636d717e5bb4fe49b3d08b
 
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 9117
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: &port 9117
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -63,7 +63,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: &port 9117
 
     route:
       app:
