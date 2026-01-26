@@ -69,3 +69,10 @@ spec:
         ports:
           http:
             port: *port
+
+    persistence:
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
