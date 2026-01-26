@@ -10,6 +10,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./prowlarr/ks.yaml
+  - ./jackett/ks.yaml
   - ./recyclarr/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./decluttarr/ks.yaml
