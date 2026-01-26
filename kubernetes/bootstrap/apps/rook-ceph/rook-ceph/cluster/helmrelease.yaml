@@ -53,6 +53,17 @@ spec:
         mds:
           mds_cache_memory_limit: "4294967296" # 4GiB cache for large media trees
 
+          # some of my pods have been getting in a weird state where the mounts
+          # get stale and io just hangs forever or i get a "Socket not
+          # connected" error. i am trying this setting, suggested here:
+          # https://docs.ceph.com/en/reef/cephfs/eviction/#advanced-configuring-blocklisting
+          # to see if that helps at all. if so, my understanding is that my
+          # network is unreliable enough or otherwise clients are slow enough to
+          # respond that they are getting preemptively disconnected and
+          # blocklisted by ceph. disabling this setting should allow them to
+          # re-open sessions to continue talking to osds
+          mds_session_blocklist_on_timeout: "false" # quote
+
       cleanupPolicy:
         wipeDevicesFromOtherClusters: false
 
