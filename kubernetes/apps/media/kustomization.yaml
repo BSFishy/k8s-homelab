@@ -11,6 +11,7 @@ resources:
   - ./radarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./jackett/ks.yaml
+  - ./flaresolverr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./decluttarr/ks.yaml
