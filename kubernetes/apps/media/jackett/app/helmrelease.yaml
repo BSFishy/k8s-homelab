@@ -116,3 +116,11 @@ spec:
         existingClaim: "media"
         globalMounts:
           - path: /media
+
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          jackett:
+            app:
+              - path: /tmp
+                subPath: tmp
