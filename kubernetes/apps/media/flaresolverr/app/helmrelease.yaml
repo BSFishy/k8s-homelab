@@ -71,6 +71,11 @@ spec:
             port: *port
 
     persistence:
+      config:
+        existingClaim: flaresolverr
+        globalMounts:
+          - /app
+
       tmpfs:
         type: emptyDir
         globalMounts:
