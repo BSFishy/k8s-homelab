@@ -47,7 +47,7 @@ spec:
 
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
             resources:
@@ -76,5 +76,3 @@ spec:
         globalMounts:
           - path: /tmp
             subPath: tmp
-          - path: /app/.local
-            subPath: cache
