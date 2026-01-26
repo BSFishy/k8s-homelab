@@ -26,32 +26,19 @@ spec:
               repository: ghcr.io/home-operations/jackett
               tag: 0.24.932@sha256:bd8fb88a44a94ad91941a9fddab16d07867cc1abf8636d717e5bb4fe49b3d08b
 
-            env:
-              JACKETT__APP__INSTANCENAME: Jackett
-              JACKETT__APP__THEME: dark
-              JACKETT__AUTH__METHOD: External
-              JACKETT__AUTH__REQUIRED: DisabledForLocalAddresses
-              JACKETT__LOG__LEVEL: info
-              JACKETT__SERVER__PORT: &port 80
-              TZ: America/Chicago
-
-            envFrom:
-              - secretRef:
-                  name: "jackett-secret"
-
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 9117
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
 
             securityContext:
               allowPrivilegeEscalation: false
