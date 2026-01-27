@@ -48,10 +48,15 @@ spec:
           bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
           device_failure_prediction_mode: local # requires mgr module
+          ms_connection_idle_timeout: "3600" # 1h
+          ms_connection_ready_timeout: "60" # 1m
         mgr:
           mgr/crash/warn_recent_interval: "7200" # 2h
         mds:
           mds_cache_memory_limit: "4294967296" # 4GiB cache for large media trees
+          mds_ping_interval: "10" # seconds
+          mds_ping_grace: "60" # seconds
+          mds_reconnect_timeout: "300" # seconds
 
           # some of my pods have been getting in a weird state where the mounts
           # get stale and io just hangs forever or i get a "Socket not

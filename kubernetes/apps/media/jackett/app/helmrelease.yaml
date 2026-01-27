@@ -99,11 +99,6 @@ spec:
         globalMounts:
           - path: /config/Jackett
 
-      media:
-        existingClaim: "media"
-        globalMounts:
-          - path: /media
-
       tmpfs:
         type: emptyDir
         advancedMounts:

@@ -50,3 +50,36 @@ groups:
           category: logs
         annotations:
           summary: "Home Assistant is unable to connect to postgresql"
+  #
+  # cephfs
+  #
+  - name: cephfs
+    rules:
+      - alert: CephFSFuseTransportEndpointDisconnected
+        expr: |
+          sum(
+            count_over_time(
+              {namespace="rook-ceph", pod=~"rook-ceph\\.cephfs\\.csi\\.ceph\\.com-nodeplugin-.*"}
+              |~ "(?i)transport endpoint is not connected"[5m]
+            )
+          ) > 0
+        for: 5m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          summary: "CephFS FUSE mount disconnected (transport endpoint not connected)"
+      - alert: CephFSFuseCorruptedMountDetected
+        expr: |
+          sum(
+            count_over_time(
+              {namespace="rook-ceph", pod=~"rook-ceph\\.cephfs\\.csi\\.ceph\\.com-nodeplugin-.*"}
+              |~ "(?i)corrupted mount detected"[5m]
+            )
+          ) > 0
+        for: 5m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          summary: "CephFS CSI detected a corrupted FUSE mount"
