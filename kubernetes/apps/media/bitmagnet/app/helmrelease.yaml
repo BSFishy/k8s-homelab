@@ -37,6 +37,8 @@ spec:
             profiles.grafana.com/goroutine.scrape: "true"
             profiles.grafana.com/goroutine.port: "3333"
             profiles.grafana.com/goroutine.path: "/debug/pprof/goroutine"
+          labels:
+            app.kubernetes.io/part-of: media
 
         containers:
           app:
@@ -90,6 +92,15 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: media
+                topologyKey: kubernetes.io/hostname
 
     service:
       app:

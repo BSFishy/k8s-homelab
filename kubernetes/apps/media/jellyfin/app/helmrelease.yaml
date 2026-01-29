@@ -23,6 +23,8 @@ spec:
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: jellyfin
+          labels:
+            app.kubernetes.io/part-of: media
 
         containers:
           app:
@@ -71,6 +73,15 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: media
+                topologyKey: kubernetes.io/hostname
 
     service:
       app:

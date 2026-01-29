@@ -20,6 +20,9 @@ spec:
   values:
     controllers:
       samba:
+        pod:
+          labels:
+            app.kubernetes.io/part-of: media
         containers:
           app:
             image:
@@ -46,6 +49,16 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+    defaultPodOptions:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: media
+                topologyKey: kubernetes.io/hostname
 
     service:
       smb:

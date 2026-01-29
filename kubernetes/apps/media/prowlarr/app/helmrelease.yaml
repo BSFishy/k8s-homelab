@@ -20,6 +20,9 @@ spec:
   values:
     controllers:
       prowlarr:
+        pod:
+          labels:
+            app.kubernetes.io/part-of: media
         containers:
           app:
             image:
@@ -73,6 +76,15 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: media
+                topologyKey: kubernetes.io/hostname
 
     service:
       app:

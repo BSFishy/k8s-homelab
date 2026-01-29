@@ -61,6 +61,8 @@ spec:
 
         pod:
           restartPolicy: Never
+          labels:
+            app.kubernetes.io/part-of: media
 
     defaultPodOptions:
       securityContext:
@@ -69,6 +71,15 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: media
+                topologyKey: kubernetes.io/hostname
 
     persistence:
       config:
