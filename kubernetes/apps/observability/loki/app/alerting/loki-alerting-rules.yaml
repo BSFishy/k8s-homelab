@@ -59,8 +59,7 @@ groups:
         expr: |
           sum(
             count_over_time(
-              {namespace="rook-ceph", pod=~"rook-ceph\\.cephfs\\.csi\\.ceph\\.com-nodeplugin-.*"}
-              |~ "(?i)transport endpoint is not connected"[5m]
+              {namespace="rook-ceph"} |~ "(?i)transport endpoint is not connected"[5m]
             )
           ) > 0
         for: 5m
@@ -73,8 +72,7 @@ groups:
         expr: |
           sum(
             count_over_time(
-              {namespace="rook-ceph", pod=~"rook-ceph\\.cephfs\\.csi\\.ceph\\.com-nodeplugin-.*"}
-              |~ "(?i)corrupted mount detected"[5m]
+              {namespace="rook-ceph"} |~ "(?i)corrupted mount detected"[5m]
             )
           ) > 0
         for: 5m
