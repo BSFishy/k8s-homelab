@@ -28,6 +28,9 @@ spec:
   mount: database
   path: static-creds/forgejo
 
+  # Allow secrets that are periodically rotated by the Vault server
+  allowStaticCreds: true
+
   # Where to write the generated secret inside Kubernetes
   destination:
     name: forgejo-postgres-creds
