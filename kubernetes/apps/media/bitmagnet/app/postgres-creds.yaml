@@ -39,6 +39,7 @@ spec:
   vaultAuthRef: bitmagnet-auth
   mount: database
   path: static-creds/bitmagnet
+  allowStaticCreds: true
   destination:
     name: bitmagnet-postgres-creds
     create: true
