@@ -84,6 +84,56 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+      bitmagnet-cleanup:
+        type: cronjob
+        cronjob:
+          schedule: 0 3 * * *
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 86400
+        containers:
+          app:
+            image:
+              repository: postgres
+              tag: 17
+            command:
+              - psql
+            args:
+              - -v
+              - ON_ERROR_STOP=1
+              - -f
+              - /scripts/cleanup.sql
+            env:
+              TZ: America/Chicago
+              PGHOST: postgres-primary.database.svc.cluster.local
+              PGPORT: "5432"
+              PGDATABASE: bitmagnet
+              PGUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: bitmagnet-postgres-creds
+                    key: username
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: bitmagnet-postgres-creds
+                    key: password
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+        pod:
+          restartPolicy: Never
+          labels:
+            app.kubernetes.io/part-of: media
 
     defaultPodOptions:
       securityContext:
@@ -153,3 +203,11 @@ spec:
         globalMounts:
           - path: /root/.config/bitmagnet/classifier.yml
             subPath: classifier.yml
+      cleanup-sql:
+        type: configMap
+        name: bitmagnet-cleanup-sql
+        advancedMounts:
+          bitmagnet-cleanup:
+            app:
+              - path: /scripts/cleanup.sql
+                subPath: cleanup.sql

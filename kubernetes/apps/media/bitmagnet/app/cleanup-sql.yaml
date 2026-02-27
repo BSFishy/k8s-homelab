@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/v1.33.3/configmap.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bitmagnet-cleanup-sql
+data:
+  cleanup.sql: |-
+    DELETE FROM torrents t
+    WHERE t.updated_at < now() - interval '7 days'
+      AND NOT EXISTS (
+        SELECT 1
+        FROM torrent_contents c
+        WHERE c.info_hash = t.info_hash
+          AND COALESCE(c.seeders, 0) + COALESCE(c.leechers, 0) > 0
+          AND c.updated_at >= now() - interval '7 days'
+      );

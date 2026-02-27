@@ -1,0 +1,154 @@
+bitmagnet=# \dt
+                    List of relations
+ Schema |            Name             | Type  |   Owner
+--------+-----------------------------+-------+-----------
+ public | bloom_filters               | table | bitmagnet
+ public | content                     | table | bitmagnet
+ public | content_attributes          | table | bitmagnet
+ public | content_collections         | table | bitmagnet
+ public | content_collections_content | table | bitmagnet
+ public | goose_db_version            | table | bitmagnet
+ public | key_values                  | table | bitmagnet
+ public | metadata_sources            | table | bitmagnet
+ public | queue_jobs                  | table | bitmagnet
+ public | torrent_contents            | table | bitmagnet
+ public | torrent_files               | table | bitmagnet
+ public | torrent_hints               | table | bitmagnet
+ public | torrent_pieces              | table | bitmagnet
+ public | torrent_sources             | table | bitmagnet
+ public | torrent_tags                | table | bitmagnet
+ public | torrents                    | table | bitmagnet
+ public | torrents_torrent_sources    | table | bitmagnet
+(17 rows)
+
+bitmagnet=# \d torrents
+                                                                           Table "public.torrents"
+    Column    |           Type           | Collation | Nullable |                                                  Default
+--------------+--------------------------+-----------+----------+------------------------------------------------------------------------------------------------------------
+ info_hash    | bytea                    |           | not null |
+ name         | text                     |           | not null |
+ size         | bigint                   |           | not null |
+ private      | boolean                  |           | not null |
+ created_at   | timestamp with time zone |           | not null |
+ updated_at   | timestamp with time zone |           | not null |
+ files_status | "FilesStatus"            |           | not null | 'no_info'::"FilesStatus"
+ extension    | text                     |           |          | generated always as (                                                                                     +
+              |                          |           |          | CASE                                                                                                      +
+              |                          |           |          |     WHEN files_status = 'single'::"FilesStatus" THEN "substring"(lower(name), '[^/.]\.([a-z0-9]+)$'::text)+
+              |                          |           |          |     ELSE NULL::text                                                                                       +
+              |                          |           |          | END) stored
+ files_count  | integer                  |           |          |
+Indexes:
+    "torrents_pkey" PRIMARY KEY, btree (info_hash)
+    "torrents_created_at_idx" btree (created_at)
+    "torrents_extension_idx" btree (extension)
+    "torrents_files_status_idx" btree (files_status)
+    "torrents_name_idx" btree (name)
+    "torrents_size_idx" btree (size)
+Referenced by:
+    TABLE "torrent_contents" CONSTRAINT "torrent_contents_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+    TABLE "torrent_files" CONSTRAINT "torrent_files_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+    TABLE "torrent_hints" CONSTRAINT "torrent_hints_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+    TABLE "torrent_pieces" CONSTRAINT "torrent_pieces_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+    TABLE "torrent_tags" CONSTRAINT "torrent_tags_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+    TABLE "torrents_torrent_sources" CONSTRAINT "torrents_torrent_sources_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+
+bitmagnet=# \d torrent_contents
+
+                                                                                                                                 Table "public.torrent_contents"
+      Column      |           Type           | Collation | Nullable |                                                                                                           Default                                          
+------------------+--------------------------+-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ id               | text                     |           | not null | generated always as ((((((encode(info_hash, 'hex'::text) || ':'::text) || COALESCE(content_type, '?'::text)) || ':'::text) || COALESCE(content_source, '?'::text)) || ':'::text) || COALESCE(content_id, '?'::text)) stored
+ info_hash        | bytea                    |           | not null |
+ content_type     | text                     |           |          |
+ content_source   | text                     |           |          |
+ content_id       | text                     |           |          |
+ languages        | jsonb                    |           |          |
+ episodes         | jsonb                    |           |          |
+ video_resolution | text                     |           |          |
+ video_source     | text                     |           |          |
+ video_codec      | text                     |           |          |
+ video_3d         | text                     |           |          |
+ video_modifier   | text                     |           |          |
+ release_group    | text                     |           |          |
+ created_at       | timestamp with time zone |           | not null |
+ updated_at       | timestamp with time zone |           | not null |
+ tsv              | tsvector                 |           |          |
+ seeders          | integer                  |           |          |
+ leechers         | integer                  |           |          |
+ published_at     | timestamp with time zone |           | not null | '1999-01-01 00:00:00+00'::timestamp with time zone
+ size             | bigint                   |           | not null | 0
+ files_count      | integer                  |           |          |
+Indexes:
+    "torrent_contents_pkey" PRIMARY KEY, btree (id)
+    "torrent_contents_coalesce_idx" btree (COALESCE(files_count, 0))
+    "torrent_contents_content_id_idx" btree (content_id)
+    "torrent_contents_content_source_content_id_idx" btree (content_source, content_id)
+    "torrent_contents_content_source_idx" btree (content_source)
+    "torrent_contents_content_type_idx" btree (content_type)
+    "torrent_contents_content_type_languages_idx" gin (content_type, languages)
+    "torrent_contents_content_type_tsv_idx" gin (content_type, tsv)
+    "torrent_contents_content_type_updated_at_idx" btree (content_type, updated_at)
+    "torrent_contents_episodes_idx" btree (episodes)
+    "torrent_contents_info_hash_content_type_content_source_cont_key" UNIQUE CONSTRAINT, btree (info_hash, content_type, content_source, content_id)
+    "torrent_contents_leechers_coalesce_idx" btree (COALESCE(leechers, '-1'::integer))
+    "torrent_contents_leechers_idx" btree (leechers)
+    "torrent_contents_published_at_idx" btree (published_at)
+    "torrent_contents_release_group_idx" btree (release_group)
+    "torrent_contents_seeders_coalesce_idx" btree (COALESCE(seeders, '-1'::integer))
+    "torrent_contents_seeders_idx" btree (seeders)
+    "torrent_contents_size_idx" btree (size)
+    "torrent_contents_updated_at_idx" btree (updated_at)
+    "torrent_contents_video_3d_idx" btree (video_3d)
+    "torrent_contents_video_codec_idx" btree (video_codec)
+    "torrent_contents_video_modifier_idx" btree (video_modifier)
+    "torrent_contents_video_resolution_idx" btree (video_resolution)
+    "torrent_contents_video_source_idx" btree (video_source)
+Check constraints:
+    "torrent_contents_check" CHECK (content_type IS NOT NULL OR content_id IS NULL)
+    "torrent_contents_check1" CHECK (content_source IS NULL OR content_id IS NOT NULL)
+Foreign-key constraints:
+    "torrent_contents_content_source_fkey" FOREIGN KEY (content_source) REFERENCES metadata_sources(key) ON DELETE CASCADE
+    "torrent_contents_content_type_content_source_content_id_fkey" FOREIGN KEY (content_type, content_source, content_id) REFERENCES content(type, source, id) ON DELETE CASCADE
+    "torrent_contents_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
+
+bitmagnet=# \d torrent_sources
+                     Table "public.torrent_sources"
+   Column   |           Type           | Collation | Nullable | Default
+------------+--------------------------+-----------+----------+---------
+ key        | text                     |           | not null |
+ name       | text                     |           | not null |
+ created_at | timestamp with time zone |           | not null |
+ updated_at | timestamp with time zone |           | not null |
+Indexes:
+    "torrent_sources_pkey" PRIMARY KEY, btree (key)
+Referenced by:
+    TABLE "torrents_torrent_sources" CONSTRAINT "torrents_torrent_sources_source_fkey" FOREIGN KEY (source) REFERENCES torrent_sources(key) ON DELETE CASCADE
+
+bitmagnet=# \d torrent_hints
+                         Table "public.torrent_hints"
+      Column      |           Type           | Collation | Nullable | Default
+------------------+--------------------------+-----------+----------+---------
+ info_hash        | bytea                    |           | not null |
+ content_type     | text                     |           | not null |
+ content_source   | text                     |           |          |
+ content_id       | text                     |           |          |
+ title            | text                     |           |          |
+ release_year     | integer                  |           |          |
+ languages        | jsonb                    |           |          |
+ episodes         | jsonb                    |           |          |
+ video_resolution | text                     |           |          |
+ video_source     | text                     |           |          |
+ video_codec      | text                     |           |          |
+ video_3d         | text                     |           |          |
+ video_modifier   | text                     |           |          |
+ release_group    | text                     |           |          |
+ created_at       | timestamp with time zone |           | not null |
+ updated_at       | timestamp with time zone |           | not null |
+Indexes:
+    "torrent_hints_pkey" PRIMARY KEY, btree (info_hash)
+Check constraints:
+    "torrent_hints_check" CHECK (content_source IS NULL OR content_id IS NOT NULL)
+Foreign-key constraints:
+    "torrent_hints_content_source_fkey" FOREIGN KEY (content_source) REFERENCES metadata_sources(key) ON DELETE CASCADE
+    "torrent_hints_info_hash_fkey" FOREIGN KEY (info_hash) REFERENCES torrents(info_hash) ON DELETE CASCADE
