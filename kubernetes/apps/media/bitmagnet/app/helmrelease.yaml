@@ -197,14 +197,18 @@ spec:
     persistence:
       config:
         existingClaim: bitmagnet-config
-        globalMounts:
-          - path: /root/.config/bitmagnet
+        advancedMounts:
+          bitmagnet:
+            app:
+              - path: /root/.config/bitmagnet
       classifier:
         type: configMap
         name: bitmagnet-classifier
-        globalMounts:
-          - path: /root/.config/bitmagnet/classifier.yml
-            subPath: classifier.yml
+        advancedMounts:
+          bitmagnet:
+            app:
+              - path: /root/.config/bitmagnet/classifier.yml
+                subPath: classifier.yml
       cleanup-sql:
         type: configMap
         name: bitmagnet-cleanup-sql
