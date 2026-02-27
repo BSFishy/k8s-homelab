@@ -154,6 +154,7 @@ spec:
 
     service:
       app:
+        type: ClusterIP
         ports:
           http:
             port: 3333
