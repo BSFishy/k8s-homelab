@@ -26,6 +26,30 @@ data:
           LIMIT 1000
           FOR UPDATE SKIP LOCKED
         )
+        DELETE FROM torrents_torrent_sources tts
+        USING candidates c
+        WHERE tts.info_hash = c.info_hash;
+
+        DELETE FROM torrent_contents tc
+        USING candidates c
+        WHERE tc.info_hash = c.info_hash;
+
+        DELETE FROM torrent_files tf
+        USING candidates c
+        WHERE tf.info_hash = c.info_hash;
+
+        DELETE FROM torrent_hints th
+        USING candidates c
+        WHERE th.info_hash = c.info_hash;
+
+        DELETE FROM torrent_pieces tp
+        USING candidates c
+        WHERE tp.info_hash = c.info_hash;
+
+        DELETE FROM torrent_tags tt
+        USING candidates c
+        WHERE tt.info_hash = c.info_hash;
+
         DELETE FROM torrents t
         USING candidates c
         WHERE t.info_hash = c.info_hash;
