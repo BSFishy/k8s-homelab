@@ -22,6 +22,8 @@ spec:
       bitmagnet:
         pod:
           annotations:
+            kubernetes.io/egress-bandwidth: "1M"
+            kubernetes.io/ingress-bandwidth: "1M"
             profiles.grafana.com/cpu.scrape: "true"
             profiles.grafana.com/cpu.port: "3333"
             profiles.grafana.com/cpu.path: "/debug/pprof/profile"

@@ -21,6 +21,9 @@ spec:
     controllers:
       qbittorrent:
         pod:
+          annotations:
+            kubernetes.io/egress-bandwidth: "5M"
+            kubernetes.io/ingress-bandwidth: "5M"
           shareProcessNamespace: true
           labels:
             app.kubernetes.io/part-of: media
