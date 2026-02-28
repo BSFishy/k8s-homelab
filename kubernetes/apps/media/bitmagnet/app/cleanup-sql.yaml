@@ -11,47 +11,49 @@ data:
       deleted_count integer := 0;
     BEGIN
       LOOP
-        WITH candidates AS (
-          SELECT t.info_hash
-          FROM torrents t
-          WHERE t.updated_at < now() - interval '7 days'
-            AND NOT EXISTS (
-              SELECT 1
-              FROM torrent_contents c
-              WHERE c.info_hash = t.info_hash
-                AND COALESCE(c.seeders, 0) + COALESCE(c.leechers, 0) > 0
-                AND c.updated_at >= now() - interval '7 days'
-            )
-          ORDER BY t.info_hash
-          LIMIT 1000
-          FOR UPDATE SKIP LOCKED
-        )
+        CREATE TEMP TABLE cleanup_candidates (info_hash bytea) ON COMMIT DROP;
+
+        INSERT INTO cleanup_candidates (info_hash)
+        SELECT t.info_hash
+        FROM torrents t
+        WHERE t.updated_at < now() - interval '7 days'
+          AND NOT EXISTS (
+            SELECT 1
+            FROM torrent_contents c
+            WHERE c.info_hash = t.info_hash
+              AND COALESCE(c.seeders, 0) + COALESCE(c.leechers, 0) > 0
+              AND c.updated_at >= now() - interval '7 days'
+          )
+        ORDER BY t.info_hash
+        LIMIT 1000
+        FOR UPDATE SKIP LOCKED;
+
         DELETE FROM torrents_torrent_sources tts
-        USING candidates c
+        USING cleanup_candidates c
         WHERE tts.info_hash = c.info_hash;
 
         DELETE FROM torrent_contents tc
-        USING candidates c
+        USING cleanup_candidates c
         WHERE tc.info_hash = c.info_hash;
 
         DELETE FROM torrent_files tf
-        USING candidates c
+        USING cleanup_candidates c
         WHERE tf.info_hash = c.info_hash;
 
         DELETE FROM torrent_hints th
-        USING candidates c
+        USING cleanup_candidates c
         WHERE th.info_hash = c.info_hash;
 
         DELETE FROM torrent_pieces tp
-        USING candidates c
+        USING cleanup_candidates c
         WHERE tp.info_hash = c.info_hash;
 
         DELETE FROM torrent_tags tt
-        USING candidates c
+        USING cleanup_candidates c
         WHERE tt.info_hash = c.info_hash;
 
         DELETE FROM torrents t
-        USING candidates c
+        USING cleanup_candidates c
         WHERE t.info_hash = c.info_hash;
 
         GET DIAGNOSTICS deleted_count = ROW_COUNT;
