@@ -6,12 +6,31 @@ metadata:
   name: bitmagnet-cleanup-sql
 data:
   cleanup.sql: |-
-    DELETE FROM torrents t
-    WHERE t.updated_at < now() - interval '7 days'
-      AND NOT EXISTS (
-        SELECT 1
-        FROM torrent_contents c
-        WHERE c.info_hash = t.info_hash
-          AND COALESCE(c.seeders, 0) + COALESCE(c.leechers, 0) > 0
-          AND c.updated_at >= now() - interval '7 days'
-      );
+    DO $$
+    DECLARE
+      deleted_count integer := 0;
+    BEGIN
+      LOOP
+        WITH candidates AS (
+          SELECT t.info_hash
+          FROM torrents t
+          WHERE t.updated_at < now() - interval '7 days'
+            AND NOT EXISTS (
+              SELECT 1
+              FROM torrent_contents c
+              WHERE c.info_hash = t.info_hash
+                AND COALESCE(c.seeders, 0) + COALESCE(c.leechers, 0) > 0
+                AND c.updated_at >= now() - interval '7 days'
+            )
+          ORDER BY t.info_hash
+          LIMIT 1000
+          FOR UPDATE SKIP LOCKED
+        )
+        DELETE FROM torrents t
+        USING candidates c
+        WHERE t.info_hash = c.info_hash;
+
+        GET DIAGNOSTICS deleted_count = ROW_COUNT;
+        EXIT WHEN deleted_count = 0;
+      END LOOP;
+    END $$;
