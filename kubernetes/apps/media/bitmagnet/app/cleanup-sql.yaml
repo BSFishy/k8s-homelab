@@ -24,7 +24,7 @@ data:
                 AND c.updated_at >= now() - interval '7 days'
             )
           ORDER BY t.info_hash
-          LIMIT 1000
+          LIMIT 10
           FOR UPDATE SKIP LOCKED
         ) s;
 
