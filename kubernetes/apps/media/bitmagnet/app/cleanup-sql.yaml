@@ -11,6 +11,8 @@ data:
       candidates bytea[];
       batch_size integer := 10;
       deadlock_count integer := 0;
+      picked_count integer := 0;
+      deleted_count integer := 0;
     BEGIN
       LOOP
         SELECT array_agg(info_hash) INTO candidates
@@ -30,7 +32,9 @@ data:
           FOR UPDATE SKIP LOCKED
         ) s;
 
-        EXIT WHEN candidates IS NULL;
+        picked_count := COALESCE(array_length(candidates, 1), 0);
+        EXIT WHEN picked_count = 0;
+        RAISE NOTICE 'bitmagnet cleanup: picked % candidates', picked_count;
 
         BEGIN
           DELETE FROM torrents_torrent_sources WHERE info_hash = ANY (candidates);
@@ -40,10 +44,13 @@ data:
           DELETE FROM torrent_pieces WHERE info_hash = ANY (candidates);
           DELETE FROM torrent_tags WHERE info_hash = ANY (candidates);
           DELETE FROM torrents WHERE info_hash = ANY (candidates);
+          GET DIAGNOSTICS deleted_count = ROW_COUNT;
+          RAISE NOTICE 'bitmagnet cleanup: deleted % torrents in batch', deleted_count;
           deadlock_count := 0;
         EXCEPTION
           WHEN deadlock_detected THEN
             deadlock_count := deadlock_count + 1;
+            RAISE NOTICE 'bitmagnet cleanup: deadlock detected (attempt %), retrying', deadlock_count;
             PERFORM pg_sleep(0.25);
             IF deadlock_count >= 10 THEN
               RAISE;
