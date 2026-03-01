@@ -9,6 +9,8 @@ data:
     DO $$
     DECLARE
       candidates bytea[];
+      batch_size integer := 10;
+      deadlock_count integer := 0;
     BEGIN
       LOOP
         SELECT array_agg(info_hash) INTO candidates
@@ -24,18 +26,28 @@ data:
                 AND c.updated_at >= now() - interval '7 days'
             )
           ORDER BY t.info_hash
-          LIMIT 10
+          LIMIT batch_size
           FOR UPDATE SKIP LOCKED
         ) s;
 
         EXIT WHEN candidates IS NULL;
 
-        DELETE FROM torrents_torrent_sources WHERE info_hash = ANY (candidates);
-        DELETE FROM torrent_contents WHERE info_hash = ANY (candidates);
-        DELETE FROM torrent_files WHERE info_hash = ANY (candidates);
-        DELETE FROM torrent_hints WHERE info_hash = ANY (candidates);
-        DELETE FROM torrent_pieces WHERE info_hash = ANY (candidates);
-        DELETE FROM torrent_tags WHERE info_hash = ANY (candidates);
-        DELETE FROM torrents WHERE info_hash = ANY (candidates);
+        BEGIN
+          DELETE FROM torrents_torrent_sources WHERE info_hash = ANY (candidates);
+          DELETE FROM torrent_contents WHERE info_hash = ANY (candidates);
+          DELETE FROM torrent_files WHERE info_hash = ANY (candidates);
+          DELETE FROM torrent_hints WHERE info_hash = ANY (candidates);
+          DELETE FROM torrent_pieces WHERE info_hash = ANY (candidates);
+          DELETE FROM torrent_tags WHERE info_hash = ANY (candidates);
+          DELETE FROM torrents WHERE info_hash = ANY (candidates);
+          deadlock_count := 0;
+        EXCEPTION
+          WHEN deadlock_detected THEN
+            deadlock_count := deadlock_count + 1;
+            PERFORM pg_sleep(0.25);
+            IF deadlock_count >= 10 THEN
+              RAISE;
+            END IF;
+        END;
       END LOOP;
     END $$;
