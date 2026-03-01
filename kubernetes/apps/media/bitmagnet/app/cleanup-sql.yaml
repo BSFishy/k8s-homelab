@@ -14,6 +14,7 @@ data:
       picked_count integer := 0;
       deleted_count integer := 0;
     BEGIN
+      PERFORM pg_advisory_lock(hashtext('bitmagnet_cleanup'));
       LOOP
         SELECT array_agg(info_hash) INTO candidates
         FROM (
@@ -37,6 +38,15 @@ data:
         RAISE NOTICE 'bitmagnet cleanup: picked % candidates', picked_count;
 
         BEGIN
+          PERFORM set_config('lock_timeout', '2s', true);
+          LOCK TABLE torrents_torrent_sources,
+                     torrent_contents,
+                     torrent_files,
+                     torrent_hints,
+                     torrent_pieces,
+                     torrent_tags,
+                     torrents
+            IN SHARE ROW EXCLUSIVE MODE;
           DELETE FROM torrents_torrent_sources WHERE info_hash = ANY (candidates);
           DELETE FROM torrent_contents WHERE info_hash = ANY (candidates);
           DELETE FROM torrent_files WHERE info_hash = ANY (candidates);
@@ -48,13 +58,23 @@ data:
           RAISE NOTICE 'bitmagnet cleanup: deleted % torrents in batch', deleted_count;
           deadlock_count := 0;
         EXCEPTION
+          WHEN lock_not_available THEN
+            deadlock_count := deadlock_count + 1;
+            RAISE NOTICE 'bitmagnet cleanup: lock timeout (attempt %), retrying', deadlock_count;
+            PERFORM pg_sleep(0.5);
+            IF deadlock_count >= 10 THEN
+              RAISE NOTICE 'bitmagnet cleanup: too many lock timeouts, stopping early';
+              EXIT;
+            END IF;
           WHEN deadlock_detected THEN
             deadlock_count := deadlock_count + 1;
             RAISE NOTICE 'bitmagnet cleanup: deadlock detected (attempt %), retrying', deadlock_count;
             PERFORM pg_sleep(0.25);
             IF deadlock_count >= 10 THEN
-              RAISE;
+              RAISE NOTICE 'bitmagnet cleanup: too many deadlocks, stopping early';
+              EXIT;
             END IF;
         END;
       END LOOP;
+      PERFORM pg_advisory_unlock(hashtext('bitmagnet_cleanup'));
     END $$;
