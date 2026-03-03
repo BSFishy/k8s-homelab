@@ -9,13 +9,16 @@ data:
     DO $$
     DECLARE
       candidates bytea[];
-      batch_size integer := 10;
+      batch_size integer := 100;
+      max_deleted integer := 100000;
+      total_deleted integer := 0;
       deadlock_count integer := 0;
       picked_count integer := 0;
       deleted_count integer := 0;
     BEGIN
       PERFORM pg_advisory_lock(hashtext('bitmagnet_cleanup'));
       LOOP
+        EXIT WHEN total_deleted >= max_deleted;
         SELECT array_agg(info_hash) INTO candidates
         FROM (
           SELECT t.info_hash
@@ -55,7 +58,9 @@ data:
           DELETE FROM torrent_tags WHERE info_hash = ANY (candidates);
           DELETE FROM torrents WHERE info_hash = ANY (candidates);
           GET DIAGNOSTICS deleted_count = ROW_COUNT;
+          total_deleted := total_deleted + deleted_count;
           RAISE NOTICE 'bitmagnet cleanup: deleted % torrents in batch', deleted_count;
+          RAISE NOTICE 'bitmagnet cleanup: total deleted this run % / %', total_deleted, max_deleted;
           deadlock_count := 0;
         EXCEPTION
           WHEN lock_not_available THEN
@@ -76,5 +81,6 @@ data:
             END IF;
         END;
       END LOOP;
+      RAISE NOTICE 'bitmagnet cleanup: finished with total deleted %', total_deleted;
       PERFORM pg_advisory_unlock(hashtext('bitmagnet_cleanup'));
     END $$;
