@@ -172,6 +172,16 @@ spec:
           revision: 14
           datasource: Prometheus
 
+      postgres:
+        postgresql-database:
+          gnetId: 9628
+          revision: 1
+          datasource: Prometheus
+        postgresql-statistics:
+          gnetId: 13494
+          revision: 1
+          datasource: Prometheus
+
       mimir:
         mimir-alertmanager:
           url: https://raw.githubusercontent.com/grafana/mimir/main/operations/mimir-mixin-compiled/dashboards/mimir-alertmanager.json
