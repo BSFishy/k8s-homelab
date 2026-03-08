@@ -57,7 +57,7 @@ groups:
     rules:
       - alert: CephFSFuseTransportEndpointDisconnected
         expr: |
-          sum(
+          sum by (pod, node) (
             count_over_time(
               {namespace="rook-ceph"} |~ "(?i)transport endpoint is not connected"[5m]
             )
@@ -68,9 +68,11 @@ groups:
           category: logs
         annotations:
           summary: "CephFS FUSE mount disconnected (transport endpoint not connected)"
+          node: "{{ $labels.node }}"
+          pod: "{{ $labels.pod }}"
       - alert: CephFSFuseCorruptedMountDetected
         expr: |
-          sum(
+          sum by (pod, node) (
             count_over_time(
               {namespace="rook-ceph"} |~ "(?i)corrupted mount detected"[5m]
             )
@@ -81,3 +83,5 @@ groups:
           category: logs
         annotations:
           summary: "CephFS CSI detected a corrupted FUSE mount"
+          node: "{{ $labels.node }}"
+          pod: "{{ $labels.pod }}"
