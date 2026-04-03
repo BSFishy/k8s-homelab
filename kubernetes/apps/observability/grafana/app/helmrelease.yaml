@@ -310,13 +310,6 @@ spec:
             name: Loki
             type: loki
             url: http://loki-gateway.observability.svc.cluster.local:80
-            jsonData:
-              derivedFields:
-                - datasourceName: Tempo
-                  matcherRegex: "traceID=(\\w+)"
-                  name: TraceID
-                  url: "$${__value.raw}"
-                  datasourceUid: tempo
           - access: proxy
             name: Tempo
             type: tempo
