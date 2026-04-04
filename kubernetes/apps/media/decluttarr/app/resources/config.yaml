@@ -1,5 +1,5 @@
 general:
-  log_level: debug
+  log_level: INFO
   test_run: false
   timer: 10
   # ignored_download_clients: ["emulerr"]
