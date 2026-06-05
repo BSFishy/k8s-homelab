@@ -117,9 +117,6 @@ spec:
           # gaia-04
           - name: /dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U6NU0YA28274E
 
-          # gaia-05
-          - name: /dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U6NU0YA32820Z
-
         config:
           osdsPerDevice: "1"
 
